@@ -34,6 +34,11 @@ public class FamousTeacher implements Serializable {
 	 * 是否关注
 	 */
 	private boolean isAttention;
+	
+	/**
+	 *   直播是否结束
+	 */
+	private int isEnd;
 	/**
 	 * 昵称
 	 */
@@ -215,6 +220,14 @@ public class FamousTeacher implements Serializable {
 	 */
 	private String appLiveUrl;
 	
+
+	public int getIsEnd() {
+		return isEnd;
+	}
+
+	public void setIsEnd(int isEnd) {
+		this.isEnd = isEnd;
+	}
 
 	public int getWeekPrice() {
 		return weekPrice;

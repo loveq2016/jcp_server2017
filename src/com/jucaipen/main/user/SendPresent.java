@@ -1,36 +1,26 @@
 package com.jucaipen.main.user;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.jucaipen.main.datautils.RollBackUtil;
 import com.jucaipen.model.Contribute;
 import com.jucaipen.model.FamousTeacher;
 import com.jucaipen.model.Gifts;
-import com.jucaipen.model.Guardian;
 import com.jucaipen.model.MyGifts;
 import com.jucaipen.model.MyPresent;
 import com.jucaipen.model.Rebate;
 import com.jucaipen.model.SysAccount;
 import com.jucaipen.model.User;
-import com.jucaipen.model.VideoLive;
 import com.jucaipen.service.FamousTeacherSer;
 import com.jucaipen.service.GiftsSer;
-import com.jucaipen.service.GuardianSer;
 import com.jucaipen.service.MyPresentSer;
 import com.jucaipen.service.SysAccountSer;
 import com.jucaipen.service.UserServer;
-import com.jucaipen.service.VideoLiveServer;
 import com.jucaipen.utils.JsonUtil;
-import com.jucaipen.utils.LoginUtil;
 import com.jucaipen.utils.StringUtil;
 import com.jucaipen.utils.TimeUtils;
 /**
@@ -41,8 +31,6 @@ import com.jucaipen.utils.TimeUtils;
 public class SendPresent extends HttpServlet {
 	private static final long serialVersionUID = -5375079383224086542L;
 	private String result;
-	private Map<String,String> params=new HashMap<String,String>();
-	private static final String SEND_LIVE_MSG="http://www.jucaipen.com/TeacherLive/ashx/VideoLive.ashx?action=APPSendMsg";
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

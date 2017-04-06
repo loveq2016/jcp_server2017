@@ -11,6 +11,11 @@ public class SysAccountSer{
 		SysAccountDao dao=new SysAccountImp();
 		return dao.updatePurchInfo(sysAccount, childAccount, userAccount);
 	}
+	
+	public static int updateTeacherRebate(int teacherAccount, int rebateAccount) {
+		SysAccountDao dao=new SysAccountImp();
+		return dao.updateTeacherRebate(teacherAccount, rebateAccount);
+	}
 
 	public static SysAccount findAccountInfo() {
 		SysAccountDao dao=new SysAccountImp();
@@ -21,6 +26,17 @@ public class SysAccountSer{
 			int userAccount, int gurdianAccount) {
 		SysAccountDao dao=new SysAccountImp();
 		return dao.updateGurdianInfo( sysAccount, childAccount, userAccount, gurdianAccount);
+	}
+	
+	public static int updateDaShangInfo(int child,int user,int daShang){
+		SysAccountDao dao=new SysAccountImp();
+		return dao.updateDaShangInfo(child, user, daShang);
+	}
+	
+	
+	public static  int updateGiftInfo(int child, int user, int gift) {
+		SysAccountDao dao=new SysAccountImp();
+		return dao.updateGiftInfo(child, user, gift);
 	}
 
 }

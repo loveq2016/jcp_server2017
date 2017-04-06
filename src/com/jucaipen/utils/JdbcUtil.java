@@ -11,7 +11,7 @@ import java.sql.Statement;
  * 
  */
 public class JdbcUtil {
-	private static boolean isTest = false;
+	private static boolean isTest = true;
 	private static Connection dbConn;
 	private static boolean isNormal;
 	/**

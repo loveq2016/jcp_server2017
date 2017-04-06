@@ -24,11 +24,22 @@ public class ContributeSer{
 
 	/**
 	 * @param uId
-	 * @return  根据用户id获取贡献榜
-	 */
-	public static List<Contribute> findContributeByUid(int uId) {
+	 * @return  根据单个讲师贡献榜     年 、月、日榜
+	 */ 
+	public static List<Contribute> findContributeByTid(int tId,String type) {
 		ContributeDao dao=new ContributeImp();
-		return dao.findContributeByUid(uId);
+		return dao.findContributeByTid(tId,type);
+	}
+	
+	
+	
+	/**
+	 * @param type
+	 * @return  获取讲师最新的总榜单
+	 */
+	public static List<Contribute> findContributeGroupByTid(String type){
+		ContributeDao dao=new ContributeImp();
+		return dao.findContributeGroupByTid(type);
 	}
 
 	/**
@@ -50,6 +61,15 @@ public class ContributeSer{
 		ContributeDao dao=new ContributeImp();
 		return dao.findContributeByUidAndFkId(uId, fkId);
 	}
+	
+	/**
+	 * @param teacherId
+	 * @return  获取总贡献数
+	 */
+	public static int findAllContributeByTid(int teacherId){
+		ContributeDao dao=new ContributeImp();
+		return dao.findAllContributeByTid(teacherId);
+	}
 
 	/**
 	 * @return  获取所有的贡献
@@ -57,6 +77,12 @@ public class ContributeSer{
 	public static List<Contribute> findAllContribute() {
 		ContributeDao dao=new ContributeImp();
 		return dao.findAllContribute();
+	}
+	
+	public static int addContribute(Contribute contribute){
+		ContributeDao dao=new ContributeImp();
+		return dao.addContribute(contribute);
+		
 	}
 
 }

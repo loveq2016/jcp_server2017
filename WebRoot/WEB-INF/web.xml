@@ -1198,6 +1198,11 @@
     <servlet-name>QuerryMyBills</servlet-name>
     <servlet-class>com.jucaipen.main.my.QuerryMyBills</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>LiveInfo</servlet-name>
+    <servlet-class>com.jucaipen.main.live.LiveInfo</servlet-class>
+  </servlet>
+
 
 
 
@@ -1252,6 +1257,10 @@
   <servlet-mapping>
     <servlet-name>QuerryMyBills</servlet-name>
     <url-pattern>/jucaipen/getbills</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>LiveInfo</servlet-name>
+    <url-pattern>/jucaipen/liveinfo</url-pattern>
   </servlet-mapping>
     
     

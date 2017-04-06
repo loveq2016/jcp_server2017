@@ -212,4 +212,24 @@ public class MyPresentImp implements MyPresentDao {
 		return 0;
 	}
 
+	@Override
+	public int updatePresents(int uId, int pId, int num) {
+		// 修改礼品信息
+		dbConn=JdbcUtil.connSqlServer();
+		try {
+			sta=dbConn.createStatement();
+			return sta.executeUpdate("UPDATE JCP_MyPresent SET PresentNum="+num+" WHERE FK_UserId="+uId+" AND FK_LiPinId="+pId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return 0;
+	
+	}
+
 }

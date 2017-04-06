@@ -44,6 +44,20 @@ public class AccountSer{
 		return dao.updateBills(uId, newBills);
 	}
 	
+	
+	/**
+	 * @param uId
+	 * @param newBills
+	 * @return  修改聚财币数量
+	 */
+	public static int updateBillsIntegers(int uId,int newBills,int newsIntegers){
+		AccountDao dao=new AccountImp();
+		return dao.updateBillsIntegers(uId, newBills,newsIntegers);
+	}
+	
+	
+	
+	
 	/**
 	 * @param uId
 	 * @param integeral

@@ -90,7 +90,7 @@ public class QuerryTeacher extends HttpServlet {
 				int tId = teacher.getId();
 				VideoLive videoLive = VideoLiveServer.findLiveBytId(tId);
 				if (videoLive != null) {
-					teacher.setLiveIsEnd(videoLive.getIsEnd());
+					teacher.setIsEnd(videoLive.getIsEnd());
 				}
 			}
 		}
@@ -105,6 +105,10 @@ public class QuerryTeacher extends HttpServlet {
 		if (teachers != null) {
 			for (FamousTeacher teacher : teachers) {
 				int tId = teacher.getId();
+				VideoLive videoLive=VideoLiveServer.findLiveBytId(tId);
+				if(videoLive!=null){
+					teacher.setIsEnd(teacher.getIsEnd());
+				}
 				Fans fan = FansSer.findIsFans(uId, tId);
 				if (fan != null) {
 					isAttentions.add(0);

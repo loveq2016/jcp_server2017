@@ -89,4 +89,65 @@ public class SysAccountImp implements SysAccountDao {
 		return 0;
 	}
 
+	@Override
+	public int updateDaShangInfo(int child, int user, int daShang) {
+		dbConn = JdbcUtil.connSqlServer();
+		try {
+			sta = dbConn.createStatement();
+			return sta.executeUpdate("UPDATE JCP_SysAccount SET DaShangAccount="
+					+ daShang + ",SysChildAccount=" + child
+					+ ",UserAccount=" + user);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return 0;
+	
+	}
+
+	@Override
+	public int updateGiftInfo(int child, int user, int gift) {
+		dbConn = JdbcUtil.connSqlServer();
+		try {
+			sta = dbConn.createStatement();
+			return sta.executeUpdate("UPDATE JCP_SysAccount SET GiftAccount="
+					+ gift + ",SysChildAccount=" + child
+					+ ",UserAccount=" + user);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return 0;
+	}
+
+	@Override
+	public int updateTeacherRebate(int teacherAccount, int rebateAccount) {
+		dbConn = JdbcUtil.connSqlServer();
+		try {
+			sta = dbConn.createStatement();
+			return sta.executeUpdate("UPDATE JCP_SysAccount SET TeacherAccount="
+					+ teacherAccount + ",SysRebateAccount=" + rebateAccount);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return 0;
+	}
+
 }

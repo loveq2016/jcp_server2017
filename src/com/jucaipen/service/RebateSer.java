@@ -19,16 +19,16 @@ public class RebateSer {
 		return dao.findRebateById(id);
 	}
 	
-	
-	/**
+/*	
+	*//**
 	 * @param teacherId
 	 * @return  ªÒ»°∞Òµ•
-	 */
+	 *//*
 	public static List<Rebate> findRebateByTeacher(int teacherId,String type){
 		RebateDao dao=new RebateImp();
 		return dao.findRebateByTeacher(teacherId,type);
 	}
-
+*/
 	/**
 	 * @param teacherId
 	 * @param page

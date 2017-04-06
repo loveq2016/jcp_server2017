@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.jucaipen.model.FamousTeacher;
 import com.jucaipen.model.Video;
+import com.jucaipen.model.VideoLive;
 import com.jucaipen.service.FamousTeacherSer;
+import com.jucaipen.service.VideoLiveServer;
 import com.jucaipen.service.VideoServer;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.StringUtil;
@@ -51,6 +53,14 @@ public class HotVideos extends HttpServlet {
 
 	private String initHotTeacherList() {
 		List<FamousTeacher> teachers = FamousTeacherSer.findHotTeacher(5);
+		for(FamousTeacher teacher : teachers){
+			int id = teacher.getId();
+			VideoLive videoLive=VideoLiveServer.findLiveBytId(id);
+			if(videoLive!=null){
+				teacher.setIsEnd(videoLive.getIsEnd());
+			}
+		}
+		
 		return JsonUtil.getHotTeacher(teachers);
 	}
 

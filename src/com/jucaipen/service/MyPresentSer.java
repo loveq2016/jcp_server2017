@@ -17,6 +17,17 @@ public class MyPresentSer {
 		MyPresentDao dao=new MyPresentImp();
 		return dao.findPresentByUserId(uId, page);
 	}
+	
+	/**
+	 * @param uId
+	 * @param pId
+	 * @param num
+	 * @return  更新礼品数量
+	 */
+	public static int updatePresents(int uId, int pId, int num){
+		MyPresentDao dao=new MyPresentImp();
+		return dao.updatePresents(uId, pId, num);
+	}
 
 	/**
 	 * @param id

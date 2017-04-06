@@ -280,6 +280,7 @@ public class QuerryTeacherIdea extends HttpServlet {
 				live.setVideoUrl(teacher.getAppLiveUrl());
 				live.setTeacherName(teacher.getNickName());
 				live.setTeacherFace(teacher.getHeadFace());
+				live.setRoomId(teacher.getFk_UserId());
 				if (live.isCharge()) {
 					// สีทั
 					if (usId > 0) {

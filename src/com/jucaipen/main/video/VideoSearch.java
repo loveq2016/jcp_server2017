@@ -1,25 +1,22 @@
 package com.jucaipen.main.video;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.jucaipen.model.FamousTeacher;
 import com.jucaipen.model.MySpecial;
 import com.jucaipen.model.MyVideo;
 import com.jucaipen.model.Special;
-import com.jucaipen.model.TextLive;
 import com.jucaipen.model.Video;
+import com.jucaipen.model.VideoLive;
 import com.jucaipen.service.FamousTeacherSer;
 import com.jucaipen.service.MySpecialSer;
 import com.jucaipen.service.MyVideoSer;
 import com.jucaipen.service.SpecialSer;
-import com.jucaipen.service.TxtLiveSer;
+import com.jucaipen.service.VideoLiveServer;
 import com.jucaipen.service.VideoServer;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.StringUtil;
@@ -91,9 +88,9 @@ public class VideoSearch extends HttpServlet {
 		if(teachers!=null){
 			for(FamousTeacher teacher : teachers){
 				int tId=teacher.getId();
-				List<TextLive> txt = TxtLiveSer.findTxtLiveByTeacherIdAndLast(tId, 1);
-				if(txt!=null&&txt.size()>0){
-					teacher.setLiveIsEnd(txt.get(0).getIsEnd());
+				VideoLive videoLive=VideoLiveServer.findLiveBytId(tId);
+				if(videoLive!=null){
+					teacher.setIsEnd(videoLive.getIsEnd());
 				}
 			}
 		}

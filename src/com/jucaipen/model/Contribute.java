@@ -21,6 +21,20 @@ public class Contribute implements Serializable{
 	 *  所属讲师 FK_TearchId
 	 */
 	private int teacherId;
+	
+	private String fromName;
+	
+	private String fromFace;
+	
+	private String leavel;
+	
+	private String introduce;
+	
+	/**
+	 *   直播是否结束
+	 */
+	private int isEnd;
+	
 	/**
 	 *  关联id  FK_Id
 	 */
@@ -33,10 +47,44 @@ public class Contribute implements Serializable{
 	 *  总聚财币   贡献    AllJucaibi
 	 */
 	private int allJucaiBills;
+	
 	/**
 	 *  贡献类型 1赠送礼品  3开通守护 4购买问答 5打赏老师 6购买直播付费观点 7阅读付费问答 8购买付费日志  9打赏日志      ComType
 	 */
 	private int comType;
+	
+	
+	
+	public int getIsEnd() {
+		return isEnd;
+	}
+	public void setIsEnd(int isEnd) {
+		this.isEnd = isEnd;
+	}
+	public String getFromName() {
+		return fromName;
+	}
+	public void setFromName(String fromName) {
+		this.fromName = fromName;
+	}
+	public String getFromFace() {
+		return fromFace;
+	}
+	public void setFromFace(String fromFace) {
+		this.fromFace = fromFace;
+	}
+	public String getLeavel() {
+		return leavel;
+	}
+	public void setLeavel(String leavel) {
+		this.leavel = leavel;
+	}
+	public String getIntroduce() {
+		return introduce;
+	}
+	public void setIntroduce(String introduce) {
+		this.introduce = introduce;
+	}
 	public int getId() {
 		return id;
 	}

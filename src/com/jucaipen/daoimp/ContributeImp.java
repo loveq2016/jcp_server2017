@@ -59,30 +59,21 @@ public class ContributeImp implements ContributeDao {
 	}
 
 	@Override
-	public List<Contribute> findContributeByUid(int uId) {
+	public List<Contribute> findContributeByTid(int tId,String type) {
 		// 获取用户的所有贡献信息
 		contributes.clear();
 		dbConn = JdbcUtil.connSqlServer();
 		try {
 			sta = dbConn.createStatement();
-			res = sta
-					.executeQuery("SELECT * FROM JCP_Contribute WHERE FK_UserId="
-							+ uId);
+			res=sta.executeQuery("SELECT SUM(AllJucaibi) AS A,FK_UserId from JCP_Contribute WHERE FK_TearchId="
+							+ tId
+							+ "  AND   DATEDIFF("+type+", InsertDate, GETDATE())=0  GROUP BY FK_UserId ORDER BY A DESC");
 			while (res.next()) {
-				int id = res.getInt(1);
-				int teacherId = res.getInt(3); // FK_TearchId
-				int fk_id = res.getInt(4); // FK_Id
-				String insertDate = res.getString(5); // InsertDate
-				int allJucaiBills = res.getInt(6); // AllJucaibi
-				int comeType = res.getInt(7); // ComType
+				int bills = res.getInt(1);
+				int userId = res.getInt(2); // FK_TearchId
 				Contribute contribute = new Contribute();
-				contribute.setId(id);
-				contribute.setUserId(uId);
-				contribute.setTeacherId(teacherId);
-				contribute.setFk_id(fk_id);
-				contribute.setInsertDate(insertDate);
-				contribute.setAllJucaiBills(allJucaiBills);
-				contribute.setComType(comeType);
+				contribute.setAllJucaiBills(bills);
+				contribute.setUserId(userId);
 				contributes.add(contribute);
 			}
 			return contributes;
@@ -233,6 +224,61 @@ public class ContributeImp implements ContributeDao {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+
+	@Override
+	public List<Contribute> findContributeGroupByTid(String type) {
+		// 获取用户的所有贡献信息
+		contributes.clear();
+		dbConn = JdbcUtil.connSqlServer();
+		try {
+			sta = dbConn.createStatement();
+			res=sta.executeQuery("SELECT SUM(AllJucaibi) AS A,FK_TearchId from JCP_Contribute WHERE "
+					+ " DATEDIFF("+type+", InsertDate, GETDATE())=0  GROUP BY FK_TearchId ORDER BY A DESC");
+			while (res.next()) {
+				int bills = res.getInt(1);
+				int teacherId = res.getInt(2); // FK_TearchId
+				Contribute contribute = new Contribute();
+				contribute.setAllJucaiBills(bills);
+				contribute.setTeacherId(teacherId);
+				contributes.add(contribute);
+			}
+			return contributes;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	
+	}
+
+	@Override
+	public int findAllContributeByTid(int teacherId) {
+		// 获取用户的所有贡献信息
+		dbConn = JdbcUtil.connSqlServer();
+		try {
+			sta = dbConn.createStatement();
+			res=sta.executeQuery("SELECT SUM(AllJucaibi) AS A from JCP_Contribute WHERE FK_TearchId="
+							+ teacherId);
+			while (res.next()) {
+				return res.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return 0;
+	
 	}
 
 }

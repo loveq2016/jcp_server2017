@@ -15,12 +15,31 @@ public interface ContributeDao {
 	 * @return 通过id获取贡献榜信息
 	 */
 	public Contribute findContributeById(int id);
+	
+	
+	
 
 	/**
 	 * @param uId
 	 * @return 通过用户id获取贡献榜
 	 */
-	public List<Contribute> findContributeByUid(int uId);
+	public List<Contribute> findContributeByTid(int teacherIds,String type);
+	
+	
+	/**
+	 * @param teacherId
+	 * @param type
+	 * @return  获取所有讲师最新总榜
+	 */
+	public List<Contribute>  findContributeGroupByTid(String type);
+	
+	
+	/**
+	 * @param teacherId
+	 * @return  获取讲师的总榜单
+	 */
+	public int  findAllContributeByTid(int teacherId);
+	
 
 	/**
 	 * @param uId

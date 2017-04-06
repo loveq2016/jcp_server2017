@@ -2,18 +2,22 @@ package com.jucaipen.main.live;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.jucaipen.model.Contribute;
 import com.jucaipen.model.FamousTeacher;
-import com.jucaipen.model.Rebate;
+import com.jucaipen.model.VideoLive;
+import com.jucaipen.service.ContributeSer;
 import com.jucaipen.service.FamousTeacherSer;
-import com.jucaipen.service.RebateSer;
+import com.jucaipen.service.VideoLiveServer;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.StringUtil;
 /**
- * @author 杨朗飞
+ * @author 杨朗飞  讲师总榜单
  */
 public class LastTeacherList extends HttpServlet {
 	private static final long serialVersionUID = 2779291546693682575L;
@@ -40,24 +44,27 @@ public class LastTeacherList extends HttpServlet {
 	 * @return 获取最近的讲师排行榜
 	 */
 	private String getTeacherLastList(int typeId) {
-		List<Rebate> rebates;
+		List<Contribute> contributes;
 		if (typeId == 0) {
-			rebates = RebateSer.findLastTeacherLast("year");
+			contributes=ContributeSer.findContributeGroupByTid("year");
 		} else if (typeId == 1) {
-			rebates = RebateSer.findLastTeacherLast("month");
+			contributes=ContributeSer.findContributeGroupByTid("month");
 		} else {
-			rebates = RebateSer.findLastTeacherLast("day");
+			contributes=ContributeSer.findContributeGroupByTid("day");
 		}
-		for (Rebate rebate : rebates) {
-			int teacherId = rebate.getTeacherId();
+		for (Contribute contribute : contributes) {
+			int teacherId = contribute.getTeacherId();
 			FamousTeacher teacher = FamousTeacherSer
 					.findTeacherBaseInfo(teacherId);
-			rebate.setFromName(teacher.getNickName());
-			rebate.setFromFace(teacher.getHeadFace());
-			rebate.setLeavel(teacher.getLevel());
-			rebate.setIntroduce(teacher.getIntroduce());
-			rebate.setFromId(teacherId);
+			VideoLive videoLive=VideoLiveServer.findLiveBytId(teacherId);
+			contribute.setFromName(teacher.getNickName());
+			contribute.setFromFace(teacher.getHeadFace());
+			contribute.setLeavel(teacher.getLevel());
+			contribute.setIntroduce(teacher.getIntroduce());
+			if(videoLive!=null){
+				contribute.setIsEnd(videoLive.getIsEnd());
+			}
 		}
-		return JsonUtil.getLastTeacherLast(rebates);
+		return JsonUtil.getLastTeacherLast(contributes);
 	}
 }

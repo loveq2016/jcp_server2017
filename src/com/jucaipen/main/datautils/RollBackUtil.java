@@ -1,5 +1,4 @@
 package com.jucaipen.main.datautils;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -34,14 +33,17 @@ import com.jucaipen.model.VideoLiveSale;
 import com.jucaipen.service.AccountDetailSer;
 import com.jucaipen.service.AccountSer;
 import com.jucaipen.service.ChargeOrderSer;
+import com.jucaipen.service.ContributeSer;
+import com.jucaipen.service.MarkerSer;
+import com.jucaipen.service.MyGiftsSer;
+import com.jucaipen.service.MyPresentSer;
+import com.jucaipen.service.RebateSer;
 import com.jucaipen.service.SysAccountSer;
 import com.jucaipen.service.SysDetailAccountSer;
+import com.jucaipen.service.UserServer;
 import com.jucaipen.utils.BaseData;
 import com.jucaipen.utils.JdbcUtil;
-
 public class RollBackUtil {
-	private Connection dbConn;
-	private Statement sta;
 	private static RollBackUtil util;
 
 	private RollBackUtil() {
@@ -80,10 +82,11 @@ public class RollBackUtil {
 			SysAccount account2, SysDetailAccount detailAccount,
 			Contribute contribute, FamousTeacher teacher, Rebate sysRebate,
 			int gurdianId, int type, LiveRecoderSale sale) {
-		dbConn = JdbcUtil.connSqlServer();
+		Connection dbConn = null;
 		try {
+			dbConn = JdbcUtil.connSqlServer();
 			dbConn.setAutoCommit(false);
-			sta = dbConn.createStatement();
+			Statement sta = dbConn.createStatement();
 			if (type == 1) {
 				// 购买单次直播
 				// 1、更新单次购买表
@@ -249,6 +252,8 @@ public class RollBackUtil {
 			SysAccount account2, SysDetailAccount detailAccount, int type,
 			String prePayDate, List<String> orderCodes) {
 		int update = 0;
+		Connection dbConn = null;
+		Statement sta=null;
 		try {
 			dbConn = JdbcUtil.connSqlServer();
 			dbConn.setAutoCommit(false);
@@ -359,7 +364,6 @@ public class RollBackUtil {
 			SysAccount account2, SysDetailAccount detailAccount, int type,
 			String prePayDate) {
 		int updateBills = 0;
-		try {
 			// 1 充值 JCP_AddOrder
 			if (pState == 2) {
 				int update = ChargeOrderSer.updatePayState(orderCode, pState,
@@ -377,8 +381,9 @@ public class RollBackUtil {
 						updateBills = AccountSer.addAccount(account);
 					}
 					// 3、 账户详细 聚财币变化 JCP_Account_Detail
-					AccountDetail accountDetail = AccountDetailSer.findDetailByOrderCode(orderCode);
-					if (accountDetail==null&&updateBills > 0) {
+					AccountDetail accountDetail = AccountDetailSer
+							.findDetailByOrderCode(orderCode);
+					if (accountDetail == null && updateBills > 0) {
 						int addDetails = AccountDetailSer.addDetails(detail);
 						// 4、系统账户 JCP_SysAccount
 						if (addDetails > 0) {
@@ -391,21 +396,12 @@ public class RollBackUtil {
 							// 5、 系统账户详细 JCP_SysAccountDateil
 							if (purchInfo > 0) {
 								SysDetailAccountSer.addDetails(detailAccount);
-
 							}
 						}
 					}
 
 				}
-			}
-		} finally {
-			try {
-				sta.close();
-				dbConn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+		} 
 		return 0;
 	}
 
@@ -429,10 +425,11 @@ public class RollBackUtil {
 			int markerMoney, int jucaiBills, int uId, Contribute contribute,
 			SysAccount sysAccount, SysDetailAccount sysDetail, User user,
 			Rebate rebate, Rebate sysRebate, AccountDetail detailIntegeral) {
-		dbConn = JdbcUtil.connSqlServer();
+		Connection dbConn=null;
 		try {
+			dbConn = JdbcUtil.connSqlServer();
 			dbConn.setAutoCommit(false);
-			sta = dbConn.createStatement();
+			Statement sta = dbConn.createStatement();
 			// 1、添加打赏信息 JCP_MarkerWord_Dateil
 			sta.executeUpdate("INSERT INTO JCP_MarkerWord_Dateil(MarkerType,FK_UserId,FK_LogId,MaekerCount,InsertDate,IP) VALUES("
 					+ marker.getType()
@@ -554,6 +551,98 @@ public class RollBackUtil {
 	}
 
 	/**
+	 * @param marker
+	 * @param detail
+	 * @param uId
+	 * @param jucaiBills
+	 * @param markerMoney
+	 * @param integeral
+	 * @param contribute
+	 * @param sysAccount
+	 * @param sysDetail
+	 * @param user
+	 * @param sysRebate
+	 * @param rebate
+	 * @param detailIntegeral
+	 * @return 打赏
+	 */
+	public int addRewardNoCommit(Marker marker, AccountDetail detail,
+			int integeral, int markerMoney, int jucaiBills, int uId,
+			Contribute contribute, SysAccount sysAccount,
+			SysDetailAccount sysDetail, User user, Rebate rebate,
+			Rebate sysRebate, AccountDetail detailIntegeral) {
+		// 1、添加打赏信息 JCP_MarkerWord_Dateil
+		int addMarker = MarkerSer.addMarker(marker);
+		if (addMarker == 1) {
+			// 2、总账户信息 积分聚财币 JCP_Account
+			int billsIntegers = AccountSer.updateBillsIntegers(uId,
+					(jucaiBills - markerMoney), (integeral + markerMoney));
+			if (billsIntegers == 1) {
+				// 3、账户详细信息 JCP_Account_Detail 聚财币减少
+				int addDetails = AccountDetailSer.addDetails(detail);
+				if (addDetails == 1) {
+					// 积分增加
+					int addDetails2 = AccountDetailSer
+							.addDetails(detailIntegeral);
+					if (addDetails2 == 1) {
+						// 4、返利 JCP_Rebate 系统返利
+						int addRebate = RebateSer.addRebate(rebate);
+						if (addRebate == 1) {
+							// 讲师返利
+							int addRebate2 = RebateSer.addRebate(sysRebate);
+							if (addRebate2 == 1) {
+								// 5、贡献 JCP_Contribute
+								int addContribute = ContributeSer
+										.addContribute(contribute);
+								if (addContribute == 1) {
+									// 6、系统总表 JCP_SysAccount
+									int updateDaShangInfo = SysAccountSer
+											.updateDaShangInfo(
+													(sysAccount
+															.getSysChildAccount() + markerMoney),
+													(sysAccount
+															.getUserAccount() - markerMoney),
+													(sysAccount
+															.getDaShangAccount() + markerMoney));
+									if (updateDaShangInfo == 1) {
+										// 7、系统明细表 JCP_SysAccountDateil
+										int addDetails3 = SysDetailAccountSer
+												.addDetails(sysDetail);
+										if (addDetails3 == 1) {
+											// 8、用户表 积分 JCP_User
+											int updateIntegeral = UserServer
+													.updateIntegeral(
+															uId,
+															(integeral + markerMoney));
+											if (updateIntegeral == 1) {
+												// 更新用户等级
+												int currentLeavel = user
+														.getUserLeval();
+												int newLeavel = BaseData
+														.getLeavel(user
+																.getAllIntegral()
+																+ markerMoney);
+												if (currentLeavel < newLeavel) {
+													UserServer
+															.updateUserLeavel(
+																	uId,
+																	newLeavel);
+												}
+												return 1;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return 0;
+	}
+
+	/**
 	 * @param sale
 	 * @param account
 	 * @param uId
@@ -573,10 +662,10 @@ public class RollBackUtil {
 			int uId, AccountDetail detail, AccountDetail detailInteger,
 			Rebate teacherRebate, Rebate sysRebate, Contribute contribute,
 			SysAccount sysAccount, SysDetailAccount sysDetailAccount, User user) {
-		dbConn = JdbcUtil.connSqlServer();
+		 Connection dbConn = JdbcUtil.connSqlServer();
 		try {
 			dbConn.setAutoCommit(false);
-			sta = dbConn.createStatement();
+			Statement sta = dbConn.createStatement();
 			// 1、添加战法订阅信息 JCP_TacticsSale
 			sta.executeUpdate("INSERT INTO  JCP_TacticsSale(UserId,"
 					+ "TacticsId,MobileNum,InsetDate,StratDate,EndDate,IsStop,IP,Remarks) VALUES("
@@ -712,10 +801,10 @@ public class RollBackUtil {
 	public int purchVideo(MyVideo myVideo, Account a, int uId, int b,
 			AccountDetail detail, AccountDetail detailInteger,
 			SysAccount sysAccount, SysDetailAccount sysDetailAccount, User user) {
-		dbConn = JdbcUtil.connSqlServer();
+		Connection dbConn = JdbcUtil.connSqlServer();
 		try {
 			dbConn.setAutoCommit(false);
-			sta = dbConn.createStatement();
+			Statement sta = dbConn.createStatement();
 			// 1、添加添加我的视频信息 JCP_MyVideo
 			sta.executeUpdate("INSERT INTO JCP_MyVideo"
 					+ "(FK_UserId,FK_VideoId,InsertDate,Remark,IsDel,IsStop,StartDate,EndDate)"
@@ -800,114 +889,7 @@ public class RollBackUtil {
 		return 0;
 	}
 
-	/**
-	 * @param present
-	 * @param b
-	 * @param a
-	 * @param uId
-	 * @param detail
-	 * @param detailInteger
-	 * @param contribute
-	 * @param user
-	 * @param sysAccount
-	 * @param sysDetailAccount
-	 * @return 购买礼品
-	 */
-	public int purchGifts(MyPresent presentExit, MyPresent present, Account a,
-			int b, int uId, AccountDetail detail, AccountDetail detailInteger,
-			User user, SysAccount sysAccount, SysDetailAccount sysDetailAccount) {
-		dbConn = JdbcUtil.connSqlServer();
-		try {
-			dbConn.setAutoCommit(false);
-			sta = dbConn.createStatement();
-			// 1、添加添加礼品信息 JCP_MyPresent
-			if (presentExit == null) {
-				sta.executeUpdate("INSERT INTO JCP_MyPresent (FK_UserId,PresentNum,FK_LiPinId) VALUES("
-						+ present.getUserId()
-						+ ","
-						+ present.getPresentNum()
-						+ "," + present.getPresentId() + ")");
-			} else {
-				sta.executeUpdate("UPDATE JCP_MyPresent SET PresentNum="
-						+ (presentExit.getPresentNum() + present
-								.getPresentNum()) + " WHERE FK_LiPinId="
-						+ presentExit.getPresentId());
-			}
-			// 2、总账户信息 积分聚财币 JCP_Account
-			sta.executeUpdate("UPDATE JCP_Account SET Integral="
-					+ (a.getIntegeral() + b) + ",JucaiBi="
-					+ (a.getJucaiBills() - b) + " WHERE UserId=" + uId);
-			// 3、账户详细信息 JCP_Account_Detail 聚财币减少
-			sta.executeUpdate("INSERT INTO JCP_Account_Detail"
-					+ "(OrderCode,DetailMoney,DetailType,State,Remark,"
-					+ "InsertDate,IsDel,UserId) VALUES ('"
-					+ detail.getOrderCode() + "','" + detail.getDetailMoney()
-					+ "'," + detail.getDetailType() + "," + detail.getState()
-					+ ",'" + detail.getRemark() + "','"
-					+ detail.getInsertDate() + "'," + 0 + ","
-					+ detail.getUserId() + ")");
-			// 积分增加
-			sta.executeUpdate("INSERT INTO JCP_Account_Detail"
-					+ "(OrderCode,DetailMoney,DetailType,State,Remark,"
-					+ "InsertDate,IsDel,UserId) VALUES ('"
-					+ detailInteger.getOrderCode() + "','"
-					+ detailInteger.getDetailMoney() + "',"
-					+ detailInteger.getDetailType() + ","
-					+ detailInteger.getState() + ",'"
-					+ detailInteger.getRemark() + "','"
-					+ detailInteger.getInsertDate() + "'," + 0 + ","
-					+ detailInteger.getUserId() + ")");
-
-			// 4、系统总表 JCP_SysAccount
-			sta.executeUpdate("UPDATE JCP_SysAccount SET SysChildAccount="
-					+ (sysAccount.getSysChildAccount() + b) + ",UserAccount="
-					+ (sysAccount.getUserAccount() - b) + ",GiftAccount="
-					+ (sysAccount.getGiftAccount() + b));
-
-			// 5、系统明细表 JCP_SysAccountDateil
-			sta.executeUpdate("INSERT INTO JCP_SysAccountDateil"
-					+ "(UserId,AccType,RecordType,OrderId,Price,InsertDate,Remark,IP,IsDel)"
-					+ " VALUES(" + detail.getUserId() + ","
-					+ sysDetailAccount.getType() + ","
-					+ sysDetailAccount.getRecoderType() + ","
-					+ sysDetailAccount.getOrderId() + ","
-					+ sysDetailAccount.getPrice() + ",'"
-					+ sysDetailAccount.getInsertDate() + "','"
-					+ sysDetailAccount.getRemark() + "','"
-					+ sysDetailAccount.getIp() + "',"
-					+ sysDetailAccount.getIsDel() + ")");
-
-			// 6、用户表 积分 JCP_User
-			sta.executeUpdate("UPDATE JCP_User SET AllIntegral="
-					+ (a.getIntegeral() + b) + " WHERE Id=" + uId);
-
-			// 更新用户等级
-			int currentLeavel = user.getUserLeval();
-			int newLeavel = BaseData.getLeavel(user.getAllIntegral() + b);
-			if (currentLeavel < newLeavel) {
-				sta.executeUpdate("UPDATE JCP_User SET UserLevel=" + newLeavel
-						+ " WHERE Id=" + uId);
-			}
-			dbConn.commit();
-			return 1;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			try {
-				dbConn.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-		} finally {
-			try {
-				dbConn.setAutoCommit(true);
-				dbConn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return 0;
-	}
-
+	
 	/**
 	 * @param a
 	 * @param uId
@@ -925,10 +907,10 @@ public class RollBackUtil {
 			SysAccount sysAccount, int bs, AccountDetail detail,
 			AccountDetail detailInteger, SysDetailAccount sysDetailAccount,
 			AnswerSale sale, Rebate rebate) {
-		dbConn = JdbcUtil.connSqlServer();
+		Connection dbConn = JdbcUtil.connSqlServer();
 		try {
 			dbConn.setAutoCommit(false);
-			sta = dbConn.createStatement();
+			Statement sta = dbConn.createStatement();
 			// 1、添加问答购买信息 JCP_AnswerSale
 			sta.executeUpdate("INSERT INTO JCP_AnswerSale (FK_UserId,FK_TearchId,OrderCode,FK_AskId,InsertDate) VALUES ("
 					+ sale.getUserId()
@@ -1028,6 +1010,116 @@ public class RollBackUtil {
 		}
 		return 0;
 	}
+	
+	
+	/**
+	 * @param present
+	 * @param b
+	 * @param a
+	 * @param uId
+	 * @param detail
+	 * @param detailInteger
+	 * @param contribute
+	 * @param user
+	 * @param sysAccount
+	 * @param sysDetailAccount
+	 * @return 购买礼品
+	 */
+	public int purchGifts(MyPresent presentExit, MyPresent present, Account a,
+			int b, int uId, AccountDetail detail, AccountDetail detailInteger,
+			User user, SysAccount sysAccount, SysDetailAccount sysDetailAccount) {
+		Connection dbConn = JdbcUtil.connSqlServer();
+		try {
+			dbConn.setAutoCommit(false);
+			Statement sta = dbConn.createStatement();
+			// 1、添加添加礼品信息 JCP_MyPresent
+			if (presentExit == null) {
+				sta.executeUpdate("INSERT INTO JCP_MyPresent (FK_UserId,PresentNum,FK_LiPinId) VALUES("
+						+ present.getUserId()
+						+ ","
+						+ present.getPresentNum()
+						+ "," + present.getPresentId() + ")");
+			} else {
+				sta.executeUpdate("UPDATE JCP_MyPresent SET PresentNum="
+						+ (presentExit.getPresentNum() + present
+								.getPresentNum()) + " WHERE FK_LiPinId="
+						+ presentExit.getPresentId());
+			}
+			// 2、总账户信息 积分聚财币 JCP_Account
+			sta.executeUpdate("UPDATE JCP_Account SET Integral="
+					+ (a.getIntegeral() + b) + ",JucaiBi="
+					+ (a.getJucaiBills() - b) + " WHERE UserId=" + uId);
+			// 3、账户详细信息 JCP_Account_Detail 聚财币减少
+			sta.executeUpdate("INSERT INTO JCP_Account_Detail"
+					+ "(OrderCode,DetailMoney,DetailType,State,Remark,"
+					+ "InsertDate,IsDel,UserId) VALUES ('"
+					+ detail.getOrderCode() + "','" + detail.getDetailMoney()
+					+ "'," + detail.getDetailType() + "," + detail.getState()
+					+ ",'" + detail.getRemark() + "','"
+					+ detail.getInsertDate() + "'," + 0 + ","
+					+ detail.getUserId() + ")");
+			// 积分增加
+			sta.executeUpdate("INSERT INTO JCP_Account_Detail"
+					+ "(OrderCode,DetailMoney,DetailType,State,Remark,"
+					+ "InsertDate,IsDel,UserId) VALUES ('"
+					+ detailInteger.getOrderCode() + "','"
+					+ detailInteger.getDetailMoney() + "',"
+					+ detailInteger.getDetailType() + ","
+					+ detailInteger.getState() + ",'"
+					+ detailInteger.getRemark() + "','"
+					+ detailInteger.getInsertDate() + "'," + 0 + ","
+					+ detailInteger.getUserId() + ")");
+
+			// 4、系统总表 JCP_SysAccount
+			sta.executeUpdate("UPDATE JCP_SysAccount SET SysChildAccount="
+					+ (sysAccount.getSysChildAccount() + b) + ",UserAccount="
+					+ (sysAccount.getUserAccount() - b) + ",GiftAccount="
+					+ (sysAccount.getGiftAccount() + b));
+
+			// 5、系统明细表 JCP_SysAccountDateil
+			sta.executeUpdate("INSERT INTO JCP_SysAccountDateil"
+					+ "(UserId,AccType,RecordType,OrderId,Price,InsertDate,Remark,IP,IsDel)"
+					+ " VALUES(" + detail.getUserId() + ","
+					+ sysDetailAccount.getType() + ","
+					+ sysDetailAccount.getRecoderType() + ","
+					+ sysDetailAccount.getOrderId() + ","
+					+ sysDetailAccount.getPrice() + ",'"
+					+ sysDetailAccount.getInsertDate() + "','"
+					+ sysDetailAccount.getRemark() + "','"
+					+ sysDetailAccount.getIp() + "',"
+					+ sysDetailAccount.getIsDel() + ")");
+
+			// 6、用户表 积分 JCP_User
+			sta.executeUpdate("UPDATE JCP_User SET AllIntegral="
+					+ (a.getIntegeral() + b) + " WHERE Id=" + uId);
+
+			// 更新用户等级
+			int currentLeavel = user.getUserLeval();
+			int newLeavel = BaseData.getLeavel(user.getAllIntegral() + b);
+			if (currentLeavel < newLeavel) {
+				sta.executeUpdate("UPDATE JCP_User SET UserLevel=" + newLeavel
+						+ " WHERE Id=" + uId);
+			}
+			dbConn.commit();
+			return 1;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				dbConn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		} finally {
+			try {
+				dbConn.setAutoCommit(true);
+				dbConn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return 0;
+	}
+
 
 	/**
 	 * @param num
@@ -1045,10 +1137,10 @@ public class RollBackUtil {
 	public int sendGifts(MyPresent present, int num, int bill, int uId,
 			SysAccount sysAccount, Rebate sysRebate, Rebate rebate,
 			Contribute contribute, MyGifts gifts) {
-		dbConn = JdbcUtil.connSqlServer();
+		Connection dbConn = JdbcUtil.connSqlServer();
 		try {
 			dbConn.setAutoCommit(false);
-			sta = dbConn.createStatement();
+			Statement sta = dbConn.createStatement();
 			// 1、更新礼品背包 JCP_MyPresent
 			sta.executeUpdate("UPDATE JCP_MyPresent SET PresentNum="
 					+ (present.getPresentNum() - num) + " WHERE FK_UserId="
@@ -1132,6 +1224,92 @@ public class RollBackUtil {
 		}
 		return 0;
 	}
+	
+	
+	
+	/**
+	 * @param present
+	 * @param b
+	 * @param a
+	 * @param uId
+	 * @param detail
+	 * @param detailInteger
+	 * @param contribute
+	 * @param user
+	 * @param sysAccount
+	 * @param sysDetailAccount
+	 * @param sysRebate 
+	 * @param rebate 
+	 * @param contribute 
+	 * @param gifts 
+	 * @return 购买礼品+赠送礼品
+	 */
+	public int purchGiftsNoCommit(MyPresent presentExit, MyPresent present, Account a,
+			int b, int uId, AccountDetail detail, AccountDetail detailInteger,
+			User user, SysAccount sysAccount, SysDetailAccount sysDetailAccount, MyGifts gifts, Contribute contribute, Rebate rebate, Rebate sysRebate) {
+		    int addPresent;
+			// 1、添加添加礼品信息 JCP_MyPresent
+		    if(presentExit==null){
+		    	addPresent = MyPresentSer.addPresent(present);
+		    }else{
+		    	addPresent= MyPresentSer.updatePresents(uId, presentExit.getPresentId(), presentExit.getPresentNum());
+		    }
+		    if(addPresent>0){
+		    	// 2、总账户信息 积分聚财币 JCP_Account    ----购买
+		    	int updateBillsIntegers = AccountSer.updateBillsIntegers(uId, (a.getJucaiBills() - b), (a.getIntegeral() + b));
+		    	if(updateBillsIntegers>0){
+		    		// 3、账户详细信息 JCP_Account_Detail 聚财币减少 ---购买
+					int addDetails = AccountDetailSer.addDetails(detail);
+					// 积分增加
+					int addDetails2 = AccountDetailSer.addDetails(detailInteger);
+		    		if(addDetails>0&&addDetails2>0){
+		    			// 4、系统总表 JCP_SysAccount
+		    			int updateGiftInfo = SysAccountSer.updateGiftInfo((sysAccount.getSysChildAccount() + b), (sysAccount.getUserAccount() - b), (sysAccount.getGiftAccount() + b));
+		    			if(updateGiftInfo>0){
+		    				// 5、系统明细表 JCP_SysAccountDateil
+		    				int addDetails3 = SysDetailAccountSer.addDetails(sysDetailAccount);
+		    				if(addDetails3>0){
+		    					// 6、用户表 积分 JCP_User
+		    					int updateIntegeral = UserServer.updateIntegeral(uId,(a.getIntegeral() + b));
+		    					if(updateIntegeral>0){
+		    						// 更新用户等级
+			    					int currentLeavel = user.getUserLeval();
+			    					int newLeavel = BaseData.getLeavel(user.getAllIntegral() + b);
+			    					if (currentLeavel < newLeavel) {
+			    						UserServer.updateUserLeavel(uId, newLeavel);
+			    					}
+			    					//赠送礼品
+			    					// 1、更新礼品背包 JCP_MyPresent
+			    					int updatePresents = MyPresentSer.updatePresents(uId, present.getPresentId(), (present.getPresentNum() - presentExit.getPresentNum()));
+			    					if(updatePresents>0){
+			    						// 2、系统总表 JCP_SysAccount
+				    					int updateTeacherRebate = SysAccountSer.updateTeacherRebate(sysAccount.getTeacherRebateAccount()+b, sysAccount.getSysRebateAccount()+b);
+				    					if(updateTeacherRebate>0){
+				    						// 3 返利表
+					    					// 系统返利
+					    					int addRebate = RebateSer.addRebate(sysRebate);
+					    					if(addRebate>0){
+					    						// 讲师返利
+						    					int addRebate2 = RebateSer.addRebate(rebate);
+						    					if(addRebate2>0){
+						    						// 4贡献表
+							    					int addContribute = ContributeSer.addContribute(contribute);
+							    					if(addContribute>0){
+							    						// 5 送出礼品记录
+								    					return  MyGiftsSer.addGifts(gifts);
+							    					}
+						    					}
+					    					}
+				    					}
+			    					}
+		    					}
+		    				}
+		    			}
+		    		}
+		    	}
+		    }
+		return 0;
+	}
 
 	/**
 	 * @param mySpecial
@@ -1149,10 +1327,10 @@ public class RollBackUtil {
 			AccountDetail detail, AccountDetail detailInteger,
 			SysAccount sysAccount, SysDetailAccount sysDetailAccount, User user) {
 
-		dbConn = JdbcUtil.connSqlServer();
+		Connection dbConn = JdbcUtil.connSqlServer();
 		try {
 			dbConn.setAutoCommit(false);
-			sta = dbConn.createStatement();
+			Statement sta = dbConn.createStatement();
 			// 1、添加添加我的专辑信息 JCP_MySpecial
 			sta.executeUpdate("INSERT INTO JCP_MySpecial"
 					+ "(FK_UserId,FK_SpecialId,InsertDate,Remark,IsDel"
@@ -1252,10 +1430,10 @@ public class RollBackUtil {
 	public int signIn(SignDetail detail, Sign sign,
 			RebateIntegeralDetail inDetail, AccountDetail accountDetail,
 			Account a, int uId, int signIntegeral, User user) {
-		dbConn = JdbcUtil.connSqlServer();
+		Connection dbConn = JdbcUtil.connSqlServer();
 		try {
 			dbConn.setAutoCommit(false);
-			sta = dbConn.createStatement();
+			Statement sta = dbConn.createStatement();
 			// 1、添加添加签到详细表 JCP_QianDao_Detail
 			sta.executeUpdate("INSERT INTO JCP_QianDao_Detail(UserId,InsertDate,Ip,Remark) VALUES("
 					+ detail.getUserId()
@@ -1366,10 +1544,10 @@ public class RollBackUtil {
 			AccountDetail accountDetailIntegeral, Account acount, int b,
 			int uId, User user, Contribute contribute, SysAccount sysAccount,
 			SysDetailAccount detailAccount, Rebate rebate, Rebate sysRebate) {
-		dbConn = JdbcUtil.connSqlServer();
+		Connection dbConn = JdbcUtil.connSqlServer();
 		try {
 			dbConn.setAutoCommit(false);
-			sta = dbConn.createStatement();
+			Statement sta = dbConn.createStatement();
 			// 1、添加购买日志观点表 JCP_TeacherlogSale
 			sta.executeUpdate("INSERT  INTO JCP_TeacherlogSale"
 					+ "(FK_UserId,FK_TearchId,OrderCode,FK_LogId,InsertDate) VALUES("
@@ -1508,10 +1686,10 @@ public class RollBackUtil {
 			TxtLiveSale sale, Contribute contribute, SysAccount sysAccount,
 			SysDetailAccount detailAccount, User user, Rebate rebate,
 			Rebate sysRebate) {
-		dbConn = JdbcUtil.connSqlServer();
+		Connection dbConn = JdbcUtil.connSqlServer();
 		try {
 			dbConn.setAutoCommit(false);
-			sta = dbConn.createStatement();
+			Statement sta = dbConn.createStatement();
 			// 1、添加文字直播购买表 JCP_TxtLiveSale
 			sta.executeUpdate("INSERT INTO JCP_TxtLiveSale"
 					+ "(FK_UserId,FK_TearchId,OrderCode,FK_TxtLiveId,InsertDate,StartDate,EndDate,Remark,PayPrice) VALUES ("
@@ -1653,10 +1831,10 @@ public class RollBackUtil {
 			AccountDetail accountDetailIntegeral, int uId,
 			SysDetailAccount detailAccount, Contribute contribute,
 			SaleRecoder recoder) {
-		dbConn = JdbcUtil.connSqlServer();
+		Connection dbConn = JdbcUtil.connSqlServer();
 		try {
 			dbConn.setAutoCommit(false);
-			sta = dbConn.createStatement();
+			Statement sta = dbConn.createStatement();
 			// 1、添加文字直播详情购买表 JCP_LiveDetailSale
 			sta.executeUpdate("INSERT INTO JCP_LiveDetailSale "
 					+ "(FK_UserId,FK_TearchId,OrderCode,FK_LiveDetailId,InsertDate,Remark,PayPrice) "
@@ -1802,10 +1980,10 @@ public class RollBackUtil {
 	public int payAsk(Ask ask, Account account, int uId, User user, int bs,
 			SysAccount sysAccount, AccountDetail accountDetail,
 			AccountDetail detailInteger, SysDetailAccount sysDetailAccount) {
-		dbConn = JdbcUtil.connSqlServer();
+		Connection dbConn = JdbcUtil.connSqlServer();
 		try {
 			dbConn.setAutoCommit(false);
-			sta = dbConn.createStatement();
+			Statement sta = dbConn.createStatement();
 			// 1、添加提问表 JCP_Ask
 			sta.executeUpdate("INSERT INTO JCP_Ask"
 					+ "(FK_UserId,ParentId,AskBodys,AskDate,"
@@ -1938,10 +2116,10 @@ public class RollBackUtil {
 	public int catchAnswers(Account account, AccountDetail accountDetail,
 			Rebate rebate, SysAccount sysAccount, Rebate sysRebate, int uId,
 			User user, int aId, int g, int bills, Contribute contribute) {
-		dbConn = JdbcUtil.connSqlServer();
+		Connection dbConn = JdbcUtil.connSqlServer();
 		try {
 			dbConn.setAutoCommit(false);
-			sta = dbConn.createStatement();
+			Statement sta = dbConn.createStatement();
 			// 1、更新回答表 JCP_Answer
 			sta.executeUpdate("UPDATE JCP_Answer SET IsCaiNa=1 AND Grade=" + g
 					+ " WHERE Id=" + aId);
@@ -2055,10 +2233,10 @@ public class RollBackUtil {
 			AccountDetail accountDetail, int aId,
 			SysDetailAccount detailAccount2, int bs,
 			AccountDetail accountDetailIntegeral) {
-		dbConn = JdbcUtil.connSqlServer();
+		Connection dbConn = JdbcUtil.connSqlServer();
 		try {
 			dbConn.setAutoCommit(false);
-			sta = dbConn.createStatement();
+			Statement sta = dbConn.createStatement();
 			// 1、添加提问表 JCP_Ask
 			sta.executeUpdate("INSERT INTO JCP_Ask"
 					+ "(FK_UserId,ParentId,AskBodys,AskDate,"
@@ -2193,10 +2371,10 @@ public class RollBackUtil {
 			AccountDetail integeralDetail, int b, Account account, int uId,
 			User user, Contribute contribute, SysAccount sysAccount,
 			SysDetailAccount sysDetailAccount, Rebate rebate, Rebate sysRebate) {
-		dbConn = JdbcUtil.connSqlServer();
+		Connection dbConn = JdbcUtil.connSqlServer();
 		try {
 			dbConn.setAutoCommit(false);
-			sta = dbConn.createStatement();
+			Statement sta = dbConn.createStatement();
 			// 1、添加视频直播购买表 JCP_VideoLiveSale
 			sta.executeUpdate("INSERT INTO JCP_VideoLiveSale "
 					+ "(FK_UserId,FK_TearchId,OrderCode,FK_VideoLiveId,InsertDate,StartDate,EndDate,IsStop,Remark,PayPrice) "

@@ -177,4 +177,23 @@ public class AccountImp implements AccountDao {
 		return 0;
 	}
 
+	@Override
+	public int updateBillsIntegers(int Id, int newBills, int newsIntegers) {
+		dbConn = JdbcUtil.connSqlServer();
+		try {
+			sta = dbConn.createStatement();
+			return sta.executeUpdate("UPDATE JCP_Account SET Integral="
+					+ newsIntegers + ",JucaiBi="+newBills+" WHERE UserId=" + Id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return 0;
+	}
+
 }

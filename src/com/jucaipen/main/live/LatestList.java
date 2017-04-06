@@ -7,9 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.jucaipen.model.ClientOsInfo;
-import com.jucaipen.model.Rebate;
+import com.jucaipen.model.Contribute;
 import com.jucaipen.model.User;
-import com.jucaipen.service.RebateSer;
+import com.jucaipen.service.ContributeSer;
 import com.jucaipen.service.UserServer;
 import com.jucaipen.utils.HeaderUtil;
 import com.jucaipen.utils.JsonUtil;
@@ -60,25 +60,24 @@ public class LatestList extends HttpServlet {
 
 	public String initlist(int t, int tId) {
 		// 初始化榜单信息
-		List<Rebate> rebateArray;
+		List<Contribute> contributes;
 		if (t == 0) {
 			// 日榜单 
-			rebateArray = RebateSer.findRebateByTeacher(tId,"day");
+			contributes=ContributeSer.findContributeByTid(tId, "day");
 		} else if (t == 1) {
 			// 月榜单
-			rebateArray = RebateSer.findRebateByTeacher(tId,"month");
+			contributes=ContributeSer.findContributeByTid(tId, "month");
 		} else {
 			// 年榜单
-			rebateArray = RebateSer.findRebateByTeacher(tId,"year");
+			contributes=ContributeSer.findContributeByTid(tId, "year");
 		}
-		for (Rebate rebate : rebateArray) {
-			int userId = rebate.getFromId();
+		for (Contribute contribute : contributes) {
+			int userId = contribute.getUserId();
 			User user = UserServer.findUserById(userId);
-			rebate.setFromName(user.getNickName());
-			rebate.setFromFace(user.getFaceImage());
-			rebate.setFromId(userId);
+			contribute.setFromName(user.getNickName());
+			contribute.setFromFace(user.getFaceImage());
 		}
-		return JsonUtil.getLateList(rebateArray);
+		return JsonUtil.getLateList(contributes);
 	}
 
 }
