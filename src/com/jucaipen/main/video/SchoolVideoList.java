@@ -13,7 +13,6 @@ import com.jucaipen.model.MyVideo;
 import com.jucaipen.model.Special;
 import com.jucaipen.model.Video;
 import com.jucaipen.service.MySpecialSer;
-import com.jucaipen.service.MyVideoSer;
 import com.jucaipen.service.SpecialSer;
 import com.jucaipen.service.VideoServer;
 import com.jucaipen.utils.HeaderUtil;
@@ -94,7 +93,7 @@ public class SchoolVideoList extends HttpServlet {
 				isPurch=1;
 			}
 		}
-		
+	/*	
 		if(uId>0&&specialId<=0){
 			MyVideo myVideo=MyVideoSer.findIsMyVideo(uId, video.getId());
 			if(myVideo!=null){
@@ -106,7 +105,7 @@ public class SchoolVideoList extends HttpServlet {
 			}else{
 				isPurch=1;
 			}
-		}
+		}*/
 		
 		video.setIsPurch(isPurch);
 		

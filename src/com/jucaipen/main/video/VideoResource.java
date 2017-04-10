@@ -16,7 +16,6 @@ import com.jucaipen.model.MySpecial;
 import com.jucaipen.model.MyVideo;
 import com.jucaipen.model.Video;
 import com.jucaipen.service.MySpecialSer;
-import com.jucaipen.service.MyVideoSer;
 import com.jucaipen.service.VideoServer;
 import com.jucaipen.utils.HeaderUtil;
 import com.jucaipen.utils.JsonUtil;
@@ -81,7 +80,7 @@ public class VideoResource extends HttpServlet {
 	private String initVideoResource(int id, int uId) {
 		// 获取视频资源
 		Video video = VideoServer.findVideoResourceById(id);
-		MyVideo myVideo = MyVideoSer.findIsMyVideo(uId, id);
+		/*MyVideo myVideo = MyVideoSer.findIsMyVideo(uId, id);
 		int specialId = video.getPecialId();
 		if (myVideo != null) {
 			if (TimeUtils.isLive(myVideo.getStartDate(), myVideo.getEndDate())) {
@@ -91,8 +90,8 @@ public class VideoResource extends HttpServlet {
 			}
 		} else {
 			video.setIsPurch(1);
-		}
-		if (specialId > 0) {
+		}*/
+		/*if (specialId > 0) {
 			MySpecial mySpecial = MySpecialSer.getIsMySpecial(uId, specialId);
 			if (mySpecial != null) {
 				if (TimeUtils.isLive(mySpecial.getStartDate(),
@@ -103,7 +102,7 @@ public class VideoResource extends HttpServlet {
 				}
 			}
 		}
-
+*/
 		if (video.getVideoUrl().contains("script")) {
 			// 乐视
 			video.setPlayType(2);

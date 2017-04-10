@@ -19,7 +19,6 @@ import com.jucaipen.service.AccountSer;
 import com.jucaipen.service.FamousTeacherSer;
 import com.jucaipen.service.GuardianSer;
 import com.jucaipen.service.MySpecialSer;
-import com.jucaipen.service.MyVideoSer;
 import com.jucaipen.service.SpecialSer;
 import com.jucaipen.service.TacticsSaleSer;
 import com.jucaipen.service.TacticsSer;
@@ -82,12 +81,7 @@ public class QuerryPurchInfo extends HttpServlet {
 		if (account != null) {
 			ownJucaiBills = account.getJucaiBills();
 		}
-		if (type == 0) {
-			// ÊÓÆµ
-			Video video = VideoServer.findVideoById(fId);
-			int sallNum = MyVideoSer.getPurchVideoNum(fId);
-			return JsonUtil.getVideoPurchInfo(video, ownJucaiBills, sallNum);
-		} else if (type == 1) {
+		 if (type == 1) {
 			// ×¨¼­
 			Special special = SpecialSer.findSpecialById(fId);
 			int sallNum = MySpecialSer.getSpecialSallNum(fId);

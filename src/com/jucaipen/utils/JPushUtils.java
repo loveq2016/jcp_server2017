@@ -1,8 +1,7 @@
 package com.jucaipen.utils;
-
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
-
 import cn.jpush.api.JPushClient;
 import cn.jpush.api.common.resp.APIConnectionException;
 import cn.jpush.api.common.resp.APIRequestException;
@@ -57,20 +56,25 @@ public class JPushUtils {
 	 * @return 创建通知 目标 ： android iOS   指定别名
 	 */
 	public static PushPayload createNptifyForAliase(String msg, String key,
-			Number value, String dataKay, int dataValue,
+			Number value, String dataKay, int dataValue,String key1,String valueStr,String teacherFace,
 			Collection<String> aliases) {
+		Map<String, String> map=new HashMap<String, String>();
+		map.put(key, value+"");
+		map.put(dataKay, dataValue+"");
+		map.put(key1, valueStr);
+		map.put("teacherFace",teacherFace);
 		return PushPayload
 				.newBuilder()
-				.setPlatform(Platform.android_ios())
-				.setNotification(Notification.alert(msg))
+				.setNotification(Notification.android(msg, msg, map))
 				.setMessage(
 						Message.newBuilder().setMsgContent(msg)
 								.addExtra(key, value)
-								.addExtra(dataKay, dataValue).build())
+								.addExtra(key1, valueStr)
+								.addExtra(dataKay, dataValue)
+								.build())
+								.setPlatform(Platform.all())
 				.setAudience(Audience.alias(aliases)).build();
 	}
-	
-	
 	
 	
 	
@@ -148,5 +152,6 @@ public class JPushUtils {
 		return null;
 
 	}
+	
 
 }

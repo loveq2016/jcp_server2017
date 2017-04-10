@@ -17,7 +17,6 @@ import com.jucaipen.model.HotIdea;
 import com.jucaipen.model.IdeaSale;
 import com.jucaipen.model.LiveRecoder;
 import com.jucaipen.model.LiveRecoderSale;
-import com.jucaipen.model.MyVideo;
 import com.jucaipen.model.RecoderVideo;
 import com.jucaipen.model.TextLive;
 import com.jucaipen.model.TxtLiveSale;
@@ -33,14 +32,11 @@ import com.jucaipen.service.HotIdeaServ;
 import com.jucaipen.service.IdeaSaleServer;
 import com.jucaipen.service.LiveRecoderSaleSer;
 import com.jucaipen.service.LiveRecoderSer;
-import com.jucaipen.service.MySpecialSer;
-import com.jucaipen.service.MyVideoSer;
 import com.jucaipen.service.RecoderVideoServer;
 import com.jucaipen.service.TxtLiveSaleSer;
 import com.jucaipen.service.TxtLiveSer;
 import com.jucaipen.service.UserServer;
 import com.jucaipen.service.VideoLiveServer;
-import com.jucaipen.service.VideoServer;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.LiveUtil;
 import com.jucaipen.utils.StringUtil;
@@ -291,7 +287,7 @@ public class QuerryTeacherIdea extends HttpServlet {
 						if(recoder!=null){
 							LiveRecoderSale sale = LiveRecoderSaleSer
 									.getLiveSaleByUidAndLiveId(usId, 
-											recoder.getId());
+											recoder.getId(),1);
 							if (sale != null) {
 								live.setIsPurch(0);
 							} else {
@@ -320,15 +316,11 @@ public class QuerryTeacherIdea extends HttpServlet {
 				for (RecoderVideo video : videos) {
 					// 是否为付费视频 0为免费视频，1为付费视频
 					if (video.getLiveIsFree()==2) {
-							MyVideo mVideo = MyVideoSer.findIsMyVideo(usId,
-									video.getId());
-							if (mVideo != null) {
-								if (TimeUtils.isLive(mVideo.getStartDate(),
-										mVideo.getEndDate())) {
-									video.setIsPurch(0);
-								} else {
-									video.setIsPurch(1);
-								}
+							LiveRecoderSale sale = LiveRecoderSaleSer
+									.getLiveSaleByUidAndLiveId(usId, 
+											video.getId(),2);
+							if (sale != null) {
+								video.setIsPurch(0);
 							} else {
 								video.setIsPurch(1);
 							}

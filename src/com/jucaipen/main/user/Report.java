@@ -17,7 +17,7 @@ import com.jucaipen.utils.TimeUtils;
 /**
  * @author Administrator
  * 
- *         举报 repoterType 0 日志 1 问答 2 观点 3 视频直播
+ *         举报 
  */
 public class Report extends HttpServlet {
 	private static final long serialVersionUID = -8371866537764942301L;
@@ -30,28 +30,25 @@ public class Report extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		String repoterType = request.getParameter("repoterType");
 		String userId = request.getParameter("userId");
-		String fkId = request.getParameter("fkId");
+		String fkId = request.getParameter("teacherId");
 		String bodys = request.getParameter("bodys");
 		ip = request.getRemoteAddr();
 		if (StringUtil.isNotNull(userId)) {
 			if (StringUtil.isInteger(userId)) {
 				int uId = Integer.parseInt(userId);
 				if (uId > 0) {
-					if (StringUtil.isNotNull(repoterType)
-							&& StringUtil.isInteger(repoterType)) {
-						int type = Integer.parseInt(repoterType);
 						if (StringUtil.isNotNull(fkId)
 								&& StringUtil.isInteger(fkId)) {
-							int fId = Integer.parseInt(fkId);
-							result = addRepoterInfo(uId, type, fId, bodys);
+							if(StringUtil.isNotNull(bodys)){
+								int fId = Integer.parseInt(fkId);
+								result = addRepoterInfo(uId, fId, bodys);
+							}else{
+								result = JsonUtil.getRetMsg(5, "举报内容不能为空");
+							}
 						} else {
-							result = JsonUtil.getRetMsg(4, "fkId 参数异常");
+							result = JsonUtil.getRetMsg(4, "teacherId 参数异常");
 						}
-					} else {
-						result = JsonUtil.getRetMsg(5, "repoterType 参数异常");
-					}
 				} else {
 					result = JsonUtil.getRetMsg(3, "用户还没登录");
 				}
@@ -66,7 +63,7 @@ public class Report extends HttpServlet {
 		out.close();
 	}
 
-	private String addRepoterInfo(int uId, int type, int fId, String bodys) {
+	private String addRepoterInfo(int uId, int fId, String bodys) {
 		// 添加投诉信息 0 日志 1 问答 2 观点 3 视频直播
 		com.jucaipen.model.Report report = new com.jucaipen.model.Report();
 		report.setBodys(bodys);
@@ -75,20 +72,8 @@ public class Report extends HttpServlet {
 				.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		report.setIp(ip);
 		report.setIshandle(0);
-		if (type == 0) {
-			// 投诉日志
-			report.setType(1);
-		} else if (type == 1) {
-			// 投诉问答
-			report.setType(2);
-		} else if (type == 2) {
-			// 投诉观点
-			report.setType(3);
-		} else {
-			// 投诉视频直播
-			report.setType(4);
-			//提交报到                                       
-		}
+		// 投诉视频直播
+		report.setType(4);
 		report.setUserId(uId);
 		int isSuccess = ReportSer.addRepoter(report);
 		return isSuccess == 1 ? JsonUtil.getRetMsg(0, "投诉提交成功") : JsonUtil

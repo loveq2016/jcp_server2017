@@ -3,12 +3,10 @@ package com.jucaipen.main.purch;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.jucaipen.main.datautils.RollBackUtil;
 import com.jucaipen.model.Account;
 import com.jucaipen.model.AccountDetail;
@@ -19,7 +17,6 @@ import com.jucaipen.model.SysDetailAccount;
 import com.jucaipen.model.User;
 import com.jucaipen.model.Video;
 import com.jucaipen.service.AccountSer;
-import com.jucaipen.service.MyVideoSer;
 import com.jucaipen.service.SysAccountSer;
 import com.jucaipen.service.UserServer;
 import com.jucaipen.service.VideoServer;
@@ -105,7 +102,7 @@ public class PurchVideo extends HttpServlet {
 		}
 
 		// 是否已经购买
-		MyVideo mVideo = MyVideoSer.findIsMyVideo(uId, vId);
+		/*MyVideo mVideo = MyVideoSer.findIsMyVideo(uId, vId);
 		if (mVideo != null
 				&& TimeUtils.isLive(mVideo.getStartDate(), mVideo.getEndDate())) {
 			// 续费
@@ -114,7 +111,7 @@ public class PurchVideo extends HttpServlet {
 			startDate = TimeUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
 			endDate = TimeUtils.format(TimeUtils.addBaseDay(new Date(), days),
 					"yyyy-MM-dd HH:mm:ss");
-		}
+		}*/
 
 		Video video = VideoServer.findVideoById(vId);
 
@@ -126,7 +123,7 @@ public class PurchVideo extends HttpServlet {
 		myVideo.setVideoId(vId);
 		myVideo.setUserId(uId);
 		myVideo.setEndDate(endDate);
-		myVideo.setStartDate(startDate);
+		//myVideo.setStartDate(startDate);
 		myVideo.setRemark("购买视频【" + video.getTitle() + "】");
 
 		AccountDetail detail = new AccountDetail();

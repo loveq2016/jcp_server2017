@@ -134,9 +134,9 @@ public class VideoLiveImp implements VideoLiveDao {
 		try {
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("SELECT TOP 15 * FROM "
-							+ "(SELECT ROW_NUMBER() OVER (ORDER BY StratDate desc) AS RowNumber,* FROM JCP_VideoLive"
-							+ ") A " + "WHERE RowNumber > " + 15 * (page - 1));
+					.executeQuery("SELECT TOP 10 * FROM "
+							+ "(SELECT ROW_NUMBER() OVER (ORDER BY IsEnd ASC,RenQi DESC) AS RowNumber,* FROM JCP_VideoLive"
+							+ ") A " + "WHERE RowNumber > " + 10 * (page - 1));
 			while (res.next()) {
 				int id = res.getInt("Id");
 				String title = res.getString("Title"); // Title
@@ -215,7 +215,7 @@ public class VideoLiveImp implements VideoLiveDao {
 			sta = dbConn.createStatement();
 			res = sta
 					.executeQuery("SELECT Id,Title,Keyword,Descirption,Fk_CalssId,ISNULL(Videourl,'') Videourl,VideoImg,IsEnd,StratDate,EndDate,RenQi FROM JCP_VideoLive WHERE Fk_TeacherId="
-							+ tId);
+							+ tId+" ORDER BY StratDate DESC");
 			while (res.next()) {
 				int id = res.getInt("Id");
 				String title = res.getString("Title"); // Title
@@ -321,7 +321,7 @@ public class VideoLiveImp implements VideoLiveDao {
 		try {
 			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
-			res = sta.executeQuery("SELECT TOP "+top+" * FROM JCP_VideoLive ORDER BY RenQi"
+			res = sta.executeQuery("SELECT TOP "+top+" * FROM JCP_VideoLive ORDER BY IsEnd ASC,RenQi DESC"
 					);
 			while (res.next()) {
 				int id = res.getInt("Id");

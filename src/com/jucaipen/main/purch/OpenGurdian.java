@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.jucaipen.main.datautils.RollBackUtil;
 import com.jucaipen.model.Account;
 import com.jucaipen.model.AccountDetail;
@@ -15,6 +17,7 @@ import com.jucaipen.model.ClientOsInfo;
 import com.jucaipen.model.Contribute;
 import com.jucaipen.model.FamousTeacher;
 import com.jucaipen.model.Guardian;
+import com.jucaipen.model.LiveRecoder;
 import com.jucaipen.model.LiveRecoderSale;
 import com.jucaipen.model.Rebate;
 import com.jucaipen.model.SysAccount;
@@ -34,7 +37,7 @@ import com.jucaipen.utils.TimeUtils;
 /**
  * @author Administrator
  * 
- *         开通守护
+ *         开通守护     1   购买单次直播       2   购买单次点播      0  开通
  */
 public class OpenGurdian extends HttpServlet {
 	private static final long serialVersionUID = 7215614542250498399L;
@@ -69,7 +72,7 @@ public class OpenGurdian extends HttpServlet {
 							int b = Integer.parseInt(bills);
 						if(StringUtil.isNotNull(type)&&StringUtil.isInteger(type)){
 							int typeId=Integer.parseInt(type);
-							if(typeId==1){
+							if(typeId==1||typeId==2){
 								//单次购买
 								if(StringUtil.isNotNull(liveId)
 										&& StringUtil.isInteger(liveId)){
@@ -114,7 +117,7 @@ public class OpenGurdian extends HttpServlet {
 		out.close();
 	}
 
-	private String openGurdian(int uId, int tId, int d, int b,int type,int liveId) {
+	private String openGurdian(int uId, int tId, int d, int  b,int type,int liveId) {
 		// 聚财币是否足够
 		String startDate;
 		String endDate = null;
@@ -133,13 +136,22 @@ public class OpenGurdian extends HttpServlet {
 			return JsonUtil.getRetMsg(3, "账户聚财币不足，请充值");
 		}
 		
-		if(type==1){
+		if(type==1||type==2){
 			//单次购买
 			sale=new LiveRecoderSale();
-			sale.setLiveRecoderId(LiveRecoderSer.getRecoderByLiveId(liveId).getId());
+			sale.setRecoderType(type);
+			if(type==1){
+				//直播
+				LiveRecoder recoder = LiveRecoderSer.getRecoderByLiveId(liveId);
+				sale.setLiveRecoderId(recoder.getId());
+				sale.setRemark("购买【"+teacher.getNickName()+"】直播视频1次");
+			}else{
+				//点播
+				sale.setLiveRecoderId(liveId);
+				sale.setRemark("购买【"+teacher.getNickName()+"】点播视频1次");
+			}
 			sale.setPayBills(b);
 			sale.setPurchDate(TimeUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-			sale.setRemark("购买【"+teacher.getNickName()+"】视频直播1次");
 			sale.setTeacherId(tId);
 			sale.setUserId(uId);
 		}else{
@@ -163,7 +175,6 @@ public class OpenGurdian extends HttpServlet {
 						"yyyy-MM-dd HH:mm:ss");
 			}
 			
-			
 			guardian = new Guardian();
 			guardian.setIp(ip);
 			guardian.setTeacherId(tId);
@@ -173,10 +184,7 @@ public class OpenGurdian extends HttpServlet {
 			guardian.setStartDate(startDate);
 			guardian.setEndDate(endDate);
 			guardian.setState(0);
-			
-			
 		}
-
 		// 讲师返利
 		Rebate rebate = new Rebate();
 		rebate.setRebateMoney((b * teacher.getReturnRate()));
@@ -186,7 +194,6 @@ public class OpenGurdian extends HttpServlet {
 		rebate.setInsertDate(TimeUtils
 				.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		rebate.setType(0);
-
 		// 系统返利
 		Rebate sysRebate = new Rebate();
 		sysRebate.setRebateMoney(b * (1 - teacher.getReturnRate()));

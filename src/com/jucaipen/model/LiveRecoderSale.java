@@ -43,8 +43,19 @@ public class LiveRecoderSale {
 	 */
 	private String remark;
 	
+	/**
+	 *   记录类型（1直播购买记录，2录播购买记录）
+	 */
+	private int recoderType;
 	
-	
+	public int getRecoderType() {
+		return recoderType;
+	}
+
+	public void setRecoderType(int recoderType) {
+		this.recoderType = recoderType;
+	}
+
 	public LiveRecoderSale() {
 	}
 

@@ -32,11 +32,10 @@ import com.jucaipen.utils.HeaderUtil;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.StringUtil;
 import com.jucaipen.utils.TimeUtils;
-
 /**
  * @author Administrator
  * 
- *         购买礼品
+ *         购买礼品+赠送礼品
  */
 public class PurchGift extends HttpServlet {
 	private static final long serialVersionUID = -8389392305908385567L;
@@ -138,11 +137,12 @@ public class PurchGift extends HttpServlet {
 				"yyyy-MM-dd HH:mm:ss"));
 		sysRebate.setRemark("用户赠送礼品");
 
-
+		//背包
 		MyPresent present = new MyPresent();
 		present.setPresentId(pId);
 		present.setPresentNum(num);
 		present.setUserId(uId);
+		//账单详细
 		AccountDetail detail = new AccountDetail();
 		detail.setDetailMoney(b);
 		detail.setDetailType(1);
@@ -168,6 +168,7 @@ public class PurchGift extends HttpServlet {
 
 		SysAccount sysAccount = SysAccountSer.findAccountInfo();
 
+		//系统账单详细
 		SysDetailAccount sysDetailAccount = new SysDetailAccount();
 		sysDetailAccount.setInsertDate(TimeUtils.format(new Date(),
 				"yyyy-MM-dd HH:mm:ss"));
@@ -181,6 +182,7 @@ public class PurchGift extends HttpServlet {
 		sysDetailAccount.setUserId(uId);
 		sysDetailAccount.setType(4);
 		
+		//贡献
 		Contribute contribute = new Contribute();
 		contribute.setFk_id(present.getId());
 		contribute.setAllJucaiBills(b);
@@ -191,6 +193,7 @@ public class PurchGift extends HttpServlet {
 				"yyyy-MM-dd HH:mm:ss"));
 		
 		
+		//个人礼品记录
 		MyGifts gifts = new MyGifts();
 		gifts.setGiftId(pId);
 		gifts.setGiftNum(num);
@@ -199,6 +202,7 @@ public class PurchGift extends HttpServlet {
 		gifts.setSenderId(uId);
 		gifts.setRemark("赠送【" + gift.getTitle() + "】礼品【" + num + "】个，背包用去【" + num
 				+ "】");
+		gifts.setPrice(gift.getPrice());
 		
 
 		int isSuccess = RollBackUtil.getInstance().purchGiftsNoCommit(presentExit, present, a, b,

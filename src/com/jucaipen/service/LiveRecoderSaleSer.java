@@ -1,4 +1,6 @@
 package com.jucaipen.service;
+import java.util.List;
+
 import com.jucaipen.dao.LiveRecoderSaleDao;
 import com.jucaipen.daoimp.LiveRecoderSaleImp;
 import com.jucaipen.model.LiveRecoderSale;
@@ -12,11 +14,11 @@ public class LiveRecoderSaleSer{
 	/**
 	 * @param uId
 	 * @param liveId
-	 * @return  获取用户购买单次直播的记录
+	 * @return  获取用户购买单次直播的记录  1直播购买记录，2录播购买记录
 	 */
-	public static LiveRecoderSale getLiveSaleByUidAndLiveId(int uId, int liveId) {
+	public static LiveRecoderSale getLiveSaleByUidAndLiveId(int uId, int liveId,int type) {
 		LiveRecoderSaleDao dao=new LiveRecoderSaleImp();
-		return dao.getLiveSaleByUidAndLiveId(uId, liveId);
+		return dao.getLiveSaleByUidAndLiveId(uId, liveId,type);
 	}
 
 	/**
@@ -26,6 +28,11 @@ public class LiveRecoderSaleSer{
 	public static int addLiveSale(LiveRecoderSale sale) {
 		LiveRecoderSaleDao dao=new LiveRecoderSaleImp();
 		return dao.addLiveSale(sale);
+	}
+
+	public static List<LiveRecoderSale> getMyVideo(int uId, int page, int type) {
+		LiveRecoderSaleDao dao=new LiveRecoderSaleImp();
+		return dao.getMyVideo(uId, page, type);
 	}
 
 }

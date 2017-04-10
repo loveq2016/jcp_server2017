@@ -15,7 +15,6 @@ import com.jucaipen.model.Special;
 import com.jucaipen.model.Video;
 import com.jucaipen.model.VideoClass;
 import com.jucaipen.service.MySpecialSer;
-import com.jucaipen.service.MyVideoSer;
 import com.jucaipen.service.SpecialSer;
 import com.jucaipen.service.VideoClassSer;
 import com.jucaipen.service.VideoServer;
@@ -209,7 +208,7 @@ public class QuerryVideoList extends HttpServlet {
 			
 		}
 		
-		if(uId>0&&specialId<=0){
+		/*if(uId>0&&specialId<=0){
 			MyVideo myVideo=MyVideoSer.findIsMyVideo(uId, video.getId());
 			if(myVideo!=null){
 				if(TimeUtils.isLive(myVideo.getStartDate(), myVideo.getEndDate())){
@@ -220,7 +219,7 @@ public class QuerryVideoList extends HttpServlet {
 			}else{
 				isPurch=1;
 			}
-		}
+		}*/
 		if (specialId > 0) {
 			Special special = SpecialSer.findSpecialById(specialId);
 			video.setCharge(special.getIsFree() == 2);

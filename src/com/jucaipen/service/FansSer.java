@@ -43,6 +43,12 @@ public class FansSer {
 		FansDao dao=new FansImp();
 		return dao.findFansByTeacherId(teacherId, page);
 	}
+	
+	
+	public static List<Fans> findFansByTeacherId(int teacherId){
+		FansDao dao=new FansImp();
+		return dao.findFansByTeacherId(teacherId);
+	}
 
 	/**
 	 * @param id

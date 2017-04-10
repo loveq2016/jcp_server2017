@@ -27,6 +27,12 @@ public interface FansDao {
 	public List<Fans> findFansByTeacherId(int teacherId,int page);
 	
 	/**
+	 * @param teacherId
+	 * @return  根据讲师id获取粉丝信息
+	 */
+	public List<Fans> findFansByTeacherId(int teacherId);
+	
+	/**
 	 * @param id
 	 * @return 根据id获取粉丝信息
 	 */

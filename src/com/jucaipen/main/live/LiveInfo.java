@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,91 +23,99 @@ import com.jucaipen.utils.StringUtil;
 /**
  * @author 杨朗飞
  * 
- *   更新直播间信息
+ *         更新直播间信息
  */
 public class LiveInfo extends HttpServlet {
-	private String baseUrl="https://console.tim.qq.com/v4/group_open_http_svc/get_group_info";
-	private Map<String, String> param=new HashMap<String, String>();
-	private List<String> ids=new ArrayList<String>();
+	//获取群成员 url
+	private String baseUrl = "https://console.tim.qq.com/v4/group_open_http_svc/get_group_info";
+	private Map<String, String> param = new HashMap<String, String>();
+	private List<String> ids = new ArrayList<String>();
 	private String result;
-	private static final String GET_SIGN="http://www.jucaipen.com/ashx/AndroidUser.ashx?action=GetUserSig";
+	//腾讯云APPID
+	private static final String appId="1400027389";
+	//获取用户 userSign url
+	private static final String GET_SIGN = "http://www.jucaipen.com/ashx/AndroidUser.ashx?action=GetUserSig";
 	private static final long serialVersionUID = 1L;
-	private static final String account="admin";
+	private static final String account = "admin";
+
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		String teacherId=request.getParameter("teacherId");
-		if(StringUtil.isNotNull(teacherId)&&StringUtil.isInteger(teacherId)){
-			int tId=Integer.parseInt(teacherId);
-			result=getOnLineInfo(tId);
-		}else{
-			result=JsonUtil.getRetMsg(1,"参数异常");
+		String teacherId = request.getParameter("teacherId");
+		if (StringUtil.isNotNull(teacherId) && StringUtil.isInteger(teacherId)) {
+			int tId = Integer.parseInt(teacherId);
+			result = getOnLineInfo(tId);
+		} else {
+			result = JsonUtil.getRetMsg(1, "参数异常");
 		}
 		out.println(result);
 		out.flush();
 		out.close();
 	}
-	
+
 	/**
 	 * 获取聊天室详细信息
 	 */
-	public   String getRoomInfo(List<String>  ids){
-		StringBuffer buffer=new StringBuffer();
+	public String getRoomInfo(List<String> ids) {
+		StringBuffer buffer = new StringBuffer();
 		buffer.append("{");
 		buffer.append("\"GroupIdList\":[");
-		
-		for(String id : ids){
-			buffer.append("\""+id+"\"");
+		for (String id : ids) {
+			buffer.append("\"" + id + "\"");
 			buffer.append(",");
 		}
-		buffer.replace(buffer.length()-1, buffer.length(), "");
+		buffer.replace(buffer.length() - 1, buffer.length(), "");
 		buffer.append("]");
 		buffer.append("}");
-		return LoginUtil.sendPostStr(createUrl(baseUrl,getSign(account),account),buffer.toString());
+		return LoginUtil.sendPostStr(
+				createUrl(baseUrl, getSign(account), account),
+				buffer.toString());
 	}
-	
-	
+
 	/**
-	 * @param tId  讲师id
+	 * @param tId
+	 *            讲师id
 	 */
 	private String getOnLineInfo(int tId) {
-		//1、贡献总榜
+		// 1、贡献总榜
 		int bills = ContributeSer.findAllContributeByTid(tId);
 		FamousTeacher teacher = FamousTeacherSer.findTeacherBaseInfo(tId);
 		int userId = teacher.getFk_UserId();
-		//获取直播室信息
+		// 获取直播室信息
 		List<User> list = getMember(userId);
-		return JsonUtil.getOnLineData(bills,list);
+		return JsonUtil.getOnLineData(bills, list);
 	}
 
 	/**
 	 * @param roomId
-	 * @return  获取直播室成员信息
+	 * @return 获取直播室成员信息
 	 */
 	private List<User> getMember(int roomId) {
 		ids.clear();
-		List<User> users=new ArrayList<User>();
-		ids.add(roomId+"");
+		List<User> users = new ArrayList<User>();
+		ids.add(roomId + "");
 		String roomInfo = getRoomInfo(ids);
-		//2、直播人气
-		JSONObject object=new JSONObject(roomInfo);
-		String ok=object.optString("ActionStatus");
-		if("OK".equals(ok)){
-			JSONArray groupInfo=object.optJSONArray("GroupInfo");
-			for(int i=0;i<groupInfo.length();){
-				JSONObject detail=groupInfo.optJSONObject(i);
-				JSONArray memberList=detail.optJSONArray("MemberList");
-				int memberNum=detail.optInt("MemberNum",0);
-				if(memberList!=null){
-					for(int j=0;j<memberList.length();j++){
-						JSONObject member=memberList.optJSONObject(j);
-						String account=member.optString("Member_Account");
-						if(StringUtil.isNotNull(account)&&StringUtil.isInteger(account)){
-							User user = UserServer.findBaseInfoById(Integer.parseInt(account));
-							if(roomId!=user.getId()){
+		// 2、直播人气
+		JSONObject object = new JSONObject(roomInfo);
+		String ok = object.optString("ActionStatus");
+		if ("OK".equals(ok)) {
+			JSONArray groupInfo = object.optJSONArray("GroupInfo");
+			for (int i = 0; i < groupInfo.length();) {
+				JSONObject detail = groupInfo.optJSONObject(i);
+				JSONArray memberList = detail.optJSONArray("MemberList");
+				int memberNum = detail.optInt("MemberNum", 0);
+				if (memberList != null) {
+					for (int j = 0; j < memberList.length(); j++) {
+						JSONObject member = memberList.optJSONObject(j);
+						String account = member.optString("Member_Account");
+						if (StringUtil.isNotNull(account)
+								&& StringUtil.isInteger(account)) {
+							User user = UserServer.findBaseInfoById(Integer
+									.parseInt(account));
+							if (roomId != user.getId()) {
 								users.add(user);
 							}
 						}
@@ -117,10 +124,8 @@ public class LiveInfo extends HttpServlet {
 				}
 			}
 		}
-		//3、直播室成员列表
 		return users;
 	}
-
 
 	/**
 	 * @return 获取管理员sign
@@ -129,9 +134,9 @@ public class LiveInfo extends HttpServlet {
 		param.clear();
 		param.put("username", a);
 		String signResult = LoginUtil.sendHttpPost(GET_SIGN, param);
-		JSONObject object=new JSONObject(signResult);
-		boolean isCreate=object.optBoolean("Result");
-		if(isCreate){
+		JSONObject object = new JSONObject(signResult);
+		boolean isCreate = object.optBoolean("Result");
+		if (isCreate) {
 			return object.optString("UserSig");
 		}
 		return null;
@@ -140,14 +145,14 @@ public class LiveInfo extends HttpServlet {
 	/**
 	 * @param base
 	 * @param sign
-	 * @return  拼接腾讯云URL
+	 * @return 拼接腾讯云URL
 	 */
-	private String createUrl(String base,String sign,String acct) {
-		StringBuffer buffer=new StringBuffer(base);
-		buffer.append("?usersig="+sign+"&");
-		buffer.append("identifier="+acct+"&");
-		buffer.append("sdkappid=1400027389&");
-		buffer.append("random="+RandomUtils.getRandomData(8)+"&");
+	private String createUrl(String base, String sign, String acct) {
+		StringBuffer buffer = new StringBuffer(base);
+		buffer.append("?usersig=" + sign + "&");
+		buffer.append("identifier=" + acct + "&");
+		buffer.append("sdkappid="+appId+"&");
+		buffer.append("random=" + RandomUtils.getRandomData(8) + "&");
 		buffer.append("contenttype=json");
 		return buffer.toString();
 	}

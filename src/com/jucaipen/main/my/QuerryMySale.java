@@ -1,6 +1,7 @@
 package com.jucaipen.main.my;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -15,8 +16,10 @@ import com.jucaipen.model.Guardian;
 import com.jucaipen.model.HotIdea;
 import com.jucaipen.model.IdeaSale;
 import com.jucaipen.model.LiveDetailSale;
+import com.jucaipen.model.LiveRecoderSale;
 import com.jucaipen.model.MySpecial;
 import com.jucaipen.model.MyVideo;
+import com.jucaipen.model.RecoderVideo;
 import com.jucaipen.model.Special;
 import com.jucaipen.model.Tactics;
 import com.jucaipen.model.TacticsSale;
@@ -32,8 +35,9 @@ import com.jucaipen.service.GuardianSer;
 import com.jucaipen.service.HotIdeaServ;
 import com.jucaipen.service.IdeaSaleServer;
 import com.jucaipen.service.LiveDetailSaleSer;
+import com.jucaipen.service.LiveRecoderSaleSer;
 import com.jucaipen.service.MySpecialSer;
-import com.jucaipen.service.MyVideoSer;
+import com.jucaipen.service.RecoderVideoServer;
 import com.jucaipen.service.SpecialSer;
 import com.jucaipen.service.TacticsSaleSer;
 import com.jucaipen.service.TacticsSer;
@@ -98,27 +102,13 @@ public class QuerryMySale extends HttpServlet {
 	private String initMySaleInfo(int uId, int type, int p) {
 		if (type == 0) {
 			// 0 视频    ---是否过期
-			List<MyVideo> myVideos = MyVideoSer.findMyVideoByUserId(uId, p);
-			for (MyVideo vd : myVideos) {
-				int vId = vd.getVideoId();
-				Video video = VideoServer.findVideoById(vId);
-				if (video == null) {
-					video = new Video();
-				}
-				if(TimeUtils.isLive(vd.getStartDate(), vd.getEndDate())){
-					vd.setIsPurch(0);
-				}else{
-					vd.setIsPurch(2);
-				}
-				vd.setXnHits(video.getXnHitCount());
-				vd.setFk_specialId(video.getPecialId());
-				vd.setClassId(video.getClassId());
-				vd.setVideoUrl(video.getHtmlUrl());
-				vd.setVideoImag(video.getImages());
-				vd.setVideoTitle(video.getTitle());
-				vd.setVideoDesc(video.getDescript());
+			List<RecoderVideo>  recoders=new ArrayList<RecoderVideo>();
+			List<LiveRecoderSale> sales=LiveRecoderSaleSer.getMyVideo(uId, p, 2);
+			for (LiveRecoderSale sale : sales) {
+				int vId = sale.getLiveRecoderId();
+				RecoderVideo vidoe=RecoderVideoServer.getRecoderVideioById(vId);
 			}
-			return JsonUtil.getMyVideoList(myVideos);
+			return JsonUtil.getMyVideoList(recoders);
 		} else if (type == 1) {
 			// 1 专辑   ---是否过期
 			List<MySpecial> mySpecials = MySpecialSer.findSpecialByUid(uId, p);

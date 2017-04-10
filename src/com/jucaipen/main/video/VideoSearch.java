@@ -2,19 +2,22 @@ package com.jucaipen.main.video;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.jucaipen.model.FamousTeacher;
+import com.jucaipen.model.LiveRecoderSale;
 import com.jucaipen.model.MySpecial;
 import com.jucaipen.model.MyVideo;
 import com.jucaipen.model.Special;
 import com.jucaipen.model.Video;
 import com.jucaipen.model.VideoLive;
 import com.jucaipen.service.FamousTeacherSer;
+import com.jucaipen.service.LiveRecoderSaleSer;
 import com.jucaipen.service.MySpecialSer;
-import com.jucaipen.service.MyVideoSer;
 import com.jucaipen.service.SpecialSer;
 import com.jucaipen.service.VideoLiveServer;
 import com.jucaipen.service.VideoServer;
@@ -139,21 +142,12 @@ public class VideoSearch extends HttpServlet {
 		}
 
 		if (uId > 0 && specialId <= 0) {
-			MyVideo myVideo = MyVideoSer.findIsMyVideo(uId, video.getId());
-			if (myVideo != null) {
-				if (TimeUtils.isLive(myVideo.getStartDate(),
-						myVideo.getEndDate())) {
-					isPurch = 0;
-				} else {
-					isPurch = 2;
-				}
+			LiveRecoderSale recoderSale = LiveRecoderSaleSer.getLiveSaleByUidAndLiveId(uId, video.getId(), 2);
+			if (recoderSale != null) {
+			  isPurch = 0;
 			} else {
 				isPurch = 1;
 			}
-		}
-		if (specialId > 0) {
-			Special special = SpecialSer.findSpecialById(specialId);
-			video.setCharge(special.getIsFree() == 2);
 		}
 		video.setIsPurch(isPurch);
 	}

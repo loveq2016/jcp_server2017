@@ -51,6 +51,9 @@ public class HotVideos extends HttpServlet {
 		out.close();
 	}
 
+	/**
+	 * @return  初始化讲师热门列表
+	 */
 	private String initHotTeacherList() {
 		List<FamousTeacher> teachers = FamousTeacherSer.findHotTeacher(5);
 		for(FamousTeacher teacher : teachers){

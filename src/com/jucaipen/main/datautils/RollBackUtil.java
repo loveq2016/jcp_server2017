@@ -87,15 +87,15 @@ public class RollBackUtil {
 			dbConn = JdbcUtil.connSqlServer();
 			dbConn.setAutoCommit(false);
 			Statement sta = dbConn.createStatement();
-			if (type == 1) {
-				// 购买单次直播
+			if (type == 1||type==2) {
+				// 购买单次 1 直播、2 点播
 				// 1、更新单次购买表
 				sta.executeUpdate("INSERT INTO JCP_VideoLive_RecordSale("
-						+ "LiveCodeId,TeacherId,InsertDate,PayJCB,UserId,Remark) VALUES("
+						+ "LiveCodeId,TeacherId,InsertDate,PayJCB,UserId,Remark,RecordType) VALUES("
 						+ sale.getLiveRecoderId() + "," + sale.getTeacherId()
 						+ ",'" + sale.getPurchDate() + "',"
 						+ sale.getPayBills() + "," + sale.getUserId() + ",'"
-						+ sale.getRemark() + "')");
+						+ sale.getRemark() + "',"+type+")");
 			} else {
 				// 开通守护
 				// 1 更新守护 JCP_ShouHuZhe
@@ -1280,7 +1280,7 @@ public class RollBackUtil {
 			    					}
 			    					//赠送礼品
 			    					// 1、更新礼品背包 JCP_MyPresent
-			    					int updatePresents = MyPresentSer.updatePresents(uId, present.getPresentId(), (present.getPresentNum() - presentExit.getPresentNum()));
+			    					int updatePresents = MyPresentSer.updatePresents(uId, present.getPresentId(), (present.getPresentNum() - gifts.getGiftNum()));
 			    					if(updatePresents>0){
 			    						// 2、系统总表 JCP_SysAccount
 				    					int updateTeacherRebate = SysAccountSer.updateTeacherRebate(sysAccount.getTeacherRebateAccount()+b, sysAccount.getSysRebateAccount()+b);

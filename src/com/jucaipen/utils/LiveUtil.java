@@ -8,7 +8,7 @@ import com.jucaipen.service.LiveRecoderSaleSer;
 import com.jucaipen.service.LiveRecoderSer;
 
 public class LiveUtil {
-	
+	/*
 	public static void main(String[] args) {
 		if(!isFree(1)){
 			//收费
@@ -23,7 +23,7 @@ public class LiveUtil {
 			}
 		}
 		//进入直播间
-	}
+	}*/
 	
 
 	/**
@@ -46,9 +46,9 @@ public class LiveUtil {
 	/**
 	 * @return  单次是否购买
 	 */
-	public static boolean isPurch(int userId,int liveId){
+	public static boolean isPurch(int userId,int liveId,int type){
 		LiveRecoder recoder = LiveRecoderSer.getRecoderByLiveId(liveId);
-		return LiveRecoderSaleSer.getLiveSaleByUidAndLiveId(userId, recoder.getId())!=null ? true : false;
+		return LiveRecoderSaleSer.getLiveSaleByUidAndLiveId(userId, recoder.getId(),type)!=null ? true : false;
 	}
 
 }

@@ -119,6 +119,7 @@ public class LiveList extends HttpServlet {
 		List<VideoLive> videos = VideoLiveServer.findRecoderLive(4);
 		if (videos != null) {
 			for (VideoLive live : videos) {
+				int liveType;
 				int tId = live.getTeacherId();
 				FamousTeacher teacher = FamousTeacherSer
 						.findFamousTeacherById(tId);
@@ -129,6 +130,7 @@ public class LiveList extends HttpServlet {
 				live.setLiveVideo(teacher.getIsUserLiveUrl() == 1);
 				// 播放url
 				if(live.getIsEnd()!=2){
+					liveType=2;
 					RecoderVideo recoderVideo=RecoderVideoServer.getLastRecoderVideo(tId);
 					//直播已经结束 --返回最近的录播url
 					// 是否收费 0 否 1 是
@@ -144,6 +146,7 @@ public class LiveList extends HttpServlet {
 						live.setVideoUrl("");
 					}
 				}else{
+					liveType=1;
 					// 是否收费 0 否 1 是
 					live.setCharge(teacher.getLiveFree() == 1);
 					live.setRoomId(teacher.getFk_UserId());
@@ -164,7 +167,7 @@ public class LiveList extends HttpServlet {
 						.getRecoderByLiveId(live.getId());
 						if(resoder!=null){
 							LiveRecoderSale sale = LiveRecoderSaleSer
-									.getLiveSaleByUidAndLiveId(uId,resoder.getId());
+									.getLiveSaleByUidAndLiveId(uId,resoder.getId(),liveType);
 							if(sale!=null){
 								isPurch = 0;
 							}else{
@@ -199,6 +202,7 @@ public class LiveList extends HttpServlet {
 		List<VideoLive> videos = VideoLiveServer.findAll(p);
 		if (videos != null) {
 			for (VideoLive live : videos) {
+				int liveType;
 				int tId = live.getTeacherId();
 				FamousTeacher teacher = FamousTeacherSer
 						.findFamousTeacherById(tId);
@@ -209,6 +213,7 @@ public class LiveList extends HttpServlet {
 				live.setLiveVideo(teacher.getIsUserLiveUrl() == 1);
 				// 播放url
 				if(live.getIsEnd()!=2){
+					liveType=2;
 					RecoderVideo recoderVideo=RecoderVideoServer.getLastRecoderVideo(tId);
 					//直播已经结束 --返回最近的录播url
 					// 是否收费 0 否 1 是
@@ -224,6 +229,7 @@ public class LiveList extends HttpServlet {
 						live.setVideoUrl("");
 					}
 				}else{
+					liveType=1;
 					// 是否收费 0 否 1 是
 					live.setCharge(teacher.getLiveFree() == 1);
 					live.setRoomId(teacher.getFk_UserId());
@@ -244,7 +250,7 @@ public class LiveList extends HttpServlet {
 						.getRecoderByLiveId(live.getId());
 						if(resoder!=null){
 							LiveRecoderSale sale = LiveRecoderSaleSer
-									.getLiveSaleByUidAndLiveId(uId,resoder.getId());
+									.getLiveSaleByUidAndLiveId(uId,resoder.getId(),liveType);
 							if(sale!=null){
 								isPurch = 0;
 							}else{

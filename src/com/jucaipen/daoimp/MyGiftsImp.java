@@ -122,7 +122,7 @@ public class MyGiftsImp implements MyGiftsDao {
 		try {
 			sta = dbConn.createStatement();
 			return sta
-					.executeUpdate("INSERT INTO JCP_MyLiPin (FK_SendUserId,FK_ReceiveUserId,FK_LiPinId,InsertDate,SortId,LiPinNum,ReMark) VALUES ("
+					.executeUpdate("INSERT INTO JCP_MyLiPin (FK_SendUserId,FK_ReceiveUserId,FK_LiPinId,InsertDate,SortId,LiPinNum,ReMark,Price) VALUES ("
 							+ gifts.getSenderId()
 							+ ","
 							+ gifts.getReceiverId()
@@ -135,7 +135,7 @@ public class MyGiftsImp implements MyGiftsDao {
 							+ ","
 							+ gifts.getGiftNum()
 							+ ",'"
-							+ gifts.getRemark() + "')");
+							+ gifts.getRemark() + "',"+gifts.getPrice()+")");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

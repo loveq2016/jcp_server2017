@@ -1,4 +1,6 @@
 package com.jucaipen.dao;
+import java.util.List;
+
 import com.jucaipen.model.LiveRecoderSale;
 /**
  * @author 杨朗飞
@@ -13,7 +15,15 @@ public interface LiveRecoderSaleDao {
 	 * @param liveId
 	 * @return  获取用户购买的单次直播
 	 */
-	public  LiveRecoderSale  getLiveSaleByUidAndLiveId(int uId,int liveId);
+	public  LiveRecoderSale  getLiveSaleByUidAndLiveId(int uId,int liveId,int type);
+	
+	 /**
+	 * @param uId
+	 * @param page
+	 * @param type
+	 * @return  获取我购买的视频
+	 */
+	public List<LiveRecoderSale> getMyVideo(int uId, int page, int type) ;
 	
 	/**
 	 * @param sale

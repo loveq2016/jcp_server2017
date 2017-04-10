@@ -19,6 +19,6 @@ public interface LiveRecoderDao {
 	 * @param liveId
 	 * @return    根据直播id获取直播记录信息
 	 */
-	public LiveRecoder getRecoderByLiveId(int liveId);
+	public LiveRecoder getRecoderByLiveId(int recoderId);
 
 }

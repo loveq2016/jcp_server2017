@@ -81,10 +81,10 @@ public class RecoderVideoImp implements RecoderVideoDao {
 			recoderVideos.clear();
 			int totlePage=findTotlePager(" 	WHERE TeacherId="+teacherId);
 			Connection dbConn = JdbcUtil.connSqlServer();
-			PreparedStatement statement=dbConn.prepareStatement("SELECT TOP 15 Id,Title,LiveIdFree,FreePrice,VideoUrl_1,ImageUrl,PlayCountSham,StartDate FROM "
-							+ "(SELECT ROW_NUMBER() OVER (ORDER BY InsertDate) AS RowNumber,* FROM JCP_Live_Recorded"
+			PreparedStatement statement=dbConn.prepareStatement("SELECT TOP 5 Id,Title,LiveIdFree,FreePrice,VideoUrl_1,ImageUrl,PlayCountSham,StartDate FROM "
+							+ "(SELECT ROW_NUMBER() OVER (ORDER BY InsertDate DESC) AS RowNumber,* FROM JCP_Live_Recorded"
 							+ " WHERE TeacherId=?) A "
-							+ "WHERE RowNumber > " + 15 * (page - 1));
+							+ "WHERE RowNumber > " + 5 * (page - 1));
 			statement.setInt(1, teacherId);
 			ResultSet query = statement.executeQuery();
 			while (query.next()) {

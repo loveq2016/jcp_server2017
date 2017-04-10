@@ -58,7 +58,18 @@ public class MyGifts implements Serializable{
 	 */
 	private String remark;
 	
+	/**
+	 *   ¿Ò∆∑µ•º€
+	 */
+	private int price;
 	
+	
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
 	public String getSendName() {
 		return sendName;
 	}

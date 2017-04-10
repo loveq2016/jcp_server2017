@@ -1,24 +1,21 @@
 package com.jucaipen.main.my;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.jucaipen.model.ClientOsInfo;
 import com.jucaipen.model.Favorites;
 import com.jucaipen.model.Knowledge;
-import com.jucaipen.model.MyVideo;
+import com.jucaipen.model.LiveRecoderSale;
 import com.jucaipen.model.Special;
 import com.jucaipen.model.Video;
 import com.jucaipen.service.FavoritesSer;
 import com.jucaipen.service.KnowledgetSer;
-import com.jucaipen.service.MyVideoSer;
+import com.jucaipen.service.LiveRecoderSaleSer;
 import com.jucaipen.service.SpecialSer;
 import com.jucaipen.service.VideoServer;
 import com.jucaipen.utils.HeaderUtil;
@@ -104,13 +101,9 @@ public class QuerryMyCollect extends HttpServlet {
 			int fkId = fa.getFk_Id();
 			if (t == 0) {
 				Video video = VideoServer.findVideoById(fkId);
-				MyVideo myVideo=MyVideoSer.findIsMyVideo(uId, fkId);
-				if(myVideo!=null){
-					if(TimeUtils.isLive(myVideo.getStartDate(), myVideo.getEndDate())){
-						isPurch=0;
-					}else{
-						isPurch=2;
-					}
+				LiveRecoderSale sale=LiveRecoderSaleSer.getLiveSaleByUidAndLiveId(uId, fkId, 2);
+				if(sale!=null){
+					isPurch=0;
 				}
 				fa.setIsPurch(isPurch);
 				if(video!=null){
