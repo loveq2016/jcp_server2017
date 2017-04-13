@@ -38,14 +38,16 @@ public class LiveNotify extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		String teacherId = request.getParameter("teacherId");
 		String liveUrl = request.getParameter("liveUrl");
+		out.print("success");
+		out.flush();
+		out.close();
 		if (StringUtil.isNotNull(teacherId) && StringUtil.isInteger(teacherId)) {
 			if (StringUtil.isNotNull(liveUrl)) {
 				int tId = Integer.parseInt(teacherId);
-				pushLiveNotify(tId, liveUrl);
-			}
+					pushLiveNotify(tId, liveUrl);
+				}
 		}
-		out.flush();
-		out.close();
+		
 	}
 
 	private void pushLiveNotify(int tId, String liveUrl) {
@@ -53,6 +55,7 @@ public class LiveNotify extends HttpServlet {
 	}
 
 	/**
+	 * @param free 
 	 * @param tacticsId
 	 *            获取关注讲师的用户别名
 	 */
@@ -72,10 +75,11 @@ public class LiveNotify extends HttpServlet {
 				String title = "【" + teacher.getNickName()
 						+ "】老师正在直播，小伙伴赶紧来围观...";
 				int roomId = teacher.getFk_UserId();
+				int isFree=teacher.getLiveFree();
 				String teacherFace=teacher.getHeadFace();
 				PushPayload payLoad = JPushUtils.createNptifyForAliase(title,
 						"teacherId", teacherId, "roomId", roomId, "liveUrl",
-						liveUrl,teacherFace, aliases);
+						liveUrl,teacherFace, isFree,aliases);
 				PushResult result = JPushUtils.pushMsg(client, payLoad);
 				System.out.println(result.toString());
 			} else {
@@ -83,13 +87,6 @@ public class LiveNotify extends HttpServlet {
 			}
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
 
 	/**
 	 * @param element

@@ -31,8 +31,10 @@ public class LiveInfo extends HttpServlet {
 	private Map<String, String> param = new HashMap<String, String>();
 	private List<String> ids = new ArrayList<String>();
 	private String result;
+	//在线人数
+	private int memberNum;
 	//腾讯云APPID
-	private static final String appId="1400027389";
+	private static final String appId="1400028429";
 	//获取用户 userSign url
 	private static final String GET_SIGN = "http://www.jucaipen.com/ashx/AndroidUser.ashx?action=GetUserSig";
 	private static final long serialVersionUID = 1L;
@@ -48,7 +50,7 @@ public class LiveInfo extends HttpServlet {
 		if (StringUtil.isNotNull(teacherId) && StringUtil.isInteger(teacherId)) {
 			int tId = Integer.parseInt(teacherId);
 			result = getOnLineInfo(tId);
-		} else {
+		} else{
 			result = JsonUtil.getRetMsg(1, "参数异常");
 		}
 		out.println(result);
@@ -86,7 +88,7 @@ public class LiveInfo extends HttpServlet {
 		int userId = teacher.getFk_UserId();
 		// 获取直播室信息
 		List<User> list = getMember(userId);
-		return JsonUtil.getOnLineData(bills, list);
+		return JsonUtil.getOnLineData(bills, list,memberNum);
 	}
 
 	/**
@@ -106,7 +108,7 @@ public class LiveInfo extends HttpServlet {
 			for (int i = 0; i < groupInfo.length();) {
 				JSONObject detail = groupInfo.optJSONObject(i);
 				JSONArray memberList = detail.optJSONArray("MemberList");
-				int memberNum = detail.optInt("MemberNum", 0);
+				memberNum = detail.optInt("MemberNum", 0);
 				if (memberList != null) {
 					for (int j = 0; j < memberList.length(); j++) {
 						JSONObject member = memberList.optJSONObject(j);

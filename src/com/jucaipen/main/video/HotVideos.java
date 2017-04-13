@@ -63,7 +63,6 @@ public class HotVideos extends HttpServlet {
 				teacher.setIsEnd(videoLive.getIsEnd());
 			}
 		}
-		
 		return JsonUtil.getHotTeacher(teachers);
 	}
 

@@ -277,7 +277,7 @@ public class QuerryTeacherIdea extends HttpServlet {
 				live.setTeacherName(teacher.getNickName());
 				live.setTeacherFace(teacher.getHeadFace());
 				live.setRoomId(teacher.getFk_UserId());
-				if (live.isCharge()) {
+			//	if (live.getIsEnd()==2||live.isCharge()) {
 					// 收费
 					if (usId > 0) {
 						Account account = AccountSer.findAccountByUserId(usId);
@@ -303,7 +303,7 @@ public class QuerryTeacherIdea extends HttpServlet {
 					} else {
 						live.setIsPurch(1);
 					}
-				}
+			//	}
 				live.setOwnJucaiBills(ownJucaiBills);
 			}
 			if (isIndex == 0) {
@@ -315,11 +315,17 @@ public class QuerryTeacherIdea extends HttpServlet {
 			if (videos != null) {
 				for (RecoderVideo video : videos) {
 					// 是否为付费视频 0为免费视频，1为付费视频
-					if (video.getLiveIsFree()==2) {
-							LiveRecoderSale sale = LiveRecoderSaleSer
+					int recoderId = Integer.parseInt(video.getExt1());
+					if (video.getLiveIsFree()==2&&recoderId!=0) {
+						    //录播是否购买
+							LiveRecoderSale recoderSale = LiveRecoderSaleSer
 									.getLiveSaleByUidAndLiveId(usId, 
 											video.getId(),2);
-							if (sale != null) {
+							//录播在直播的时候是否被购买
+							LiveRecoderSale liveSale = LiveRecoderSaleSer
+									.getLiveSaleByUidAndLiveId(usId, 
+											recoderId,1);
+							if (recoderSale != null||liveSale!=null) {
 								video.setIsPurch(0);
 							} else {
 								video.setIsPurch(1);

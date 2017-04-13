@@ -57,6 +57,12 @@ public class QuerryTactics extends HttpServlet {
 		out.flush();
 		out.close();
 	}
+	/**
+	 * @param tId  讲师id
+	 * @param uId  用户id
+	 * @param p    请求页数
+	 * @return  初始化战法信息
+	 */
 	private String initTacticsList(int tId, int uId, int p) {
 		//初始化战法信息
 		List<Tactics> tactics=TacticsSer.findTacticsByTeacherId(tId, p);

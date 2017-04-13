@@ -1,15 +1,11 @@
 package com.jucaipen.timetask;
-
 import java.util.TimerTask;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.jucaipen.utils.LoginUtil;
 import com.jucaipen.utils.RandomUtils;
 
 public class LiveTask extends TimerTask{
-	private String baseUrl="https://console.tim.qq.com/v4/group_open_http_svc/send_group_msg"
-			+ "?usersig=xxx&identifier=admin&sdkappid=88888888&random=99999999&contenttype=json";
+	private String baseUrl="https://console.tim.qq.com/v4/group_open_http_svc/send_group_msg";
 
 	@Override
 	public void run() {
@@ -21,8 +17,6 @@ public class LiveTask extends TimerTask{
 		
 		JsonArray array=new JsonArray();
 		object.add("MsgBody", array);
-		
-		
 	}
 
 	private String createUrl(String sign) {

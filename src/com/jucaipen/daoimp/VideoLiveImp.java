@@ -101,11 +101,13 @@ public class VideoLiveImp implements VideoLiveDao {
 				String startDate = res.getString(10); // StratDate
 				String endDate = res.getString(11); // EndDate
 				int renQi = res.getInt(12); // RenQi
+				int xn=res.getInt(13);
 				VideoLive live = new VideoLive();
 				live.setClassId(classId);
 				live.setDescript(desc);
 				live.setEndDate(endDate);
 				live.setIsEnd(isEnd);
+				live.setXnRenQi(xn);
 				live.setKeyWord(keyWord);
 				live.setRenQi(renQi);
 				live.setStartDate(startDate);
@@ -150,6 +152,7 @@ public class VideoLiveImp implements VideoLiveDao {
 				String startDate = res.getString("StratDate"); // StratDate
 				String endDate = res.getString("EndDate"); // EndDate
 				int renQi = res.getInt("RenQi"); // RenQi
+				int xn=res.getInt("XnRenQi");
 				VideoLive live = new VideoLive();
 				live.setPage(page);
 				live.setTotlePage(totlePage);
@@ -164,6 +167,7 @@ public class VideoLiveImp implements VideoLiveDao {
 				live.setIsEnd(isEnd);
 				live.setStartDate(startDate);
 				live.setEndDate(endDate);
+				live.setXnRenQi(xn);
 				live.setRenQi(renQi);
 				chatRooms.add(live);
 			}
@@ -214,7 +218,7 @@ public class VideoLiveImp implements VideoLiveDao {
 		try {
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("SELECT Id,Title,Keyword,Descirption,Fk_CalssId,ISNULL(Videourl,'') Videourl,VideoImg,IsEnd,StratDate,EndDate,RenQi FROM JCP_VideoLive WHERE Fk_TeacherId="
+					.executeQuery("SELECT Id,Title,Keyword,Descirption,Fk_CalssId,ISNULL(Videourl,'') Videourl,VideoImg,IsEnd,StratDate,EndDate,RenQi,XnRenQi FROM JCP_VideoLive WHERE Fk_TeacherId="
 							+ tId+" ORDER BY StratDate DESC");
 			while (res.next()) {
 				int id = res.getInt("Id");
@@ -228,6 +232,7 @@ public class VideoLiveImp implements VideoLiveDao {
 				String startDate = res.getString("StratDate"); // StratDate
 				String endDate = res.getString("EndDate"); // EndDate
 				int renQi = res.getInt("RenQi"); // RenQi
+				int xn=res.getInt("XnRenQi");
 				VideoLive live = new VideoLive();
 				live.setId(id);
 				live.setTitle(title);
@@ -235,6 +240,7 @@ public class VideoLiveImp implements VideoLiveDao {
 				live.setDescript(desc);
 				live.setClassId(classId);
 				live.setVideoUrl(videoUrl);
+				live.setXnRenQi(xn);
 				live.setVideoImage(videoImage);
 				live.setTeacherId(tId);
 				live.setIsEnd(isEnd);
@@ -304,11 +310,11 @@ public class VideoLiveImp implements VideoLiveDao {
 	}
 
 	@Override
-	public int updateRenQi(int id, int renQi) {
+	public int updateRenQi(int id, int renQi,int xnRenQi) {
 		dbConn = JdbcUtil.connSqlServer();
 		try {
 			sta = dbConn.createStatement();
-			return sta.executeUpdate("UPDATE JCP_VideoLive SET ");
+			return sta.executeUpdate("UPDATE JCP_VideoLive SET XnRenQi="+xnRenQi+",RenQi="+renQi+" WHERE Id="+id);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -336,6 +342,7 @@ public class VideoLiveImp implements VideoLiveDao {
 				int renQi = res.getInt("RenQi"); // RenQi
 				int teacherId = res.getInt("Fk_TeacherId");
 				int isEnd = res.getInt("IsEnd");
+				int xn=res.getInt("XnRenQi");
 				VideoLive live = new VideoLive();
 				live.setId(id);
 				live.setTitle(title);
@@ -343,6 +350,7 @@ public class VideoLiveImp implements VideoLiveDao {
 				live.setDescript(desc);
 				live.setClassId(classId);
 				live.setVideoUrl(videoUrl);
+				live.setXnRenQi(xn);
 				live.setVideoImage(videoImage);
 				live.setTeacherId(teacherId);
 				live.setIsEnd(isEnd);

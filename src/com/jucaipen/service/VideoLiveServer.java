@@ -65,9 +65,9 @@ public class VideoLiveServer {
 		return dao.findLiveBytId(tId);
 	}
 	
-	public static int updateRenQi(int id,int renQi){
+	public static int updateRenQi(int id,int renQi,int xnRenQi){
 		VideoLiveDao dao=new VideoLiveImp();
-		return dao.updateRenQi(id, renQi);
+		return dao.updateRenQi(id, renQi,xnRenQi);
 	}
 	
 	

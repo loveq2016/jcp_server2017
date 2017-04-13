@@ -57,22 +57,24 @@ public class JPushUtils {
 	 */
 	public static PushPayload createNptifyForAliase(String msg, String key,
 			Number value, String dataKay, int dataValue,String key1,String valueStr,String teacherFace,
-			Collection<String> aliases) {
+			int free,Collection<String> aliases) {
 		Map<String, String> map=new HashMap<String, String>();
 		map.put(key, value+"");
 		map.put(dataKay, dataValue+"");
 		map.put(key1, valueStr);
 		map.put("teacherFace",teacherFace);
+		map.put("isFree", free+"");
 		return PushPayload
 				.newBuilder()
-				.setNotification(Notification.android(msg, msg, map))
+				.setNotification(Notification.android(msg,msg,map).ios(msg, map).alert(msg))
 				.setMessage(
 						Message.newBuilder().setMsgContent(msg)
 								.addExtra(key, value)
 								.addExtra(key1, valueStr)
 								.addExtra(dataKay, dataValue)
+								.addExtra("isFree", free)
 								.build())
-								.setPlatform(Platform.all())
+								.setPlatform(Platform.android_ios())
 				.setAudience(Audience.alias(aliases)).build();
 	}
 	

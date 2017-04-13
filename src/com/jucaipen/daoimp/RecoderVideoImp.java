@@ -11,14 +11,14 @@ import java.util.List;
 import com.jucaipen.dao.RecoderVideoDao;
 import com.jucaipen.model.RecoderVideo;
 import com.jucaipen.utils.JdbcUtil;
+import com.jucaipen.utils.StringUtil;
 
 public class RecoderVideoImp implements RecoderVideoDao {
 	private List<RecoderVideo> recoderVideos = new ArrayList<RecoderVideo>();
 	private Connection dbConn;
 	private Statement sta;
 	private ResultSet res;
-	
-	
+
 	/**
 	 * @return 查询地区信息总页数
 	 */
@@ -34,7 +34,7 @@ public class RecoderVideoImp implements RecoderVideoDao {
 			return totlePager;
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				JdbcUtil.closeConn(sta, dbConn, res);
 			} catch (SQLException e) {
@@ -43,14 +43,13 @@ public class RecoderVideoImp implements RecoderVideoDao {
 		}
 		return 0;
 	}
-	
 
 	@Override
 	public RecoderVideo getLastRecoderVideo(int teacherId) {
 		try {
 			Connection dbConn = JdbcUtil.connSqlServer();
 			PreparedStatement statement = dbConn
-					.prepareStatement("SELECT TOP 1 VideoUrl_1,VideoUrl_2,VideoUrl_3,ImageUrl,LiveIdFree,FreePrice FROM JCP_Live_Recorded WHERE TeacherId=? ORDER BY EndDate DESC");
+					.prepareStatement("SELECT TOP 1 VideoUrl_1,VideoUrl_2,VideoUrl_3,ImageUrl,LiveIdFree,FreePrice,Ext_1,PlayCountSham FROM JCP_Live_Recorded WHERE TeacherId=? ORDER BY EndDate DESC");
 			statement.setInt(1, teacherId);
 			ResultSet query = statement.executeQuery();
 			while (query.next()) {
@@ -60,6 +59,8 @@ public class RecoderVideoImp implements RecoderVideoDao {
 				String image = query.getString(4);
 				int isFree = query.getInt(5);
 				int plice = query.getInt(6);
+				String ext1 = query.getString(7);
+				int xn=query.getInt(8);
 				RecoderVideo recoderVideo = new RecoderVideo();
 				recoderVideo.setLiveUrl1(url1);
 				recoderVideo.setLiveUrl2(url2);
@@ -67,6 +68,9 @@ public class RecoderVideoImp implements RecoderVideoDao {
 				recoderVideo.setImageUrl(image);
 				recoderVideo.setLiveIsFree(isFree);
 				recoderVideo.setLivePrice(plice);
+				recoderVideo.setXnPlayCount(xn);
+				recoderVideo.setExt1(ext1 != null && !ext1.equals("") ? ext1
+						: 0 + "");
 				return recoderVideo;
 			}
 		} catch (SQLException e) {
@@ -76,15 +80,17 @@ public class RecoderVideoImp implements RecoderVideoDao {
 	}
 
 	@Override
-	public List<RecoderVideo> getAllRecoderVideo(int teacherId,int page) {
+	public List<RecoderVideo> getAllRecoderVideo(int teacherId, int page) {
 		try {
 			recoderVideos.clear();
-			int totlePage=findTotlePager(" 	WHERE TeacherId="+teacherId);
+			int totlePage = findTotlePager(" 	WHERE TeacherId=" + teacherId);
 			Connection dbConn = JdbcUtil.connSqlServer();
-			PreparedStatement statement=dbConn.prepareStatement("SELECT TOP 5 Id,Title,LiveIdFree,FreePrice,VideoUrl_1,ImageUrl,PlayCountSham,StartDate FROM "
+			PreparedStatement statement = dbConn
+					.prepareStatement("SELECT TOP 5 Id,Title,LiveIdFree,FreePrice,VideoUrl_1,ImageUrl,PlayCountSham,StartDate,Ext_1 FROM "
 							+ "(SELECT ROW_NUMBER() OVER (ORDER BY InsertDate DESC) AS RowNumber,* FROM JCP_Live_Recorded"
 							+ " WHERE TeacherId=?) A "
-							+ "WHERE RowNumber > " + 5 * (page - 1));
+							+ "WHERE RowNumber > "
+							+ 5 * (page - 1));
 			statement.setInt(1, teacherId);
 			ResultSet query = statement.executeQuery();
 			while (query.next()) {
@@ -95,7 +101,9 @@ public class RecoderVideoImp implements RecoderVideoDao {
 				String url1 = query.getString(5);
 				String image = query.getString(6);
 				int xnPlayCount = query.getInt(7);
-				String startDate=query.getString(8);
+				String startDate = query.getString(8);
+				String ext1 = query.getString(9);
+
 				RecoderVideo recoderVideo = new RecoderVideo();
 				recoderVideo.setLiveUrl1(url1);
 				recoderVideo.setTotlePage(totlePage);
@@ -106,6 +114,8 @@ public class RecoderVideoImp implements RecoderVideoDao {
 				recoderVideo.setXnPlayCount(xnPlayCount);
 				recoderVideo.setTitle(title);
 				recoderVideo.setId(id);
+				recoderVideo.setExt1(ext1 != null && !ext1.equals("") ? ext1
+						: 0 + "");
 				recoderVideo.setStartDate(startDate);
 				recoderVideos.add(recoderVideo);
 			}
@@ -116,18 +126,18 @@ public class RecoderVideoImp implements RecoderVideoDao {
 		return null;
 	}
 
-
 	@Override
 	public RecoderVideo getRecoderVideioById(int id) {
 		try {
 			Connection dbConn = JdbcUtil.connSqlServer();
-			PreparedStatement statement=dbConn.prepareStatement("SELECT PlayCount,PlayCountSham FROM JCP_Live_Recorded WHERE Id=?");
+			PreparedStatement statement = dbConn
+					.prepareStatement("SELECT PlayCount,PlayCountSham FROM JCP_Live_Recorded WHERE Id=?");
 			statement.setInt(1, id);
 			ResultSet query = statement.executeQuery();
 			while (query.next()) {
 				int playCount = query.getInt(1);
-				int xnCount=query.getInt(2);
-				RecoderVideo video=new RecoderVideo();
+				int xnCount = query.getInt(2);
+				RecoderVideo video = new RecoderVideo();
 				video.setPlayCount(playCount);
 				video.setXnPlayCount(xnCount);
 				return video;
@@ -138,16 +148,16 @@ public class RecoderVideoImp implements RecoderVideoDao {
 		return null;
 	}
 
-
 	@Override
-	public int updateRecoderViderHits(int id, int hits,int xnHits) {
+	public int updateRecoderViderHits(int id, int hits, int xnHits) {
 		try {
 			Connection dbConn = JdbcUtil.connSqlServer();
-			PreparedStatement statement = dbConn.prepareStatement("UPDATE JCP_Live_Recorded SET PlayCount=?,PlayCountSham=? WHERE Id="+id);
-		    statement.setInt(1, hits);
-		    statement.setInt(2, xnHits);
-		    statement.setInt(3, id);
-		   return statement.executeUpdate();
+			PreparedStatement statement = dbConn
+					.prepareStatement("UPDATE JCP_Live_Recorded SET PlayCount=?,PlayCountSham=? WHERE Id=?");
+			statement.setInt(1, hits);
+			statement.setInt(2, xnHits);
+			statement.setInt(3, id);
+			return statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

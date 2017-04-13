@@ -21,7 +21,7 @@ public interface VideoLiveDao {
 	 * @param renQi
 	 * @return  更新人气信息
 	 */
-	public int updateRenQi(int id,int renQi);
+	public int updateRenQi(int id,int renQi,int xnRenQi);
 	/**
 	 * @param id
 	 * @return  根据id 获取房间详细信息

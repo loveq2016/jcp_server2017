@@ -139,6 +139,7 @@ public class LiveList extends HttpServlet {
 						// 单次直播价格
 						live.setLivePrice(recoderVideo.getLivePrice());
 						live.setVideoUrl(recoderVideo.getLiveUrl1());
+						live.setRecoderId(Integer.parseInt(recoderVideo.getExt1()));
 					}else{
 						live.setCharge(false);
 						// 单次直播价格
@@ -158,7 +159,7 @@ public class LiveList extends HttpServlet {
 				live.setTeacherFace(teacher.getHeadFace());
 				// 默认未开通守护
 				live.setGradian(false);
-				if (live.isCharge()) {
+			//	if (live.isCharge()) {
 					if (uId > 0) {
 						// 是否开通守护
 						Account account = AccountSer.findAccountByUserId(uId);
@@ -166,9 +167,16 @@ public class LiveList extends HttpServlet {
 						LiveRecoder resoder = LiveRecoderSer
 						.getRecoderByLiveId(live.getId());
 						if(resoder!=null){
-							LiveRecoderSale sale = LiveRecoderSaleSer
+							LiveRecoderSale liveSale=null;
+							LiveRecoderSale recoderSale = LiveRecoderSaleSer
 									.getLiveSaleByUidAndLiveId(uId,resoder.getId(),liveType);
-							if(sale!=null){
+							int recoderId = live.getRecoderId();
+							if(recoderId>0){
+								liveSale= LiveRecoderSaleSer
+										.getLiveSaleByUidAndLiveId(uId,recoderId,1);
+								
+							}
+							if(recoderSale!=null||liveSale!=null){
 								isPurch = 0;
 							}else{
 								isPurch = 1;
@@ -182,7 +190,7 @@ public class LiveList extends HttpServlet {
 					} else {
 						isPurch = 1;
 					}
-				}
+				//}
 				live.setOwnJucaiBills(ownJucaiBills);
 				live.setIsPurch(isPurch);
 				teachers.add(teacher);
@@ -222,6 +230,7 @@ public class LiveList extends HttpServlet {
 						// 单次直播价格
 						live.setLivePrice(recoderVideo.getLivePrice());
 						live.setVideoUrl(recoderVideo.getLiveUrl1());
+						live.setRecoderId(Integer.parseInt(recoderVideo.getExt1()));
 					}else{
 						live.setCharge(false);
 						// 单次直播价格
@@ -241,7 +250,7 @@ public class LiveList extends HttpServlet {
 				live.setTeacherFace(teacher.getHeadFace());
 				// 默认未开通守护
 				live.setGradian(false);
-				if (live.isCharge()) {
+			//	if (live.isCharge()) {
 					if (uId > 0) {
 						// 是否开通守护
 						Account account = AccountSer.findAccountByUserId(uId);
@@ -249,9 +258,16 @@ public class LiveList extends HttpServlet {
 						LiveRecoder resoder = LiveRecoderSer
 						.getRecoderByLiveId(live.getId());
 						if(resoder!=null){
+							LiveRecoderSale liveSale=null;
 							LiveRecoderSale sale = LiveRecoderSaleSer
 									.getLiveSaleByUidAndLiveId(uId,resoder.getId(),liveType);
-							if(sale!=null){
+							int recoderId = live.getRecoderId();
+							if(recoderId>0){
+								liveSale= LiveRecoderSaleSer
+										.getLiveSaleByUidAndLiveId(uId,recoderId,1);
+								
+							}
+							if(sale!=null||liveSale!=null){
 								isPurch = 0;
 							}else{
 								isPurch = 1;
@@ -265,7 +281,7 @@ public class LiveList extends HttpServlet {
 					} else {
 						isPurch = 1;
 					}
-				}
+				//}
 				live.setOwnJucaiBills(ownJucaiBills);
 				live.setIsPurch(isPurch);
 				teachers.add(teacher);

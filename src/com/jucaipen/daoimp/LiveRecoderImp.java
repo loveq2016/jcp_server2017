@@ -46,7 +46,7 @@ public class LiveRecoderImp implements LiveRecoderDao {
 			conn = JdbcUtil.connSqlServer();
 			sta = conn.createStatement();
 			res = sta
-					.executeQuery("SELECT TOP 1 * FROM JCP_VideoLive_Record WHERE VideoLiveId="+liveId);
+					.executeQuery("SELECT TOP 1 * FROM JCP_VideoLive_Record WHERE VideoLiveId="+liveId+" ORDER BY LiveStartDate DESC");
 			while (res.next()) {
 				int id = res.getInt(1);
 				String liveNo = res.getString(3);

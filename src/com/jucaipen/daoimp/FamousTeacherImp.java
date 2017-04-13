@@ -339,7 +339,7 @@ public class FamousTeacherImp implements FamousTeacherDao {
 		try {
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("SELECT Fans,AskNum,NickName,QianYUeCount,ReturnRate,HeadFace,FK_UserId,Jianjie,TouXian FROM JCP_Tearcher WHERE Id="
+					.executeQuery("SELECT Fans,AskNum,NickName,QianYUeCount,ReturnRate,HeadFace,FK_UserId,Jianjie,TouXian,VideoLiveIsFree FROM JCP_Tearcher WHERE Id="
 							+ tId + "  AND  State=0");
 			while (res.next()) {
 				int fans = res.getInt(1);
@@ -351,6 +351,7 @@ public class FamousTeacherImp implements FamousTeacherDao {
 				int fk_uId = res.getInt(7);
 				String introduce=res.getString(8);
 				String leavel=res.getString(9);
+				int isFree=res.getInt(10);
 				FamousTeacher teacher = new FamousTeacher();
 				teacher.setFans(fans);
 				teacher.setId(tId);
@@ -360,6 +361,7 @@ public class FamousTeacherImp implements FamousTeacherDao {
 				teacher.setSignCount(qianYueCount);
 				teacher.setAskNum(askNum);
 				teacher.setLevel(leavel);
+				teacher.setLiveFree(isFree);
 				teacher.setIntroduce(introduce);
 				teacher.setNickName(nickName);
 				return teacher;

@@ -11,6 +11,14 @@ import java.util.Random;
 public class RandomUtils {
 	private static Random random;
 	
+	public static int getRandomData(int max,int min){
+		if(random==null){
+			random=new Random();
+		}
+		return  random.nextInt(max)+1;
+	}
+	
+	
 	public static String getRandomData(int count){
 		StringBuffer buffer=new StringBuffer();
 		if(random==null){

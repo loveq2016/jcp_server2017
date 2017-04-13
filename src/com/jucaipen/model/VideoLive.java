@@ -23,6 +23,11 @@ public class VideoLive implements Serializable{
 	private boolean isLiveVideo;
 	
 	/**
+	 *  录播id
+	 */
+	private int recoderId;
+	
+	/**
 	 *   是否收费
 	 */
 	private boolean isCharge;
@@ -101,11 +106,27 @@ public class VideoLive implements Serializable{
 	private int renQi;
 	
 	/**
+	 *   虚拟人气
+	 */
+	private int xnRenQi;
+	
+	/**
 	 *   是否开通守护
 	 */
 	private boolean isGradian;
 	
-	
+	public int getXnRenQi() {
+		return xnRenQi;
+	}
+	public void setXnRenQi(int xnRenQi) {
+		this.xnRenQi = xnRenQi;
+	}
+	public int getRecoderId() {
+		return recoderId;
+	}
+	public void setRecoderId(int recoderId) {
+		this.recoderId = recoderId;
+	}
 	public int getRoomId() {
 		return roomId;
 	}

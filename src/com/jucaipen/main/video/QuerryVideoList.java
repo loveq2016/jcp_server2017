@@ -1,16 +1,12 @@
 package com.jucaipen.main.video;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.jucaipen.model.MySpecial;
-import com.jucaipen.model.MyVideo;
 import com.jucaipen.model.Special;
 import com.jucaipen.model.Video;
 import com.jucaipen.model.VideoClass;
