@@ -34,6 +34,7 @@ public interface ContributeDao {
 	public List<Contribute>  findContributeGroupByTid(String type);
 	
 	
+	
 	/**
 	 * @param teacherId
 	 * @return  获取讲师的总榜单

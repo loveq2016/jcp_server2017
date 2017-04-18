@@ -33,21 +33,7 @@ public class QuerryGiftType extends HttpServlet {
 		ClientOsInfo os = HeaderUtil.getMobilOS(userAgent);
 		int isDevice = HeaderUtil.isVaildDevice(os, userAgent);
 		if (isDevice == HeaderUtil.PHONE_APP) {
-			String userId = request.getParameter("userId");
-			if (StringUtil.isNotNull(userId)) {
-				if (StringUtil.isInteger(userId)) {
-					int uId = Integer.parseInt(userId);
-					if (uId > 0) {
-						result = initClassData();
-					} else {
-						result = JsonUtil.getRetMsg(3, "该用户还没登录");
-					}
-				} else {
-					result = JsonUtil.getRetMsg(2, "userId 参数数字格式化异常");
-				}
-			} else {
-				result = JsonUtil.getRetMsg(1, "userId 参数不能为空");
-			}
+		   result = initClassData();
 		} else {
 			result = StringUtil.isVaild;
 		}
@@ -58,7 +44,7 @@ public class QuerryGiftType extends HttpServlet {
 
 	private String initClassData() {
 		// 初始化礼品分类信息 left
-		List<GiftClass> leftClass = GiftClassSer.findTopClass(4);
+		List<GiftClass> leftClass = GiftClassSer.findAllClass();
 		return JsonUtil.getGiftClass(leftClass);
 	}
 	

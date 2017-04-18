@@ -155,6 +155,14 @@ public class VideoServer {
 		return dao.findVideoByTypeAndClassId(type, classId, page);
 	}
 	
+	
+	public static  Video findLastVideoByTeacher(int teacherId){
+		VideoDao dao=new VideoImp();
+		return dao.findLastVideoByTeacher(teacherId);
+	}
+	
+	
+	
 	/**
 	 * @param type
 	 * @param classId

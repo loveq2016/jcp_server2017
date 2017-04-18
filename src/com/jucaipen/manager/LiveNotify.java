@@ -19,8 +19,10 @@ import cn.jpush.api.push.model.PushPayload;
 
 import com.jucaipen.model.FamousTeacher;
 import com.jucaipen.model.Fans;
+import com.jucaipen.model.VideoLive;
 import com.jucaipen.service.FamousTeacherSer;
 import com.jucaipen.service.FansSer;
+import com.jucaipen.service.VideoLiveServer;
 import com.jucaipen.utils.JPushUtils;
 import com.jucaipen.utils.StringUtil;
 /**
@@ -61,6 +63,7 @@ public class LiveNotify extends HttpServlet {
 	 */
 	private void initAlias(int teacherId, String liveUrl) {
 		Collection<String> aliases = new ArrayList<String>();
+		VideoLive live = VideoLiveServer.findLiveBytId(teacherId);
 		FamousTeacher teacher = FamousTeacherSer.findTeacherBaseInfo(teacherId);
 		List<Fans> fans = FansSer.findFansByTeacherId(teacherId);
 		JPushClient client = JPushUtils.getJPush();
@@ -77,9 +80,10 @@ public class LiveNotify extends HttpServlet {
 				int roomId = teacher.getFk_UserId();
 				int isFree=teacher.getLiveFree();
 				String teacherFace=teacher.getHeadFace();
+				int liveId=live.getId();
 				PushPayload payLoad = JPushUtils.createNptifyForAliase(title,
 						"teacherId", teacherId, "roomId", roomId, "liveUrl",
-						liveUrl,teacherFace, isFree,aliases);
+						liveUrl,teacherFace, isFree,liveId,aliases);
 				PushResult result = JPushUtils.pushMsg(client, payLoad);
 				System.out.println(result.toString());
 			} else {

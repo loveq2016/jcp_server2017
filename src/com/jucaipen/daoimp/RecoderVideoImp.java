@@ -1,5 +1,4 @@
 package com.jucaipen.daoimp;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,12 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.jucaipen.dao.RecoderVideoDao;
 import com.jucaipen.model.RecoderVideo;
 import com.jucaipen.utils.JdbcUtil;
-import com.jucaipen.utils.StringUtil;
-
 public class RecoderVideoImp implements RecoderVideoDao {
 	private List<RecoderVideo> recoderVideos = new ArrayList<RecoderVideo>();
 	private Connection dbConn;
@@ -49,7 +45,7 @@ public class RecoderVideoImp implements RecoderVideoDao {
 		try {
 			Connection dbConn = JdbcUtil.connSqlServer();
 			PreparedStatement statement = dbConn
-					.prepareStatement("SELECT TOP 1 VideoUrl_1,VideoUrl_2,VideoUrl_3,ImageUrl,LiveIdFree,FreePrice,Ext_1,PlayCountSham FROM JCP_Live_Recorded WHERE TeacherId=? ORDER BY EndDate DESC");
+					.prepareStatement("SELECT TOP 1 VideoUrl_1,VideoUrl_2,VideoUrl_3,ImageUrl,LiveIdFree,FreePrice,Ext_1,PlayCountSham FROM JCP_Live_Recorded WHERE TeacherId=? AND VideoUrl_1 IS NOT NULL AND DATALENGTH(VideoUrl_1)>0 ORDER BY EndDate DESC");
 			statement.setInt(1, teacherId);
 			ResultSet query = statement.executeQuery();
 			while (query.next()) {
@@ -83,12 +79,12 @@ public class RecoderVideoImp implements RecoderVideoDao {
 	public List<RecoderVideo> getAllRecoderVideo(int teacherId, int page) {
 		try {
 			recoderVideos.clear();
-			int totlePage = findTotlePager(" 	WHERE TeacherId=" + teacherId);
+			int totlePage = findTotlePager(" 	WHERE TeacherId=" + teacherId+" AND VideoUrl_1 IS NOT NULL AND DATALENGTH(VideoUrl_1)>0");
 			Connection dbConn = JdbcUtil.connSqlServer();
 			PreparedStatement statement = dbConn
 					.prepareStatement("SELECT TOP 5 Id,Title,LiveIdFree,FreePrice,VideoUrl_1,ImageUrl,PlayCountSham,StartDate,Ext_1 FROM "
 							+ "(SELECT ROW_NUMBER() OVER (ORDER BY InsertDate DESC) AS RowNumber,* FROM JCP_Live_Recorded"
-							+ " WHERE TeacherId=?) A "
+							+ " WHERE TeacherId=? AND VideoUrl_1 IS NOT NULL AND DATALENGTH(VideoUrl_1)>0) A "
 							+ "WHERE RowNumber > "
 							+ 5 * (page - 1));
 			statement.setInt(1, teacherId);
@@ -131,7 +127,7 @@ public class RecoderVideoImp implements RecoderVideoDao {
 		try {
 			Connection dbConn = JdbcUtil.connSqlServer();
 			PreparedStatement statement = dbConn
-					.prepareStatement("SELECT PlayCount,PlayCountSham FROM JCP_Live_Recorded WHERE Id=?");
+					.prepareStatement("SELECT PlayCount,PlayCountSham FROM JCP_Live_Recorded WHERE Id=? AND VideoUrl_1 IS NOT NULL AND DATALENGTH(VideoUrl_1)>0");
 			statement.setInt(1, id);
 			ResultSet query = statement.executeQuery();
 			while (query.next()) {
@@ -153,7 +149,7 @@ public class RecoderVideoImp implements RecoderVideoDao {
 		try {
 			Connection dbConn = JdbcUtil.connSqlServer();
 			PreparedStatement statement = dbConn
-					.prepareStatement("UPDATE JCP_Live_Recorded SET PlayCount=?,PlayCountSham=? WHERE Id=?");
+					.prepareStatement("UPDATE JCP_Live_Recorded SET PlayCount=?,PlayCountSham=? WHERE Id=? AND VideoUrl_1 IS NOT NULL AND DATALENGTH(VideoUrl_1)>0");
 			statement.setInt(1, hits);
 			statement.setInt(2, xnHits);
 			statement.setInt(3, id);

@@ -21,7 +21,7 @@ import com.jucaipen.utils.StringUtil;
 /**
  * @author Administrator
  * 
- *         咨询名师 同一个问题只能问三次，之后需要聚财币购买
+ *  咨询名师 同一个问题只能问三次，之后需要聚财币购买
  * 
  */
 public class AskQuestion extends HttpServlet {

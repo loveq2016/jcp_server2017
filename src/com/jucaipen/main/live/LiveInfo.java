@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import com.jucaipen.model.Contribute;
 import com.jucaipen.model.FamousTeacher;
 import com.jucaipen.model.User;
 import com.jucaipen.service.ContributeSer;
@@ -29,6 +30,7 @@ public class LiveInfo extends HttpServlet {
 	//获取群成员 url
 	private String baseUrl = "https://console.tim.qq.com/v4/group_open_http_svc/get_group_info";
 	private Map<String, String> param = new HashMap<String, String>();
+	//房间id 集合列表
 	private List<String> ids = new ArrayList<String>();
 	private String result;
 	//在线人数
@@ -38,6 +40,7 @@ public class LiveInfo extends HttpServlet {
 	//获取用户 userSign url
 	private static final String GET_SIGN = "http://www.jucaipen.com/ashx/AndroidUser.ashx?action=GetUserSig";
 	private static final long serialVersionUID = 1L;
+	//管理者账号
 	private static final String account = "admin";
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -82,13 +85,25 @@ public class LiveInfo extends HttpServlet {
 	 *            讲师id
 	 */
 	private String getOnLineInfo(int tId) {
-		// 1、贡献总榜
-		int bills = ContributeSer.findAllContributeByTid(tId);
+		// 1、贡献值
+		int bills=0;
+		int number=0;
+		List<Contribute> contributes = ContributeSer.findContributeGroupByTid("year");
+		//贡献排行
+		for(int i=0;i<contributes.size();i++){
+			int teacherId = contributes.get(i).getTeacherId();
+			if(teacherId==tId){
+				bills= contributes.get(i).getAllJucaiBills();
+                number=i+1;
+                break ;
+			}
+		}
+		//获取讲师基本信息
 		FamousTeacher teacher = FamousTeacherSer.findTeacherBaseInfo(tId);
 		int userId = teacher.getFk_UserId();
 		// 获取直播室信息
 		List<User> list = getMember(userId);
-		return JsonUtil.getOnLineData(bills, list,memberNum);
+		return JsonUtil.getOnLineData(bills, list,memberNum,number);
 	}
 
 	/**
@@ -117,6 +132,7 @@ public class LiveInfo extends HttpServlet {
 								&& StringUtil.isInteger(account)) {
 							User user = UserServer.findBaseInfoById(Integer
 									.parseInt(account));
+							//不统计房间创建者
 							if (roomId != user.getId()) {
 								users.add(user);
 							}

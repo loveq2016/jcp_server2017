@@ -102,7 +102,7 @@ public class StringUtil {
 	 * @param url
 	 * @return  http url ×ª»»Îªhttps    
 	 */
-/*	public static  String changeHttps(String url){
+	public static  String changeHttps(String url){
 		StringBuffer newUrl=new StringBuffer();
 		if(url==null||"".equals(url)){
 			return url;
@@ -118,7 +118,7 @@ public class StringUtil {
 			}
 		}
 		return newUrl.toString();
-	}*/
+	}
 	
 	  
 	/**

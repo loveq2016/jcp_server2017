@@ -20,6 +20,13 @@ public interface VideoDao {
 	 */
 	public List<Video>  findHotVideoList(int top);
 	
+	
+	/**
+	 * @param teacherId
+	 * @return  获取讲师最近一个视频
+	 */
+	public Video  findLastVideoByTeacher(int teacherId);
+	
 	/**
 	 * @return  根据分类id 获取视频
 	 */

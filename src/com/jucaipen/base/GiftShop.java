@@ -77,7 +77,7 @@ public class GiftShop extends HttpServlet {
 		}else{
 			ownJucaiBills=0;
 		}
-		List<Gifts> gifts;
+	/*	List<Gifts> gifts;
 		if(t==10){
 			//按推荐查询
 			 gifts=GiftsSer.findIsTuijian(1);
@@ -90,7 +90,8 @@ public class GiftShop extends HttpServlet {
 		}else{
 			//按分类获取
 			 gifts=GiftsSer.findGiftByClassId(t);
-		}
+		}*/
+		List<Gifts> gifts=GiftsSer.findGiftByClassId(t);
 		return JsonUtil.getGiftList(gifts,ownJucaiBills);
 	}
 

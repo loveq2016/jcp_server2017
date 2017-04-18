@@ -1560,4 +1560,34 @@ public class VideoImp implements VideoDao {
 		return null;
 	}
 
+	@Override
+	public Video findLastVideoByTeacher(int teacherId) {
+		try {
+			dbConn = JdbcUtil.connSqlServer();
+			sta = dbConn.createStatement();
+			res = sta
+					.executeQuery("SELECT TOP 1 Title,ImagesUrl,VideoPageUrl FROM JCP_Video WHERE TearcherId="
+							+ teacherId+" ORDER BY VideoDate DESC");
+			while (res.next()) {
+				String title = res.getString(SqlUtil.VIDEO_TITLE);
+				String Images = res.getString(SqlUtil.VIDEO_IMAGES);
+				String videoUrl = res.getString("VideoPageUrl");
+				Video video = new Video();
+				video.setImages(Images);
+				video.setVideoUrl(videoUrl);
+				video.setTitle(title);
+				return video;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
 }

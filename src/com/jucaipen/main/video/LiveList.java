@@ -18,6 +18,7 @@ import com.jucaipen.model.LiveRecoderSale;
 import com.jucaipen.model.RecoderVideo;
 import com.jucaipen.model.TextLive;
 import com.jucaipen.model.TxtLiveSale;
+import com.jucaipen.model.Video;
 import com.jucaipen.model.VideoLive;
 import com.jucaipen.service.AccountSer;
 import com.jucaipen.service.FamousTeacherSer;
@@ -28,9 +29,11 @@ import com.jucaipen.service.RecoderVideoServer;
 import com.jucaipen.service.TxtLiveSaleSer;
 import com.jucaipen.service.TxtLiveSer;
 import com.jucaipen.service.VideoLiveServer;
+import com.jucaipen.service.VideoServer;
 import com.jucaipen.utils.HeaderUtil;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.LiveUtil;
+import com.jucaipen.utils.RandomUtils;
 import com.jucaipen.utils.StringUtil;
 import com.jucaipen.utils.TimeUtils;
 /**
@@ -45,8 +48,20 @@ import com.jucaipen.utils.TimeUtils;
  */
 public class LiveList extends HttpServlet {
 	private static final long serialVersionUID = -3535325712984870701L;
+	private String urls[]={"http://recordcdn.quklive.com/broadcast/activity/9458019977964845/20160719192025-20160719202126.m3u8",
+	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160721130012-20160721140053.m3u8",
+	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160725102510-20160725113411.m3u8",
+	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160727192010-20160727202111.m3u8",
+	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160729130000-20160729140032.m3u8",
+	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160801102551-20160801113353.m3u8",
+	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160802090747-20160802092208.m3u8",
+	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160809092055-20160809102256.m3u8",
+	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160815085910-20160815091500.m3u8",
+	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160816092110-20160816102025.m3u8"
+	};
 	private String result;
 	private List<FamousTeacher> teachers = new ArrayList<FamousTeacher>();
+	private String userAgent;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -54,7 +69,7 @@ public class LiveList extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		String userAgent = request.getParameter("User-Agent");
+		userAgent = request.getParameter("User-Agent");
 		ClientOsInfo os = HeaderUtil.getMobilOS(userAgent);
 		int isDevice = HeaderUtil.isVaildDevice(os, userAgent);
 		if (isDevice == HeaderUtil.PHONE_APP) {
@@ -191,6 +206,12 @@ public class LiveList extends HttpServlet {
 						isPurch = 1;
 					}
 				//}
+					if(liveType==2){
+						Video video2 = VideoServer.findLastVideoByTeacher(tId);
+						live.setVideoUrl(video2!=null&&video2.getVideoUrl().length()>0 ? video2.getVideoUrl() : urls[RandomUtils.getRandomData(9, 0)]);
+					}
+					
+					
 				live.setOwnJucaiBills(ownJucaiBills);
 				live.setIsPurch(isPurch);
 				teachers.add(teacher);
@@ -282,6 +303,10 @@ public class LiveList extends HttpServlet {
 						isPurch = 1;
 					}
 				//}
+					if(liveType==2){
+						Video video2 = VideoServer.findLastVideoByTeacher(tId);
+						live.setVideoUrl(video2!=null&&video2.getVideoUrl().length()>0 ? video2.getVideoUrl() : urls[RandomUtils.getRandomData(9, 0)]);
+					}
 				live.setOwnJucaiBills(ownJucaiBills);
 				live.setIsPurch(isPurch);
 				teachers.add(teacher);
