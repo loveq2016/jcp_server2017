@@ -151,11 +151,11 @@ public class HeaderUtil {
 			return osInfo;
 		}
 		// Android еп╤о
-		String androidString = "ANDROID";
+		String androidString = "Android";
 		if (UA.indexOf(androidString) != -1) {
 			if(isMatch(UA, "\\bMobi", Pattern.CASE_INSENSITIVE)){
 				osInfo.setDeviceType(DEVICE_TYPE_PHONE);
-				osInfo.setMainSys("ANDROID");
+				osInfo.setMainSys("Android");
 			}else {
 				osInfo.setDeviceType(DEVICE_TYPE_PAD);
 				osInfo.setMainSys("Pad");

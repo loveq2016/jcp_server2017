@@ -160,4 +160,40 @@ public class RecoderVideoImp implements RecoderVideoDao {
 		return 0;
 	}
 
+	@Override
+	public List<RecoderVideo> getHotVideos(int top) {
+		try {
+			recoderVideos.clear();
+			Connection dbConn = JdbcUtil.connSqlServer();
+			PreparedStatement statement = dbConn
+					.prepareStatement("SELECT TOP "+top+" VideoUrl_1,VideoUrl_2,VideoUrl_3,ImageUrl,LiveIdFree,FreePrice,Ext_1,PlayCountSham FROM JCP_Live_Recorded WHERE VideoUrl_1 IS NOT NULL AND DATALENGTH(VideoUrl_1)>0 ORDER BY PlayCountSham DESC");
+			ResultSet query = statement.executeQuery();
+			while (query.next()) {
+				String url1 = query.getString(1);
+				String url2 = query.getString(2);
+				String url3 = query.getString(3);
+				String image = query.getString(4);
+				int isFree = query.getInt(5);
+				int plice = query.getInt(6);
+				String ext1 = query.getString(7);
+				int xn=query.getInt(8);
+				RecoderVideo recoderVideo = new RecoderVideo();
+				recoderVideo.setLiveUrl1(url1);
+				recoderVideo.setLiveUrl2(url2);
+				recoderVideo.setLiveUrl3(url3);
+				recoderVideo.setImageUrl(image);
+				recoderVideo.setLiveIsFree(isFree);
+				recoderVideo.setLivePrice(plice);
+				recoderVideo.setXnPlayCount(xn);
+				recoderVideo.setExt1(ext1 != null && !ext1.equals("") ? ext1
+						: 0 + "");
+				recoderVideos.add(recoderVideo);
+			}
+			return recoderVideos;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }

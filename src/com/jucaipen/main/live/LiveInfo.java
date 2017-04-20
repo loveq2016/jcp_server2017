@@ -42,7 +42,6 @@ public class LiveInfo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	//π‹¿Ì’ﬂ’À∫≈
 	private static final String account = "admin";
-
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
@@ -154,7 +153,7 @@ public class LiveInfo extends HttpServlet {
 		String signResult = LoginUtil.sendHttpPost(GET_SIGN, param);
 		JSONObject object = new JSONObject(signResult);
 		boolean isCreate = object.optBoolean("Result");
-		if (isCreate) {
+		if(isCreate) {
 			return object.optString("UserSig");
 		}
 		return null;

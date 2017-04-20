@@ -1206,6 +1206,11 @@
     <servlet-name>GetSurplus</servlet-name>
     <servlet-class>com.jucaipen.main.my.GetSurplus</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>GetPayCode</servlet-name>
+    <servlet-class>com.jucaipen.main.payinfo.GetPayCode</servlet-class>
+  </servlet>
+
 
 
 
@@ -1271,6 +1276,10 @@
   <servlet-mapping>
     <servlet-name>GetSurplus</servlet-name>
     <url-pattern>/jucaipen/getSurplus</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GetPayCode</servlet-name>
+    <url-pattern>/jucaipen/getpaycode</url-pattern>
   </servlet-mapping>
     
     

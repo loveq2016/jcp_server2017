@@ -18,6 +18,15 @@ public class RecoderVideoServer{
 	}
 	
 	/**
+	 * @param top
+	 * @return  获取热门录播视频
+	 */
+	public static List<RecoderVideo> getHotVideos(int top){
+		RecoderVideoDao dao=new RecoderVideoImp();
+		return dao.getHotVideos(top);
+	}
+	
+	/**
 	 * @param teacherId
 	 * @param page
 	 * @return  获取讲师下的所有录播

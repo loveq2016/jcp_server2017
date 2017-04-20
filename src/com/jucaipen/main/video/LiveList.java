@@ -3,12 +3,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.jucaipen.model.Account;
 import com.jucaipen.model.ClientOsInfo;
 import com.jucaipen.model.FamousTeacher;
@@ -18,7 +16,6 @@ import com.jucaipen.model.LiveRecoderSale;
 import com.jucaipen.model.RecoderVideo;
 import com.jucaipen.model.TextLive;
 import com.jucaipen.model.TxtLiveSale;
-import com.jucaipen.model.Video;
 import com.jucaipen.model.VideoLive;
 import com.jucaipen.service.AccountSer;
 import com.jucaipen.service.FamousTeacherSer;
@@ -29,11 +26,9 @@ import com.jucaipen.service.RecoderVideoServer;
 import com.jucaipen.service.TxtLiveSaleSer;
 import com.jucaipen.service.TxtLiveSer;
 import com.jucaipen.service.VideoLiveServer;
-import com.jucaipen.service.VideoServer;
 import com.jucaipen.utils.HeaderUtil;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.LiveUtil;
-import com.jucaipen.utils.RandomUtils;
 import com.jucaipen.utils.StringUtil;
 import com.jucaipen.utils.TimeUtils;
 /**
@@ -48,7 +43,7 @@ import com.jucaipen.utils.TimeUtils;
  */
 public class LiveList extends HttpServlet {
 	private static final long serialVersionUID = -3535325712984870701L;
-	private String urls[]={"http://recordcdn.quklive.com/broadcast/activity/9458019977964845/20160719192025-20160719202126.m3u8",
+	/*private String urls[]={"http://recordcdn.quklive.com/broadcast/activity/9458019977964845/20160719192025-20160719202126.m3u8",
 	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160721130012-20160721140053.m3u8",
 	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160725102510-20160725113411.m3u8",
 	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160727192010-20160727202111.m3u8",
@@ -58,7 +53,7 @@ public class LiveList extends HttpServlet {
 	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160809092055-20160809102256.m3u8",
 	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160815085910-20160815091500.m3u8",
 	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160816092110-20160816102025.m3u8"
-	};
+	};*/
 	private String result;
 	private List<FamousTeacher> teachers = new ArrayList<FamousTeacher>();
 	private String userAgent;
@@ -143,6 +138,7 @@ public class LiveList extends HttpServlet {
 				}
 				// 讲师是否开通直播功能 0 否 1 是
 				live.setLiveVideo(teacher.getIsUserLiveUrl() == 1);
+				live.setRoomId(teacher.getFk_UserId());
 				// 播放url
 				if(live.getIsEnd()!=2){
 					liveType=2;
@@ -165,7 +161,6 @@ public class LiveList extends HttpServlet {
 					liveType=1;
 					// 是否收费 0 否 1 是
 					live.setCharge(teacher.getLiveFree() == 1);
-					live.setRoomId(teacher.getFk_UserId());
 					// 单次直播价格
 					live.setLivePrice(teacher.getLivePrice());
 					live.setVideoUrl(teacher.getAppLiveUrl());
@@ -206,11 +201,11 @@ public class LiveList extends HttpServlet {
 						isPurch = 1;
 					}
 				//}
-					if(liveType==2){
+					/*if(liveType==2){
 						Video video2 = VideoServer.findLastVideoByTeacher(tId);
 						live.setVideoUrl(video2!=null&&video2.getVideoUrl().length()>0 ? video2.getVideoUrl() : urls[RandomUtils.getRandomData(9, 0)]);
 					}
-					
+					*/
 					
 				live.setOwnJucaiBills(ownJucaiBills);
 				live.setIsPurch(isPurch);
@@ -303,10 +298,10 @@ public class LiveList extends HttpServlet {
 						isPurch = 1;
 					}
 				//}
-					if(liveType==2){
+					/*if(liveType==2){
 						Video video2 = VideoServer.findLastVideoByTeacher(tId);
 						live.setVideoUrl(video2!=null&&video2.getVideoUrl().length()>0 ? video2.getVideoUrl() : urls[RandomUtils.getRandomData(9, 0)]);
-					}
+					}*/
 				live.setOwnJucaiBills(ownJucaiBills);
 				live.setIsPurch(isPurch);
 				teachers.add(teacher);

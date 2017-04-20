@@ -28,6 +28,13 @@ public interface RecoderVideoDao {
 	
 	
 	/**
+	 * @param top
+	 * @return  获取热门录播视频
+	 */
+	public List<RecoderVideo>   getHotVideos(int top);
+	
+	
+	/**
 	 * @param id
 	 * @param hits
 	 * @return  更新录播视频点击数

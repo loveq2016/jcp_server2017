@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jucaipen.model.FamousTeacher;
+import com.jucaipen.model.RecoderVideo;
 import com.jucaipen.model.Video;
 import com.jucaipen.model.VideoLive;
 import com.jucaipen.service.FamousTeacherSer;
+import com.jucaipen.service.RecoderVideoServer;
 import com.jucaipen.service.VideoLiveServer;
 import com.jucaipen.service.VideoServer;
 import com.jucaipen.utils.JsonUtil;
@@ -67,7 +69,7 @@ public class HotVideos extends HttpServlet {
 	}
 
 	private String initHotVideoList() {
-		List<Video> videos = VideoServer.findHotVideoList(5);
+		List<RecoderVideo>  videos=RecoderVideoServer.getHotVideos(5);
 		return JsonUtil.getHotVideo(videos);
 	}
 

@@ -86,7 +86,6 @@ public class Recharge extends HttpServlet {
 							} else {
 								result = JsonUtil.getRetMsg(6, "支付状态异常");
 							}
-
 					} else {
 						result = JsonUtil.getRetMsg(1, "jucaiBills 参数异常");
 					}

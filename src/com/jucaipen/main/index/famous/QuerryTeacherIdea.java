@@ -53,7 +53,7 @@ import com.jucaipen.utils.TimeUtils;
 @SuppressWarnings("serial")
 public class QuerryTeacherIdea extends HttpServlet {
 	private String result;
-	private String urls[]={"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160817130010-20160817140207.m3u8",
+	/*private String urls[]={"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160817130010-20160817140207.m3u8",
 			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160818130010-20160818140219.m3u8",
 			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160819150500-20160819154838.m3u8",
 			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160822150934-20160822160025.m3u8",
@@ -63,7 +63,7 @@ public class QuerryTeacherIdea extends HttpServlet {
 			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160901092130-20160901102101.m3u8",
 			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160905135930-20160905150400.m3u8",
 			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160906191940-20160906202001.m3u8"
-			};
+			};*/
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
@@ -327,13 +327,13 @@ public class QuerryTeacherIdea extends HttpServlet {
 			}
 			
 			List<RecoderVideo>  videos=RecoderVideoServer.getAllRecoderVideo(tId,p);
-			Video video2 = VideoServer.findLastVideoByTeacher(tId);
+			//Video video2 = VideoServer.findLastVideoByTeacher(tId);
 			if (videos != null) {
 				for (RecoderVideo video : videos) {
 					// 是否为付费视频 0为免费视频，1为付费视频
 					int recoderId = Integer.parseInt(video.getExt1());
 					//if(userAgent!=null&&userAgent.contains("iOS")){
-						video.setLiveUrl1(video2!=null&&video2.getVideoUrl().length()>0 ? video2.getVideoUrl() : urls[RandomUtils.getRandomData(9, 0)]);
+						//video.setLiveUrl1(video2!=null&&video2.getVideoUrl().length()>0 ? video2.getVideoUrl() : urls[RandomUtils.getRandomData(9, 0)]);
 				//	}
 					if (video.getLiveIsFree()==2&&recoderId!=0) {
 						    //录播是否购买
