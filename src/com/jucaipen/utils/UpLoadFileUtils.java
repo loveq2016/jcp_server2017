@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,7 +22,6 @@ import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
 /**
  * @author ylf 文件工具类
  * 
@@ -33,6 +31,20 @@ public class UpLoadFileUtils {
 	private String userId;
 	private String value;
 	private List<String> params = new ArrayList<String>();
+	
+	
+	public static UpLoadFileUtils utils;
+	
+	private UpLoadFileUtils(){
+		
+	}
+	
+	public static UpLoadFileUtils getInstance(){
+		if(utils==null){
+			utils=new UpLoadFileUtils();
+		}
+		return utils;
+	}
 
 	/**
 	 * @param request
@@ -41,6 +53,7 @@ public class UpLoadFileUtils {
 	 *            缓存文件夹
 	 * @param savePath
 	 *            保存文件URL
+	 * @param loadPath   下载的url
 	 * @return 上传文件 返回 用户id 路径
 	 */
 	public Map<String, String> upLoad(HttpServletRequest request, File tmpFile,

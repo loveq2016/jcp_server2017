@@ -10,6 +10,7 @@ public class WebListener implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent config) {
+		config.getServletContext().setAttribute("check", false);
 	}
 
 	@Override

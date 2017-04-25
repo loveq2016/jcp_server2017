@@ -365,8 +365,8 @@ public class RollBackUtil {
 			String prePayDate) {
 		int updateBills = 0;
 			// 1 充值 JCP_AddOrder
-			if (pState == 2) {
-				int update = ChargeOrderSer.updatePayState(orderCode, pState,
+			if (pState != 2) {
+				int update = ChargeOrderSer.updatePayState(orderCode, 2,
 						prePayDate, ip, prePayDate, type);
 				if (update > 0) {
 					// 2 、总账户 聚财币减少 JCP_Account
@@ -395,7 +395,7 @@ public class RollBackUtil {
 													.getSysChildAccount()));
 							// 5、 系统账户详细 JCP_SysAccountDateil
 							if (purchInfo > 0) {
-								SysDetailAccountSer.addDetails(detailAccount);
+								return SysDetailAccountSer.addDetails(detailAccount);
 							}
 						}
 					}

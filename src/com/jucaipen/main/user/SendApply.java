@@ -161,9 +161,11 @@ public class SendApply extends HttpServlet {
 
 		int isTxtLive = apply.getIsTxtLive();
 		int isVideoLive = apply.getIsVideoLive();
-		if (isTxtLive == -1 && isVideoLive == -1) {
+		if (isTxtLive == 0 && isVideoLive == 0) {
 			return JsonUtil.getRetMsg(7, "请选择开通项目");
 		}
+		apply.setIsVideoLive(isVideoLive);
+		apply.setIsVideoLive(isVideoLive);
 		apply.setId(id);
 		int isSuccess = ApplyTeacherSer.addApply(apply, 3);
 		return isSuccess == 1 ? JsonUtil.getRetMsg(0, "提交成功") : JsonUtil
@@ -215,6 +217,7 @@ public class SendApply extends HttpServlet {
 			mobileMessage.setCheckDate(checkDate);
 		} else {
 			mobileMessage.setMsgType(3);
+			mobileMessage.setCheckDate("");
 		}
 		MobileMessageSer.upDateMessageType(msgId, mobileMessage);
 	}

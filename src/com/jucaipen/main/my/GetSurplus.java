@@ -9,7 +9,6 @@ import com.jucaipen.model.Account;
 import com.jucaipen.service.AccountSer;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.StringUtil;
-
 /**
  * @author 杨朗飞
  *    获取聚财币数量

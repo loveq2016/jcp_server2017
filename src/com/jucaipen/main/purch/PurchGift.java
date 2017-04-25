@@ -25,6 +25,7 @@ import com.jucaipen.model.User;
 import com.jucaipen.service.AccountSer;
 import com.jucaipen.service.FamousTeacherSer;
 import com.jucaipen.service.GiftsSer;
+import com.jucaipen.service.GradeService;
 import com.jucaipen.service.MyPresentSer;
 import com.jucaipen.service.SysAccountSer;
 import com.jucaipen.service.UserServer;
@@ -208,7 +209,8 @@ public class PurchGift extends HttpServlet {
 		int isSuccess = RollBackUtil.getInstance().purchGiftsNoCommit(presentExit, present, a, b,
 				uId, detail, detailInteger, user, sysAccount, sysDetailAccount,gifts,contribute,rebate,sysRebate);
        int restBills=a.getJucaiBills()-b;
-		return isSuccess == 1 ? JsonUtil.getPurchrResult(0, "礼品购买成功",restBills) : JsonUtil
+       int grade=GradeService.findGradByIntegeral(user.getAllIntegral()).getGrade();
+		return isSuccess == 1 ? JsonUtil.getPurchrResult(0, "礼品购买成功",restBills,grade) : JsonUtil
 				.getRetMsg(1, "礼品购买失败");
 	}
 

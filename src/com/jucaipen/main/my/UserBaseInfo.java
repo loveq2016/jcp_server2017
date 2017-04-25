@@ -35,7 +35,6 @@ public class UserBaseInfo extends HttpServlet {
 	 */
 	private String parsePhoneNum = "http://user.jucaipen.com/ashx/AndroidUser.ashx?action=GetDecryptMobileNum";
 	private Map<String, String> param = new HashMap<String, String>();
-
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");

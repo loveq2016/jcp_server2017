@@ -1210,6 +1210,11 @@
     <servlet-name>GetPayCode</servlet-name>
     <servlet-class>com.jucaipen.main.payinfo.GetPayCode</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>UpLoadFile</servlet-name>
+    <servlet-class>com.jucaipen.base.UpLoadFile</servlet-class>
+  </servlet>
+
 
 
 
@@ -1280,6 +1285,10 @@
   <servlet-mapping>
     <servlet-name>GetPayCode</servlet-name>
     <url-pattern>/jucaipen/getpaycode</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>UpLoadFile</servlet-name>
+    <url-pattern>/jucaipen/upload</url-pattern>
   </servlet-mapping>
     
     

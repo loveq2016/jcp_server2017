@@ -31,6 +31,4 @@ public class RandomUtils {
 		return buffer.toString();
 	}
 	
-	
-
 }

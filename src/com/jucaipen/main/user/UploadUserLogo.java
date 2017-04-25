@@ -59,7 +59,7 @@ public class UploadUserLogo extends HttpServlet {
 				// 创建临时目录
 				tmpFile.mkdir();
 			}
-			map = new UpLoadFileUtils().upLoad(request, tmpFile, savePath,
+			map = UpLoadFileUtils.getInstance().upLoad(request, tmpFile, savePath,
 					loadPath);
 			for (String key : map.keySet()) {
 				if (key.equals("-1") || key.equals("-2")) {

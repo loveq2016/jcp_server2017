@@ -173,7 +173,7 @@ public class AddReward extends HttpServlet {
 		contribute.setInsertDate(TimeUtils.format(new Date(),
 				"yyyy-MM-dd HH:mm:ss"));
 		contribute.setUserId(uId);
-		contribute.setTeacherId(fId);
+		contribute.setTeacherId(teacherId);
 		contribute.setAllJucaiBills(markerMoney);
 
 		SysAccount sysAccount = SysAccountSer.findAccountInfo();
@@ -219,7 +219,7 @@ public class AddReward extends HttpServlet {
 				markerMoney, jucaiBills, uId, contribute, sysAccount,
 				sysDetail, user, rebate, sysRebate, detailIntegeral);
 		int restBills=account.getJucaiBills()-markerMoney;
-		return isSuccess == 1 ? JsonUtil.getPurchrResult(0,"打赏成功",restBills) : JsonUtil
+		return isSuccess == 1 ? JsonUtil.getPurchrResult(0,"打赏成功",restBills,0) : JsonUtil
 				.getRetMsg(1, "打赏失败");
 	}
 }

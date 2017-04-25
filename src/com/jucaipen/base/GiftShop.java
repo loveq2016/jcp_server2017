@@ -12,8 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import com.jucaipen.model.Account;
 import com.jucaipen.model.ClientOsInfo;
 import com.jucaipen.model.Gifts;
+import com.jucaipen.model.Grade;
+import com.jucaipen.model.User;
 import com.jucaipen.service.AccountSer;
 import com.jucaipen.service.GiftsSer;
+import com.jucaipen.service.GradeService;
+import com.jucaipen.service.UserServer;
 import com.jucaipen.utils.HeaderUtil;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.StringUtil;
@@ -72,6 +76,8 @@ public class GiftShop extends HttpServlet {
 		//根据分类获取礼品信息
 		int ownJucaiBills;
 		Account account=AccountSer.findAccountByUserId(uId);
+		User user = UserServer.querryIntegeralByUid(uId);
+		Grade grade = GradeService.findGradByIntegeral(user.getAllIntegral());
 		if(account!=null){
 			ownJucaiBills=account.getJucaiBills();
 		}else{
@@ -83,7 +89,7 @@ public class GiftShop extends HttpServlet {
 			 gifts=GiftsSer.findIsTuijian(1);
 		}else if(t==0){
 			//所有礼品
-			gifts=GiftsSer.findGiftByClassId(5);
+			gifts=GiftsSer.findAllGifts();
 		}else if(t==20){
 			  //视频直播
 			gifts=GiftsSer.findGiftByClassId(5);
@@ -91,7 +97,7 @@ public class GiftShop extends HttpServlet {
 			//按分类获取
 			 gifts=GiftsSer.findGiftByClassId(t);
 		}
-		return JsonUtil.getGiftList(gifts,ownJucaiBills);
+		return JsonUtil.getGiftList(gifts,ownJucaiBills,grade!=null ? grade.getGrade() : 0);
 	}
 
 

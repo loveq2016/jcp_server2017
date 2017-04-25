@@ -218,7 +218,7 @@ public class GiftsImp implements GiftsDao {
 		try {
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("SELECT * FROM JCP_LiPin");
+					.executeQuery("SELECT * FROM JCP_LiPin WHERE IsDel=1");
 			while (res.next()) {
 				int id = res.getInt("Id");
 				String title = res.getString("Title");

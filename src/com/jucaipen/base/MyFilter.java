@@ -1,9 +1,7 @@
 package com.jucaipen.base;
+
 import java.io.IOException;
 import java.util.Date;
-import java.util.Enumeration;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -14,14 +12,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import nl.bitwalker.useragentutils.UserAgent;
+import cn.jpush.api.utils.StringUtils;
 
-import com.alibaba.fastjson.JSONObject;
-import com.jucaipen.model.ClientOsInfo;
-import com.jucaipen.utils.HeaderUtil;
 import com.jucaipen.utils.TimeUtils;
+
 public class MyFilter implements Filter {
-	private String getAddress = "http://ip.taobao.com/service/getIpInfo.php?ip=";
 	@Override
 	public void destroy() {
 		// 销毁
@@ -35,14 +30,22 @@ public class MyFilter implements Filter {
 		HttpServletResponse resp = (HttpServletResponse) response;
 		String ua = req.getHeader("User-Agent");
 		new PrintLog(ua, req, resp).start();
-		String localAddr = req.getLocalAddr();
-		if (localAddr.equals("121.40.227.121")) {
-			if((ua.contains("iPhone") || ua.contains("Android"))){
+//		String localAddr = req.getLocalAddr();
+//		String uri = req.getRequestURI();
+		// 过滤访问 ios android 第三方回调
+		chain.doFilter(req, resp);
+		/*if (localAddr.equals("121.40.227.121")) {
+			if (ua.contains("iPhone") || ua.contains("Android")
+					|| ua.contains("iOS") || uri.contains("livenotify")) {
 				chain.doFilter(req, resp);
+			} else {
+				//resp.sendError(205, "请求失败");
 			}
-		}else if(localAddr.equals("192.168.1.134")){
-			chain.doFilter(req, resp);
-		}
+		} else if (localAddr.equals("192.168.1.134")) {
+			 chain.doFilter(req, resp);
+		} else {
+			//resp.sendError(205, "请求失败");
+		}*/
 	}
 
 	@Override
@@ -66,18 +69,23 @@ public class MyFilter implements Filter {
 			String ip1 = req.getHeader("x-forwarded-for");
 			System.out.println("时间:"
 					+ TimeUtils.format(new Date(), "yyyy年MM月dd日 HH时mm分ss秒"));
-			System.out.println("请求Agent:"+ua);
-			if(ua.contains("Android")){
-				System.out.println("设备类型:" +"Android");
-			}else if(ua.contains("iPhone")){
-				System.out.println("设备类型:"+"iPhone");
-			}else{
-				System.out.println("设备类型:"+"Unknown");
+			System.out.println("请求Agent:" + ua);
+			if (!StringUtils.isEmpty(ua)) {
+				if (ua.contains("Android")) {
+					System.out.println("设备类型:" + "Android");
+				} else if (ua.contains("iPhone")) {
+					System.out.println("设备类型:" + "iPhone");
+				} else {
+					System.out.println("设备类型:" + "Unknown");
+				}
+			} else {
+				System.out.println("设备类型:" + "Unknown");
 			}
-			System.out.println("请求接口:" + req.getRequestURI());
+			System.out.println("请求URL:" + req.getRequestURI());
 			String ip = req.getRemoteAddr();
 			System.out.println("设备IP：" + (ip1 == null ? ip : ip1));
-			System.out.println("===============================================");
+			System.out
+					.println("===============================================");
 		}
 	}
 }

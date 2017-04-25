@@ -9,12 +9,12 @@ public class ApiBaseBean implements Serializable{
      */
     private static final long serialVersionUID = 1L;
 
-    private String            sign;                 // 签名串
+    private String            sign;                 // 签名�?
     private String            sign_type;            // 签名方式
     private String            ret_code;             // 交易代码
     private String            ret_msg;              // 交易描述
-    public String             channel_order;        // 交易流水号
-    private String            correlationID;        // 日志跟踪号
+    public String             channel_order;        // 交易流水�?
+    private String            correlationID;        // 日志跟踪�?
 
     public String getSign()
     {

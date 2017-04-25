@@ -144,7 +144,7 @@ public class Recharge extends HttpServlet {
 		int isSuccess = RollBackUtil.getInstance().recharge(orderCode, pState, payDate, ip,
 				bills, a, uId, detail, account, detailAccount, type,prePayDate,orderCodes);
 		int restBills=a.getJucaiBills()+bills;
-		return isSuccess == 1 ? JsonUtil.getPurchrResult(0, "账单更新成功",restBills) : JsonUtil
+		return isSuccess == 1 ? JsonUtil.getPurchrResult(0, "账单更新成功",restBills,0) : JsonUtil
 				.getRetMsg(1, "账单更新失败");
 	}
 }

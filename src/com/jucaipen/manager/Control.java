@@ -7,12 +7,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.jucaipen.service.AdverSer;
+import com.jucaipen.utils.StringUtil;
 /**
 * @author Administrator
+* 
+*   更改状态
 */
 public class Control extends HttpServlet {
-	private String img="http://img.jucaipen.com/jucaipenStudy/2017/1/24/2017124141518.png";
 	private static final long serialVersionUID = 4906602039828919994L;
 	private String result;
 	private int res;
@@ -23,15 +24,17 @@ public class Control extends HttpServlet {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		String yy=request.getParameter("yy");
-		if(yy.equals("on")){
-			 res=AdverSer.updateState(12, img, "shake");
+		String code=request.getParameter("code");
+		if(StringUtil.isNotNull(code)&&code.equals("jcp123")){
+			if(yy.equals("on")){
+				 request.getServletContext().setAttribute("check", true);
+				 result="审核状态--操作成功";
+			}else{
+				 request.getServletContext().setAttribute("check", false);
+				 result="审核完成状态--操作成功";
+			}
 		}else{
-			 res=AdverSer.updateState(12, img, "sh");
-		}
-		if(res>0){
-			result="操作成功";
-		}else{
-			result="操作失败";
+			result="操作码验证失败";
 		}
 		out.print("<h2>");
 		out.print(result);

@@ -1,12 +1,12 @@
 package com.jucaipen.test;
 
-import java.util.Date;
-
-import com.jucaipen.utils.TimeUtils;
+import java.text.DecimalFormat;
 
 public class CmdTest {
 	public static void main(String[] args) {
-		System.out.println(TimeUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+		String a="100.00";
+		double am = Double.valueOf(a);
+		System.out.println((int)am);
 		
 	}
 	public static int ran(int min,int max){

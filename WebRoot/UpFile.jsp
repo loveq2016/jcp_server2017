@@ -9,23 +9,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>My JSP 'yao.jsp' starting page</title>
+    <title>My JSP 'fileupload.jsp' starting page</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-     <style type="text/css">
-     </style>
+	<!--
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	-->
+
   </head>
   
   <body>
-       <form action="changeState"   method="post">
-        <input type="radio" name="yy" value="on">审核中
-        <input  type="radio"  name="yy"  value="off">审核完成 <br/>   
-                操作码：<input type="text"  name="code"><br/>
-        <input type="submit"  value="提交" width="500px">
-       </form>
+     <!-- enctype 默认是 application/x-www-form-urlencoded -->
+     <form action="jucaipen/upload" enctype="multipart/form-data" method="post" >
+        
+               用户名：<input type="text" name="usename"> <br/>
+               上传文件：<input type="file" name="file1"><br/>
+              上传文件： <input type="file" name="file2"><br/>
+              <input type="submit" value="提交"/>
+     
+     </form>
   </body>
 </html>

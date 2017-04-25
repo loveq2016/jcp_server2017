@@ -54,5 +54,7 @@
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/fastjson-1.2.2.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/sun.misc.BASE64Decoder.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/UserAgentUtils-1.6.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/alipay-sdk-java20170411150054-source.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/alipay-sdk-java20170411150054.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>
