@@ -1,8 +1,6 @@
 package com.jucaipen.base;
-
 import java.io.IOException;
 import java.util.Date;
-
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -11,11 +9,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import cn.jpush.api.utils.StringUtils;
-
 import com.jucaipen.utils.TimeUtils;
-
 public class MyFilter implements Filter {
 	@Override
 	public void destroy() {
