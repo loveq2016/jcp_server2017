@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import cn.jpush.api.utils.StringUtils;
 import com.jucaipen.utils.TimeUtils;
+
 public class MyFilter implements Filter {
 	@Override
 	public void destroy() {
@@ -25,22 +26,24 @@ public class MyFilter implements Filter {
 		HttpServletResponse resp = (HttpServletResponse) response;
 		String ua = req.getHeader("User-Agent");
 		new PrintLog(ua, req, resp).start();
-//		String localAddr = req.getLocalAddr();
-//		String uri = req.getRequestURI();
+		String localAddr = req.getLocalAddr();
+		String uri = req.getRequestURI();
+		String host = req.getRemoteHost();
 		// 过滤访问 ios android 第三方回调
-		chain.doFilter(req, resp);
-		/*if (localAddr.equals("121.40.227.121")) {
+		if (localAddr.equals("121.40.227.121")) {
 			if (ua.contains("iPhone") || ua.contains("Android")
-					|| ua.contains("iOS") || uri.contains("livenotify")) {
-				chain.doFilter(req, resp);
+					|| ua.contains("iOS") || uri.contains("livenotify")
+					||uri.contains("rechargeResult")
+					||host.equals("192.168.1.134")) {
+				chain.doFilter(new BaseRequest(req), resp);
 			} else {
 				//resp.sendError(205, "请求失败");
 			}
 		} else if (localAddr.equals("192.168.1.134")) {
-			 chain.doFilter(req, resp);
+			 chain.doFilter(new BaseRequest(req), resp);
 		} else {
 			//resp.sendError(205, "请求失败");
-		}*/
+		}
 	}
 
 	@Override

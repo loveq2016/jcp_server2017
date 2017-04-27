@@ -1,11 +1,9 @@
 package com.jucaipen.main.purch;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Enumeration;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +22,7 @@ import com.jucaipen.utils.TimeUtils;
 /**
  * @author 杨朗飞 支付回调接口
  */
-public class RechargeResult extends HttpServlet {
+public class RechargeResult extends HttpServlet{
 	private static final long serialVersionUID = -7946065445513185182L;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -49,6 +47,8 @@ public class RechargeResult extends HttpServlet {
 
 	private void Log(HttpServletRequest request) throws ParseException {
 		Enumeration<String> names = request.getParameterNames();
+		//2016010501066384
+		String app_id=request.getParameter("app_id");
 		// 商户订单号
 		String tradeNo = request.getParameter("out_trade_no");
 		// 订单金额

@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//WebRoot/WEB-INF/admin.jsp=UTF-8
 encoding//WebRoot/test.jsp=UTF-8
 encoding//src/com/jucaipen/base/UploadApk.java=UTF-8
 encoding//src/com/jucaipen/main/payinfo/ApiBaseBean.java=UTF-8

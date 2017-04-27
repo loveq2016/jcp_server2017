@@ -30,6 +30,7 @@
 		</marquee>
 	</h2>
 	<br>
+	<!-- <a href='/WEB-INF/admin.jsp'>admin</a> -->
 	<table>
 		<tr>
 			<td align="center" valign="middle" bgColor="#c0c0c0" width="10%"><a

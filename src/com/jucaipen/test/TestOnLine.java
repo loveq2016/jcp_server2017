@@ -44,7 +44,9 @@ public class TestOnLine extends HttpServlet {
 			object.addProperty("name", n);
 			array.add(object);
 		}
-		out.println(array.toString());
+		//out.println(array.toString());
+		request.setAttribute("list", names);
+		request.getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
 		out.flush();
 		out.close();
 	}
