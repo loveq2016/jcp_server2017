@@ -24,8 +24,9 @@ public class Control extends HttpServlet {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		String yy=request.getParameter("yy");
+		String fun=request.getParameter("fun");
 		String code=request.getParameter("code");
-		if(StringUtil.isNotNull(code)&&code.equals("jcp123")){
+		if(StringUtil.isNotNull(code)&&code.equals("jcp123")&&StringUtil.isNotNull(yy)){
 			if(yy.equals("on")){
 				 request.getServletContext().setAttribute("check", true);
 				 result="审核状态--操作成功";
@@ -36,9 +37,22 @@ public class Control extends HttpServlet {
 		}else{
 			result="操作码验证失败";
 		}
-		out.print("<h2>");
-		out.print(result);
-		out.print("</h2>");
+		
+		
+		
+		if(StringUtil.isNotNull(code)&&code.equals("jcp123")&&StringUtil.isNotNull(fun)){
+			if(fun.equals("on")){
+				 request.getServletContext().setAttribute("expand", true);
+				 result="显示扩展功能--操作成功";
+			}else{
+				 request.getServletContext().setAttribute("expand", false);
+				 result="隐藏扩展功能--操作成功";
+			}
+		}else{
+			result="操作码验证失败";
+		}
+		request.setAttribute("result", result);
+		request.getRequestDispatcher("result.jsp").forward(request, response);
 		out.flush();
 		out.close();
 	}

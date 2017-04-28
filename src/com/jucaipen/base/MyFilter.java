@@ -29,12 +29,18 @@ public class MyFilter implements Filter {
 		String localAddr = req.getLocalAddr();
 		String uri = req.getRequestURI();
 		String host = req.getRemoteHost();
+		chain.doFilter(new BaseRequest(req), resp);
 		// 过滤访问 ios android 第三方回调
-		if (localAddr.equals("121.40.227.121")) {
+		/*if (localAddr.equals("121.40.227.121")) {
 			if (ua.contains("iPhone") || ua.contains("Android")
-					|| ua.contains("iOS") || uri.contains("livenotify")
+					|| ua.contains("iOS") || 
+					uri.contains("livenotify")
 					||uri.contains("rechargeResult")
-					||host.equals("192.168.1.134")) {
+					||uri.contains("jsp")
+					||uri.contains("html")
+					||uri.contains("upload")
+					||host.equals("192.168.1.134")
+					) {
 				chain.doFilter(new BaseRequest(req), resp);
 			} else {
 				//resp.sendError(205, "请求失败");
@@ -43,7 +49,7 @@ public class MyFilter implements Filter {
 			 chain.doFilter(new BaseRequest(req), resp);
 		} else {
 			//resp.sendError(205, "请求失败");
-		}
+		}*/
 	}
 
 	@Override

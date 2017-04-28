@@ -1214,6 +1214,11 @@
     <servlet-name>UpLoadFile</servlet-name>
     <servlet-class>com.jucaipen.base.UpLoadFile</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>GetExpand</servlet-name>
+    <servlet-class>com.jucaipen.manager.GetExpand</servlet-class>
+  </servlet>
+
 
 
 
@@ -1289,6 +1294,10 @@
   <servlet-mapping>
     <servlet-name>UpLoadFile</servlet-name>
     <url-pattern>/jucaipen/upload</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GetExpand</servlet-name>
+    <url-pattern>/jucaipen/getexpand</url-pattern>
   </servlet-mapping>
     
     

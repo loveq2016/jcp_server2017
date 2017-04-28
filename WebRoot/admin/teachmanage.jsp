@@ -22,6 +22,13 @@
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
 
+<style type="text/css">
+    a {
+	   text-decoration: none;
+}
+ 
+</style>
+
 </head>
 
 <body>
@@ -49,7 +56,7 @@
 		<tr>
 			<td align="center"><%=res.getInt("Id")%></td>
 			<td align="center"><%=res.getString("NickName")%></td>
-			<td align="center"><%=res.getString("HeadFace")%></td>
+			<td align="center"><a href="<%=res.getString("HeadFace")%>" target="black"><%=res.getString("HeadFace")%></a></td>
 			<td align="center"><%=res.getString("Notice")%></td>
 			<td align="center"><%=res.getString("Jianjie")%></td>
 			<td align="center"><a href="teach/insert.jsp">添加</a> <a
