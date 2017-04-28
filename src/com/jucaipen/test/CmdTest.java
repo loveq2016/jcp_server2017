@@ -1,7 +1,4 @@
 package com.jucaipen.test;
-
-import java.text.DecimalFormat;
-
 public class CmdTest {
 	public static void main(String[] args) {
 		String a="100.00";

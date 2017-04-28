@@ -36,7 +36,6 @@ public class LoadImg extends HttpServlet{
 			resultMsg="url²»ÄÜÎª¿Õ";
 		}
 		
-		
 		System.out.println("resultMsg:"+resultMsg);
 		out.println(resultMsg);
 		out.flush();

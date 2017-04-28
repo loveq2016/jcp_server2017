@@ -1,17 +1,39 @@
 package com.jucaipen.test;
-
-import java.util.Date;
-import java.util.List;
-
-import com.jucaipen.model.TextLive;
-import com.jucaipen.service.TxtLiveSer;
-import com.jucaipen.utils.TimeUtils;
+import com.jucaipen.utils.RandomUtils;
 
 public class Test {
-	
 	public static void main(String[] args) {
-		String time=TimeUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
-		System.out.println(time);
+		final Thread A=new Thread(){@Override
+		public void run() {
+			print("A");
+		}};
+		
+		
+		Thread B=new Thread(){@Override
+		public void run() {
+			try {
+				A.join();
+				print("B");
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}};
+		
+		A.start();
+		B.start();
+	}
+	
+	public static void print(String s){
+		int i=0;
+		while (i<3) {
+			i++;
+			try {
+				Thread.sleep(1000);
+				System.out.println("Ïß³Ì"+s+":"+RandomUtils.getRandomData(5, 0));
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 }
