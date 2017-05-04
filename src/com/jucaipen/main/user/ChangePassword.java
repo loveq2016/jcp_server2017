@@ -44,7 +44,6 @@ public class ChangePassword extends HttpServlet {
 		int isDevice = HeaderUtil.isVaildDevice(os, userAgent);
 		if (isDevice == HeaderUtil.PHONE_APP) {
 			String userId = request.getParameter("userId");
-			String oldPwd = request.getParameter("oldPwd");
 			String telPhone = request.getParameter("telPhone");
 			String actionCode = request.getParameter("actionCode");
 			String newPwd = request.getParameter("newPwd");
@@ -53,7 +52,7 @@ public class ChangePassword extends HttpServlet {
 				if (StringUtil.isInteger(userId)) {
 					int uId = Integer.parseInt(userId);
 					if (uId > 0) {
-						result = changePassword(uId, oldPwd, telPhone,
+						result = changePassword(uId, telPhone,
 								actionCode, newPwd, reptPwd);
 					} else {
 						result = JsonUtil.getRetMsg(3, "当前用户还没登录");
@@ -72,7 +71,7 @@ public class ChangePassword extends HttpServlet {
 		out.close();
 	}
 
-	private String changePassword(int uId, String oldPwd, String telPhone,
+	private String changePassword(int uId, String telPhone,
 			String actionCode, String newPwd, String reptPwd) {
 		// 修改密码
 		// 1 、判断参数合法性 2、验证旧密码正确性 3、验证手机验证码是否正确 4、加密密码并修改密码
@@ -92,14 +91,12 @@ public class ChangePassword extends HttpServlet {
 				if (StringUtil.isNotNull(telPhone)
 						&& StringUtil.isMobileNumber(telPhone)) {
 					if (StringUtil.isNotNull(actionCode)) {
-						if (StringUtil.isNotNull(oldPwd)
-								&& StringUtil.isNotNull(newPwd)
+						if (StringUtil.isNotNull(newPwd)
 								&& StringUtil.isNotNull(reptPwd)) {
-							String oldMd5Pwd = MD5Util.MD5(oldPwd);
 							if (newPwd.equals(reptPwd)) {
-								String password = UserServer
-										.findPasswordById(uId);
-								if (oldMd5Pwd.equals(password)) {
+								/*String password = UserServer
+										.findPasswordById(uId);*/
+								//if (oldMd5Pwd.equals(password)) {
 									// 用户密码验证通过
 									String newMd5Pwd = MD5Util.MD5(newPwd);
 									int isSuccess = UserServer.updatePassword(
@@ -107,9 +104,9 @@ public class ChangePassword extends HttpServlet {
 									return isSuccess == 1 ? JsonUtil.getRetMsg(
 											0, "密码修改成功") : JsonUtil.getRetMsg(
 											1, "密码修改失败");
-								} else {
+								/*} else {
 									return JsonUtil.getRetMsg(6, "原始密码错误");
-								}
+								}*/
 							} else {
 								return JsonUtil.getRetMsg(5, "两次密码不一致");
 							}

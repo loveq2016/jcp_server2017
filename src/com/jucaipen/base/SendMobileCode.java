@@ -80,10 +80,10 @@ public class SendMobileCode extends HttpServlet {
 						boolean rest=obg.getBoolean("Result");
 						if(rest){
 							String tel=obg.getString("MobileNum");
-							boolean isExist=checkIsExist(tel);
-							if(type==0&&isExist){
+							//boolean isExist=checkIsExist(tel);
+							/*if(type==0&&isExist){
 								result=JsonUtil.getRetMsg(4, "手机号已经注册");
-							}else{
+							}else{*/
 								initMessage(id);
 								if (msg != null) {
 									String code = RandomUtils.getRandomData(4);
@@ -110,7 +110,7 @@ public class SendMobileCode extends HttpServlet {
 								} else {
 									result = JsonUtil.getRetMsg(2, "短信发送失败");
 								}
-							}
+							//}
 						}else{
 							result=JsonUtil.getRetMsg(6,"手机号出现异常");
 						}
@@ -166,7 +166,7 @@ public class SendMobileCode extends HttpServlet {
 		message.setSendDev(3);
 		// 0    注册    1   修改手机号   2  修改密码   3  忘记密码
 		if(type==0){
-			message.setRemark("APP用户注册");
+			message.setRemark("APP用户【注册/登录】");
 		}else if(type==1){
 			message.setRemark("APP用户修改手机号");
 		}else if(type==2){

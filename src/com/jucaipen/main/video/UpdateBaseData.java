@@ -53,13 +53,17 @@ public class UpdateBaseData extends HttpServlet {
 			// 视频
 			int random=RandomUtils.getRandomData(6,0);
 			RecoderVideo vide=RecoderVideoServer.getRecoderVideioById(fkId);
-			res = RecoderVideoServer.updateRecoderViderHits(fkId, vide.getPlayCount() + 1, vide.getXnPlayCount()
-					+ random);
+			if(vide!=null){
+				res = RecoderVideoServer.updateRecoderViderHits(fkId, vide.getPlayCount() + 1, vide.getXnPlayCount()
+						+ random);
+			}
 		} else if (type == 1) {
 			// 视频直播
 			int random=RandomUtils.getRandomData(6,0);
 			VideoLive live = VideoLiveServer.getRoomInfo(fkId);
-			res = VideoLiveServer.updateRenQi(fkId, live.getRenQi() + 1,live.getXnRenQi()+random);
+			if(live!=null){
+				res = VideoLiveServer.updateRenQi(fkId, live.getRenQi() + 1,live.getXnRenQi()+random);
+			}
 		}
 		return res>0 ? JsonUtil.getRetMsg(0, "更新成功") : JsonUtil.getRetMsg(1,"更新失败");
 

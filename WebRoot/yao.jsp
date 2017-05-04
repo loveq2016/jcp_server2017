@@ -21,6 +21,7 @@
 <style type="text/css">
 div,fieldset {
 	font-size: 18px;
+	font-family: "微软雅黑";
 }
 
 fieldset {
@@ -30,11 +31,10 @@ fieldset {
 .btn {
 	width: 100%;
 	color: white;
-	padding: 5px; font-family : "微软雅黑";
+	padding: 5px;
 	font-size: 18spx;
 	background: #0099FF;
 	border: 0px;
-	font-family: "微软雅黑";
 }
 
 .btn : HOVER {

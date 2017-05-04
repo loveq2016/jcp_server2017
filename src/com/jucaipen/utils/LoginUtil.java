@@ -4,7 +4,11 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.util.List;
 import java.util.Map;
+
+import org.apache.http.NameValuePair;
 public class LoginUtil {
 	private static StringBuilder builder;
 	/**
@@ -96,19 +100,20 @@ public class LoginUtil {
 	 * @param url
 	 * @return ·¢ËÍ post ÇëÇó==>string
 	 */
-	public static String sendPostStr(String path, String param) {
+	public static String sendPostStr(String path, String para,List<NameValuePair> param) {
 		try {
 			URL url = new URL(path);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");
 			conn.setRequestProperty("Proxy-Connection", "Keep-Alive");
+			  conn.setRequestProperty("Content-Type", "text/xml; charset=UTF-8");  
 			conn.setRequestProperty("accept", "*/");
 			conn.setReadTimeout(1000 * 10);
 			conn.setConnectTimeout(1000 * 10);
 			conn.setDoInput(true);
 			conn.setDoOutput(true);
 			PrintWriter out = new PrintWriter(conn.getOutputStream());
-			out.print(param);
+			out.print(para);
 			out.flush();
 			int responseCode = conn.getResponseCode();
 			if (responseCode == HttpURLConnection.HTTP_OK) {

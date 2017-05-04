@@ -76,7 +76,7 @@ public class LiveInfo extends HttpServlet {
 		buffer.append("}");
 		return LoginUtil.sendPostStr(
 				createUrl(baseUrl, getSign(account), account),
-				buffer.toString());
+				buffer.toString(),null);
 	}
 
 	/**

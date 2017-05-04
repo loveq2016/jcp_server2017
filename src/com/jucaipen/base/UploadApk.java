@@ -9,14 +9,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import com.jucaipen.model.ApkInfo;
 import com.jucaipen.service.ApkInfoServer;
 import com.jucaipen.utils.StringUtil;
@@ -84,7 +87,7 @@ public class UploadApk extends HttpServlet {
 							String filePath = uuId + "/" + tempFile.getName();
 							createApkDate(param, filePath);
 							if (info != null) {
-								updateApkInfo(info);
+								updateApkInfo(info,saveFile+filePath);
 								//pushUpdateInfo(filePath);
 								out.print("文件上传处理成功");
 							} else {
@@ -119,9 +122,17 @@ public class UploadApk extends HttpServlet {
 	 * @param info
 	 * 
 	 *            上传APK文件
+	 * @param string 
 	 */
-	private void updateApkInfo(ApkInfo info) {
+	private void updateApkInfo(ApkInfo info, String fileName) {
 		ApkInfoServer.insertApkInfo(info);
+		uploadFile(fileName);
+	}
+	
+
+	private void uploadFile(String fileName) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	/**

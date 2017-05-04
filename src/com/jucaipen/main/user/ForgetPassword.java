@@ -28,7 +28,7 @@ public class ForgetPassword extends HttpServlet {
 	private String result;
 	private Map<String, String> param = new HashMap<String, String>();
 	// 加密手机号 参数
-	private String encrypePath = "http://www.jcplicai.com/ashx/AndroidUser.ashx?action=GetEncryptMobileNum";
+	private String encrypePath = "http://www.jucaipen.com/ashx/AndroidUser.ashx?action=GetEncryptMobileNum";
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)

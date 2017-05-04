@@ -47,7 +47,7 @@ public class HttpRequestSimple{
 
     /**
      * 
-     * ¹¦ÄÜÃèÊö£º·¢ËÍÐòÁÐ»¯¶ÔÏó
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½
      * @param url
      * @param inputObj
      * @return
@@ -80,19 +80,19 @@ public class HttpRequestSimple{
                     bOut.size(), null);
             inputStreamEntity.setContentEncoding(new BasicHeader(
                     HTTP.CONTENT_ENCODING, "UTF-8"));
-            // ÉèÖÃÇëÇóÖ÷Ìå
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             post.setEntity(inputStreamEntity);
-            // ·¢Æð½»Ò×
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             HttpResponse resp = httpClient.execute(post);
-            log.info("ÇëÇó[" + url + "] " + resp.getStatusLine());
+            log.info("ï¿½ï¿½ï¿½ï¿½[" + url + "] " + resp.getStatusLine());
             int ret = resp.getStatusLine().getStatusCode();
             if (ret == HttpStatus.SC_OK)
             {
-                // // // ÏìÓ¦·ÖÎö
+                // // // ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½
                 // HttpEntity entity = resp.getEntity();
                 // returnObj = (Serializable) SerializationUtils.deserialize(entity.getContent());
                 // return returnObj;
-                // ÏìÓ¦·ÖÎö
+                // ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½
                 HttpEntity entity = resp.getEntity();
 
                 java.io.InputStream in = entity.getContent();
@@ -102,7 +102,7 @@ public class HttpRequestSimple{
                 oInput.close();
                 oInput = null;
                 long end = System.currentTimeMillis();
-                log.info("ÇëÇó[" + url + "]ÏûºÄÊ±¼ä " + (end - start) + "ºÁÃë");
+                log.info("ï¿½ï¿½ï¿½ï¿½[" + url + "]ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ " + (end - start) + "ï¿½ï¿½ï¿½ï¿½");
                 return returnObj;
             }
             return null;
@@ -137,15 +137,15 @@ public class HttpRequestSimple{
             StringEntity stringEntity = new StringEntity(body, "UTF-8");
             stringEntity.setContentEncoding(new BasicHeader(
                     HTTP.CONTENT_ENCODING, "UTF-8"));
-            // ÉèÖÃÇëÇóÖ÷Ìå
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             post.setEntity(stringEntity);
-            // ·¢Æð½»Ò×
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             HttpResponse resp = httpClient.execute(post);
-            log.info("ÇëÇó[" + url + "] " + resp.getStatusLine());
+            log.info("ï¿½ï¿½ï¿½ï¿½[" + url + "] " + resp.getStatusLine());
             int ret = resp.getStatusLine().getStatusCode();
             if (ret == HttpStatus.SC_OK)
             {
-                // ÏìÓ¦·ÖÎö
+                // ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½
                 HttpEntity entity = resp.getEntity();
 
                 BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -158,7 +158,7 @@ public class HttpRequestSimple{
                     result = br.readLine();
                 }
                 long end = System.currentTimeMillis();
-                log.info("ÇëÇó[" + url + "]ÏûºÄÊ±¼ä " + (end - start) + "ºÁÃë");
+                log.info("ï¿½ï¿½ï¿½ï¿½[" + url + "]ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ " + (end - start) + "ï¿½ï¿½ï¿½ï¿½");
                 return responseString.toString();
             }
             return null;
@@ -189,13 +189,13 @@ public class HttpRequestSimple{
         get.setHeader("Content-Type", "text/html;charset=UTF-8");
         try
         {
-            // ·¢Æð½»Ò×
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             HttpResponse resp = httpClient.execute(get);
-            log.info("ÇëÇó[" + url + "] " + resp.getStatusLine());
+            log.info("ï¿½ï¿½ï¿½ï¿½[" + url + "] " + resp.getStatusLine());
             int ret = resp.getStatusLine().getStatusCode();
             if (ret == HttpStatus.SC_OK)
             {
-                // ÏìÓ¦·ÖÎö
+                // ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½
                 HttpEntity entity = resp.getEntity();
 
                 BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -242,15 +242,15 @@ public class HttpRequestSimple{
             StringEntity stringEntity = new StringEntity(body, "UTF-8");
             stringEntity.setContentEncoding(new BasicHeader(
                     HTTP.CONTENT_ENCODING, "UTF-8"));
-            // ÉèÖÃÇëÇóÖ÷Ìå
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             post.setEntity(stringEntity);
-            // ·¢Æð½»Ò×
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             HttpResponse resp = httpClient.execute(post);
-            log.info("ÇëÇó[" + url + "] " + resp.getStatusLine());
+            log.info("ï¿½ï¿½ï¿½ï¿½[" + url + "] " + resp.getStatusLine());
             int ret = resp.getStatusLine().getStatusCode();
             if (ret == HttpStatus.SC_OK)
             {
-                // ÏìÓ¦·ÖÎö
+                // ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½
                 HttpEntity entity = resp.getEntity();
 
                 BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -263,7 +263,7 @@ public class HttpRequestSimple{
                     result = br.readLine();
                 }
                 long end = System.currentTimeMillis();
-                log.info("ÇëÇó[" + url + "]ÏûºÄÊ±¼ä " + (end - start) + "ºÁÃë");
+                log.info("ï¿½ï¿½ï¿½ï¿½[" + url + "]ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ " + (end - start) + "ï¿½ï¿½ï¿½ï¿½");
                 return responseString.toString();
             }
             return null;
@@ -305,15 +305,15 @@ public class HttpRequestSimple{
         {
             UrlEncodedFormEntity formEntiry = new UrlEncodedFormEntity(list,
                     HTTP.UTF_8);
-            // ÉèÖÃÇëÇó²ÎÊý
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             post.setEntity(formEntiry);
-            // ·¢Æð½»Ò×
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             HttpResponse resp = httpClient.execute(post);
-            log.info("ÇëÇó[" + url + "] " + resp.getStatusLine());
+            log.info("ï¿½ï¿½ï¿½ï¿½[" + url + "] " + resp.getStatusLine());
             int ret = resp.getStatusLine().getStatusCode();
             if (ret == HttpStatus.SC_OK)
             {
-                // ÏìÓ¦·ÖÎö
+                // ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½
                 HttpEntity entity = resp.getEntity();
                 br = new BufferedReader(new InputStreamReader(entity
                         .getContent(), "UTF-8"));
@@ -350,3 +350,4 @@ public class HttpRequestSimple{
     }
 
 }
+

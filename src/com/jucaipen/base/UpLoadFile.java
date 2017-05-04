@@ -12,7 +12,7 @@ import javax.servlet.http.Part;
  * @author 杨朗飞
  *   多文件上传文件
  */
-@MultipartConfig(location="C:\\Users\\Administrator\\Desktop\\temp",maxFileSize=1024*1024*5)
+@MultipartConfig(location="C:\\Users\\Administrator\\git\\jcp_server2017\\AccumulateWealth\\WebRoot\\WEB-INF\\upload")
 public class UpLoadFile extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -33,6 +33,7 @@ public class UpLoadFile extends HttpServlet {
 		}
 		PrintWriter writer = response.getWriter();
 		writer.write("上传成功");
+		System.out.println("上传成功");
 		writer.flush();
 		writer.close();
 	}

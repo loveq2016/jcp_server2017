@@ -21,6 +21,7 @@
 <style type="text/css">
 div,fieldset {
 	font-size: 18px;
+	font-family: "微软雅黑";
 }
 
 fieldset {

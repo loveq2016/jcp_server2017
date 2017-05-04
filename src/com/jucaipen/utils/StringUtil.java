@@ -49,10 +49,10 @@ public class StringUtil {
 			return ((CharSequence) obj).length() == 0;
 
 		if (obj instanceof Collection)
-			return ((Collection) obj).isEmpty();
+			return ((Collection<?>) obj).isEmpty();
 
 		if (obj instanceof Map)
-			return ((Map) obj).isEmpty();
+			return ((Map<?, ?>) obj).isEmpty();
 		if (obj instanceof Object[]) {
 			Object[] object = (Object[]) obj;
 			if (object.length == 0) {
@@ -156,7 +156,7 @@ public class StringUtil {
 	 * @return 密码长度是否在6-23之间
 	 */
 	public static boolean isPassword(String password) {
-		if (password.length() >= 6 && password.length() <= 23) {
+		if (password!=null&&password.length() >= 6 && password.length() <= 23) {
 			return true;
 		} else {
 			return false;
@@ -262,6 +262,7 @@ public class StringUtil {
          return html;
      }
 	
+	@SuppressWarnings("deprecation")
 	public static String getTime(String date){
 		try {
 			if(date!=null&&date.contains("/")){
@@ -307,7 +308,7 @@ public class StringUtil {
 	            } else {
 	                secondStr = seconds + "";
 	            }
-			return year+"-"+mintStr+"-"+dayStr+" "+hourStr+":"+mintStr+":"+secondStr;
+			return year+"-"+monthStr+"-"+dayStr+" "+hourStr+":"+mintStr+":"+secondStr;
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

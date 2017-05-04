@@ -847,7 +847,7 @@ public class UserImp implements UserDao {
 		try {
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("SELECT NickName,UserLevel,ISNULL(UserFace,'') UserFace,UserName,MobileNum,LoginTime,AllIntegral,InvitationCode,IsMobileVerification FROM JCP_User WHERE Id="
+					.executeQuery("SELECT NickName,UserLevel,ISNULL(UserFace,'') UserFace,UserName,MobileNum,LoginTime,AllIntegral,InvitationCode,IsMobileVerification,PassWord FROM JCP_User WHERE Id="
 							+ id);
 			while (res.next()) {
 				String nickName = res.getString(1);
@@ -859,6 +859,7 @@ public class UserImp implements UserDao {
 				int integeral = res.getInt(7);
 				String investCode = res.getString(8);
 				int isCheckMobile=res.getInt(9);
+				String pwd=res.getString(10);
 				User user = new User();
 				user.setId(id);
 				user.setLoginNum(loginNum);
@@ -869,6 +870,7 @@ public class UserImp implements UserDao {
 				user.setUserName(userName);
 				user.setIsChechMobile(isCheckMobile);
 				user.setMobileNum(telPhone);
+				user.setPassword(pwd);
 				user.setAllIntegral(integeral);
 				return user;
 			}
