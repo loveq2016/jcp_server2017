@@ -45,29 +45,30 @@ public class DownFile extends HttpServlet {
 			}else{
 				fileName = request.getParameter("fileName");
 			}
-			if (StringUtil.isNotNull(fileName)) {
-				String adr=request.getLocalAddr();
-				if(adr.equals("121.40.227.121")){
-					fm = fileName;
-				}else{
-					fm = new String(fileName.getBytes("ISO-8859-1"),"utf-8");
-				}
-				loadPath = rootPath + fm;
-				File apkFile = new File(loadPath);
-				if (apkFile.exists()) {
-					downLoadApk(response,request,apkFile);
-				} else {
-					result=JsonUtil.getRetMsg(3, "文件不存在");
-				}
-			} else {
-				PrintWriter out = response.getWriter();
-				result = JsonUtil.getRetMsg(1, "下载文件名不能为空");
-				out.write(result);
-				out.flush();
-				out.close();
-			}
 		}else{
-			result=JsonUtil.getRetMsg(5,"downloadType 参数异常");
+			ApkInfo info = ApkInfoServer.findLastApkInfo(1);
+			fileName=info.getApkPath();
+		}
+		if (StringUtil.isNotNull(fileName)) {
+			String adr=request.getLocalAddr();
+			if(adr.equals("121.40.227.121")){
+				fm = fileName;
+			}else{
+				fm = new String(fileName.getBytes("ISO-8859-1"),"utf-8");
+			}
+			loadPath = rootPath + fm;
+			File apkFile = new File(loadPath);
+			if (apkFile.exists()) {
+				downLoadApk(response,request,apkFile);
+			} else {
+				result=JsonUtil.getRetMsg(3, "文件不存在");
+			}
+		} else {
+			PrintWriter out = response.getWriter();
+			result = JsonUtil.getRetMsg(1, "下载文件名不能为空");
+			out.write(result);
+			out.flush();
+			out.close();
 		}
 	}
 

@@ -16,7 +16,6 @@ import com.jucaipen.utils.StringUtil;
 public class Control extends HttpServlet {
 	private static final long serialVersionUID = 4906602039828919994L;
 	private String result;
-	private int res;
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");

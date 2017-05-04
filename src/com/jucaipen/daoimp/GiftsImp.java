@@ -57,7 +57,7 @@ public class GiftsImp implements GiftsDao {
 			res = sta
 					.executeQuery("SELECT TOP 15 * FROM "
 							+ "(SELECT ROW_NUMBER() OVER (ORDER BY Id) AS RowNumber,* FROM JCP_LiPin"
-							+ " WHERE SaleType=1 AND IsDel=1) A "
+							+ " WHERE SaleType=1 AND IsDel=1 ORDER BY Price ASC) A "
 							+ "WHERE RowNumber > " + 15 * (page - 1));
 			while (res.next()) {
 				int id = res.getInt("Id");
@@ -93,7 +93,7 @@ public class GiftsImp implements GiftsDao {
 		dbConn = JdbcUtil.connSqlServer();
 		try {
 			sta = dbConn.createStatement();
-			res=sta.executeQuery("SELECT * FROM JCP_LiPin WHERE  ClassId="+classId+" AND SaleType=1 AND IsDel=1");
+			res=sta.executeQuery("SELECT * FROM JCP_LiPin WHERE  ClassId="+classId+" AND SaleType=1 AND IsDel=1 ORDER BY Price ASC");
 			while (res.next()) {
 				int id = res.getInt("Id");
 				String title = res.getString("Title");
@@ -128,7 +128,7 @@ public class GiftsImp implements GiftsDao {
 		try {
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("SELECT * FROM JCP_LiPin WHERE Id="+id+" AND SaleType=1 AND IsDel=1");
+					.executeQuery("SELECT * FROM JCP_LiPin WHERE Id="+id+" AND SaleType=1 AND IsDel=1 ORDER BY Price ASC");
 			while (res.next()) {
 				String title = res.getString("Title");
 				int price = res.getInt("Price");
@@ -158,7 +158,7 @@ public class GiftsImp implements GiftsDao {
 		dbConn = JdbcUtil.connSqlServer();
 		try {
 			sta = dbConn.createStatement();
-			res=sta.executeQuery("SELECT * FROM JCP_LiPin WHERE IsTuiJian="+IsTuiJian+" AND  SaleType=1 AND IsDel=1");
+			res=sta.executeQuery("SELECT * FROM JCP_LiPin WHERE IsTuiJian="+IsTuiJian+" AND  SaleType=1 AND IsDel=1 ORDER BY Price ASC");
 			while (res.next()) {
 				int id = res.getInt("Id");
 				String title = res.getString("Title");
@@ -187,7 +187,7 @@ public class GiftsImp implements GiftsDao {
 			sta = dbConn.createStatement();
 			res=sta.executeQuery("SELECT TOP 15 * FROM "
 					+ "(SELECT ROW_NUMBER() OVER (ORDER BY Id) AS RowNumber,* FROM JCP_LiPin WHERE  IsTuiJian="
-					+ IsTuiJian + " AND SaleType=1 AND IsDel=1) A " + "WHERE RowNumber > " + 15
+					+ IsTuiJian + " AND SaleType=1 AND IsDel=1 ORDER BY Price ASC) A " + "WHERE RowNumber > " + 15
 					* (page - 1));
 			while (res.next()) {
 				int id = res.getInt("Id");
@@ -218,7 +218,7 @@ public class GiftsImp implements GiftsDao {
 		try {
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("SELECT * FROM JCP_LiPin WHERE IsDel=1");
+					.executeQuery("SELECT * FROM JCP_LiPin WHERE IsDel=1 ORDER BY Price ASC");
 			while (res.next()) {
 				int id = res.getInt("Id");
 				String title = res.getString("Title");
