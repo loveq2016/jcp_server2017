@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.ClientOsInfo;
 import com.jucaipen.model.FamousTeacher;
 import com.jucaipen.model.Fans;
@@ -15,6 +18,8 @@ import com.jucaipen.model.VideoLive;
 import com.jucaipen.service.FamousTeacherSer;
 import com.jucaipen.service.FansSer;
 import com.jucaipen.service.VideoLiveServer;
+import com.jucaipen.utils.CacheUtils;
+import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.HeaderUtil;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.StringUtil;
@@ -82,6 +87,10 @@ public class QuerryTeacher extends HttpServlet {
 
 	private String initAllData(int page, int uId) {
 		// 初始化全部名师信息
+		Object cached = DataManager.getCached(Constant.TEACHER_CACHE, uId+"allTeacher"+page);
+		if(cached!=null){
+			return cached.toString();
+		}
 		List<FamousTeacher> teachers = FamousTeacherSer
 				.findAllFamousTeacher(page);
 		if (teachers != null) {
@@ -93,11 +102,17 @@ public class QuerryTeacher extends HttpServlet {
 				}
 			}
 		}
-		return JsonUtil.getAllFamousTeacherList(teachers);
+		String teacherList = JsonUtil.getAllFamousTeacherList(teachers);
+		new CacheUtils(Constant.TEACHER_CACHE).addToCache(uId+"allTeacher"+page, teacherList);
+		return teacherList;
 	}
 
 	private String initIndexData(int uId) {
 		// 初始化首页名师推荐列表信息
+		Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "indexTeacher"+uId);
+		if(cached!=null){
+			return cached.toString();
+		}
 		List<FamousTeacher> teachers = FamousTeacherSer
 				.findFamousTeacherByIndex(5);
 		List<Integer> isAttentions = new ArrayList<Integer>();
@@ -116,7 +131,9 @@ public class QuerryTeacher extends HttpServlet {
 				}
 			}
 		}
-		return JsonUtil.getFamousTeacherList(teachers, isAttentions);
+		String list = JsonUtil.getFamousTeacherList(teachers, isAttentions);
+		new CacheUtils(Constant.TEACHER_CACHE).addToCache("indexTeacher"+uId, list);
+		return list;
 	}
 
 }

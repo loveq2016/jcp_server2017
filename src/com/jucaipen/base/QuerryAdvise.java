@@ -9,9 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.Advertive;
 import com.jucaipen.model.ClientOsInfo;
 import com.jucaipen.service.AdverSer;
+import com.jucaipen.utils.CacheUtils;
+import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.HeaderUtil;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.MsgCode;
@@ -40,15 +43,25 @@ public class QuerryAdvise extends HttpServlet {
 			if (StringUtil.isNotNull(typeId)) {
 				if (StringUtil.isInteger(typeId)) {
 					int type = Integer.parseInt(typeId);
-					result=initIndexPageData(type);
+					result = initIndexPageData(type);
 				} else {
-					result = MsgCode.CURRENT_VERSION==MsgCode.HISTORY_VISION_1?JsonUtil.getRetMsg(1, "广告类型参数数字格式化异常"): JsonUtil.getAdvertive(null, MsgCode.RET_FAIL_PARAMERROR_CODE, MsgCode.RET_FAIL_PARAMERROR);
+					result = MsgCode.CURRENT_VERSION == MsgCode.HISTORY_VISION_1 ? JsonUtil
+							.getRetMsg(1, "广告类型参数数字格式化异常") : JsonUtil
+							.getAdvertive(null,
+									MsgCode.RET_FAIL_PARAMERROR_CODE,
+									MsgCode.RET_FAIL_PARAMERROR);
 				}
 			} else {
-				result = MsgCode.CURRENT_VERSION==MsgCode.HISTORY_VISION_1 ?JsonUtil.getRetMsg(4, "参数不能为空") :JsonUtil.getAdvertive(null, MsgCode.RET_FAIL_PARAMERROR_CODE, MsgCode.RET_FAIL_PARAMERROR);
+				result = MsgCode.CURRENT_VERSION == MsgCode.HISTORY_VISION_1 ? JsonUtil
+						.getRetMsg(4, "参数不能为空") : JsonUtil.getAdvertive(null,
+						MsgCode.RET_FAIL_PARAMERROR_CODE,
+						MsgCode.RET_FAIL_PARAMERROR);
 			}
 		} else {
-			result = MsgCode.CURRENT_VERSION==MsgCode.HISTORY_VISION_1?StringUtil.isVaild : JsonUtil.getAdvertive(null,MsgCode.RET_FAIL_DEVERROR_CODE, MsgCode.RET_FAIL_DEVERROR);
+			result = MsgCode.CURRENT_VERSION == MsgCode.HISTORY_VISION_1 ? StringUtil.isVaild
+					: JsonUtil.getAdvertive(null,
+							MsgCode.RET_FAIL_DEVERROR_CODE,
+							MsgCode.RET_FAIL_DEVERROR);
 		}
 		out.print(result);
 		out.flush();
@@ -56,6 +69,12 @@ public class QuerryAdvise extends HttpServlet {
 	}
 
 	private String initIndexPageData(int type) {
+		// 判断缓存是否存在
+		Object cached = DataManager.getCached(Constant.DEFAULT_CACHE,"ads");
+		if (cached != null) {
+			return cached.toString();
+		}
+
 		List<Advertive> advertives;
 		// 加载首页广告
 		if (type == 10) {
@@ -63,6 +82,10 @@ public class QuerryAdvise extends HttpServlet {
 		} else {
 			advertives = AdverSer.findAdverByPid(13);
 		}
-		return MsgCode.CURRENT_VERSION==MsgCode.HISTORY_VISION_1 ? JsonUtil.getAdvertive1(advertives) : JsonUtil.getAdvertive(advertives,MsgCode.RET_SUCCESS_CODE,MsgCode.RET_SUCCESS);
+		String advertive1 = JsonUtil.getAdvertive1(advertives);
+		new CacheUtils(Constant.DEFAULT_CACHE).addToCache("ads", advertive1);
+		return MsgCode.CURRENT_VERSION == MsgCode.HISTORY_VISION_1 ? advertive1
+				: JsonUtil.getAdvertive(advertives, MsgCode.RET_SUCCESS_CODE,
+						MsgCode.RET_SUCCESS);
 	}
 }

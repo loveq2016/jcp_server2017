@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
+
+    <!-- 达到内存上限后缓存文件保存位置  diskStore -->
+	<diskStore path="D:\PROJECT\ftp"/>
+	
+	<!-- 最大存储数据，超出后缓存保存至文件  maxElementsInMemory -->
+	<!-- 缓存废弃策略，LRU表示最少使用的优先清除，此值对应之前3种策略    memoryStoreEvictionPolicys-->
+	   <!-- LRU - （最近最少使用） -->
+	   <!-- LFU - （最不经常使用） -->
+	   <!-- FIFO - （清除最早缓存的数据，不关心是否经常使用） -->
+	<!-- 空闲时间，超出此时间未使用缓存自动清除  timeToIdleSeconds-->
+	<!-- 清除时间，缓存保留的最长时间  timeToLiveSeconds-->
+	<!-- 是否往硬盘写缓存数据  overflowToDisk-->
+	<!-- 磁盘上缓存的最大数据  maxElementsOnDisk -->
+	
+	<defaultCache 
+		maxElementsInMemory="10000" 
+		memoryStoreEvictionPolicy="LRU" 
+		eternal="false"  
+		maxElementsOnDisk="100"
+		timeToIdleSeconds="1" 
+		timeToLiveSeconds="5" 
+		overflowToDisk="false" 
+		diskPersistent="false" 
+		/>
+		
+	<!-- 缓存 实时更新较低的数据-->
+	<cache 
+		name="cache_default" 
+		memoryStoreEvictionPolicy="LRU" 
+		maxElementsInMemory="1000" 
+		eternal="false"
+		timeToIdleSeconds="7200"
+		timeToLiveSeconds="7200" 
+		overflowToDisk="false" />
+		
+		
+		<!-- 缓存视频  更新较快 -->
+		<cache 
+		name="cache_video" 
+		memoryStoreEvictionPolicy="LRU" 
+		maxElementsInMemory="100" 
+		eternal="false"
+		timeToIdleSeconds="30"
+		timeToLiveSeconds="30" 
+		overflowToDisk="false" />
+		
+		<!-- 缓存讲师排名、用户数据   实时性比较高 -->
+		<cache 
+		name="cache_teacher" 
+		memoryStoreEvictionPolicy="LRU" 
+		maxElementsInMemory="100" 
+		eternal="false"
+		timeToIdleSeconds="30"
+		timeToLiveSeconds="30" 
+		overflowToDisk="false" />
+		
+</ehcache>

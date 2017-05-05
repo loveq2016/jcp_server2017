@@ -56,5 +56,6 @@
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/UserAgentUtils-1.6.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/alipay-sdk-java20170411150054-source.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/alipay-sdk-java20170411150054.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/ehcache.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>

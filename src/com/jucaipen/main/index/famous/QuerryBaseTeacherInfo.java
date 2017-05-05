@@ -1,20 +1,19 @@
 package com.jucaipen.main.index.famous;
-
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.FamousTeacher;
 import com.jucaipen.model.Fans;
 import com.jucaipen.service.FamousTeacherSer;
 import com.jucaipen.service.FansSer;
+import com.jucaipen.utils.CacheUtils;
+import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.StringUtil;
-
 /**
  * @author Administrator
  * 
@@ -51,10 +50,16 @@ public class QuerryBaseTeacherInfo extends HttpServlet {
 		out.close();
 	}
 	private String initTeacherBaseInfo(int tId,int uId) {
+		Object cached = DataManager.getCached(Constant.DEFAULT_CACHE, uId+"teacherInfo"+tId);
+		if(cached!=null){
+			return cached.toString();
+		}
 		FamousTeacher teacher=FamousTeacherSer.findFamousTeacherById(tId);
 		Fans fans = FansSer.findIsFans(uId, tId);
 		teacher.setAttention(fans!=null);
-		return JsonUtil.getTeacherBaseInfo(teacher);
+		String baseInfo = JsonUtil.getTeacherBaseInfo(teacher);
+		new CacheUtils(Constant.DEFAULT_CACHE).addToCache(uId+"teacherInfo"+tId, baseInfo);
+		return baseInfo;
 	}
 
 }

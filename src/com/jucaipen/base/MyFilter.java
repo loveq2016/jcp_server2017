@@ -25,7 +25,7 @@ public class MyFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
 		String ua = req.getHeader("User-Agent");
-		new PrintLog(ua, req, resp).start();
+		//new PrintLog(ua, req, resp).start();
 		String localAddr = req.getLocalAddr();
 		String uri = req.getRequestURI();
 		String host = req.getRemoteHost();

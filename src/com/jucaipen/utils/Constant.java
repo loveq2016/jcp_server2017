@@ -69,5 +69,23 @@ public class Constant {
 	public static final String DERBY_PWD = "jucaipen168";
 	
 	
+	/**
+	 *   默认缓存对象
+	 */
+	public static final String DEFAULT_CACHE="cache_default";
+	
+	/**
+	 *   视频缓存
+	 */
+	public static final String VIDEO_CACHE="cache_video";
+	
+	
+	/**
+	 *   缓存讲师排名、用户信息
+	 */
+	public static final String TEACHER_CACHE="cache_teacher";
+	
+	
+	
 
 }

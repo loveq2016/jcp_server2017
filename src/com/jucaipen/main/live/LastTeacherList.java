@@ -8,12 +8,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.Contribute;
 import com.jucaipen.model.FamousTeacher;
 import com.jucaipen.model.VideoLive;
 import com.jucaipen.service.ContributeSer;
 import com.jucaipen.service.FamousTeacherSer;
 import com.jucaipen.service.VideoLiveServer;
+import com.jucaipen.utils.CacheUtils;
+import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.StringUtil;
 /**
@@ -44,6 +47,11 @@ public class LastTeacherList extends HttpServlet {
 	 * @return 获取最近的讲师排行榜
 	 */
 	private String getTeacherLastList(int typeId) {
+		Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "teacherLase"+typeId);
+		if(cached!=null){
+			return cached.toString();
+		}
+		
 		List<Contribute> contributes;
 		if (typeId == 0) {
 			contributes=ContributeSer.findContributeGroupByTid("year");
@@ -65,6 +73,8 @@ public class LastTeacherList extends HttpServlet {
 				contribute.setIsEnd(videoLive.getIsEnd());
 			}
 		}
-		return JsonUtil.getLastTeacherLast(contributes);
+		String last = JsonUtil.getLastTeacherLast(contributes);
+		new CacheUtils(Constant.TEACHER_CACHE).addToCache("teacherLase"+typeId, last);
+		return last;
 	}
 }

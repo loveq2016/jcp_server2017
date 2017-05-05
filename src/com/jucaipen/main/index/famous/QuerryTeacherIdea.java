@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.Account;
 import com.jucaipen.model.Answer;
 import com.jucaipen.model.AnswerSale;
@@ -41,6 +42,8 @@ import com.jucaipen.service.TxtLiveSer;
 import com.jucaipen.service.UserServer;
 import com.jucaipen.service.VideoLiveServer;
 import com.jucaipen.service.VideoServer;
+import com.jucaipen.utils.CacheUtils;
+import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.LiveUtil;
 import com.jucaipen.utils.RandomUtils;
@@ -133,8 +136,16 @@ public class QuerryTeacherIdea extends HttpServlet {
 			List<HotIdea> ideas;
 			if (isIndex == 0) {
 				// 首页
+				Object cached = DataManager.getCached(Constant.VIDEO_CACHE,"indexIdea");
+				if(cached!=null){
+					return cached.toString();
+				}
 				ideas = HotIdeaServ.findLastIdeaByTeacherId(tId, 3);
 			} else {
+				Object cached = DataManager.getCached(Constant.VIDEO_CACHE,tId+"allIdea"+usId);
+				if(cached!=null){
+					return cached.toString();
+				}
 				ideas = HotIdeaServ.findIdeaByTeacherId(tId, p);
 			}
 
@@ -157,7 +168,13 @@ public class QuerryTeacherIdea extends HttpServlet {
 					idea.setIsPurch(isPurch);
 				}
 			}
-			return JsonUtil.getIdeaList(ideas);
+			String ideaList = JsonUtil.getIdeaList(ideas);
+			if(isIndex==0){
+				new CacheUtils(Constant.VIDEO_CACHE).addToCache("indexIdea",ideaList );
+			}else{
+				new CacheUtils(Constant.VIDEO_CACHE).addToCache(tId+"allIdea"+usId,ideaList );
+			}
+			return ideaList;
 		} else if (type == 1) {
 			// 问答
 			List<Ask> asks;
@@ -283,6 +300,18 @@ public class QuerryTeacherIdea extends HttpServlet {
 			return JsonUtil.getTxtLiveByTeacherId(txt, allTxts, guardian);
 		} else {
 			// 视频直播
+			if(isIndex==0){
+				Object cached = DataManager.getCached(Constant.VIDEO_CACHE,"indexLive");
+				if(cached!=null){
+					return cached.toString();
+				}
+			}else{
+				Object cached = DataManager.getCached(Constant.VIDEO_CACHE,tId+"allLive"+p);
+				if(cached!=null){
+					return cached.toString();
+				}
+			}
+			
 			int ownJucaiBills = 0;
 			VideoLive live = VideoLiveServer.findLiveBytId(tId);
 			if (live != null) {
@@ -328,9 +357,10 @@ public class QuerryTeacherIdea extends HttpServlet {
 			}
 			if (isIndex == 0) {
 				// 首页
-				return JsonUtil.getIndexVideoLive(live);
+				String indexVideoLive = JsonUtil.getIndexVideoLive(live);
+				new CacheUtils(Constant.VIDEO_CACHE).addToCache("indexLive", indexVideoLive);
+				return indexVideoLive;
 			}
-			
 			List<RecoderVideo>  videos=RecoderVideoServer.getAllRecoderVideo(tId,p);
 			Video video2 = VideoServer.findLastVideoByTeacher(tId);
 			if (videos != null) {
@@ -357,7 +387,9 @@ public class QuerryTeacherIdea extends HttpServlet {
 					}
 				}
 			}
-			return JsonUtil.getLive(live, videos,p);
+			String allLive = JsonUtil.getLive(live, videos,p);
+			new CacheUtils(Constant.VIDEO_CACHE).addToCache(tId+"allLive"+p, allLive);
+			return allLive;
 		}
 	}
 

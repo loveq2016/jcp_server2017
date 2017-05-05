@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.Account;
 import com.jucaipen.model.ClientOsInfo;
 import com.jucaipen.model.FamousTeacher;
@@ -31,6 +32,8 @@ import com.jucaipen.service.TxtLiveSaleSer;
 import com.jucaipen.service.TxtLiveSer;
 import com.jucaipen.service.VideoLiveServer;
 import com.jucaipen.service.VideoServer;
+import com.jucaipen.utils.CacheUtils;
+import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.HeaderUtil;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.LiveUtil;
@@ -134,6 +137,11 @@ public class LiveList extends HttpServlet {
 		if (uId <= 0) {
 			isPurch = 1;
 		}
+		Object cached = DataManager.getCached(Constant.VIDEO_CACHE, "recoderVideo");
+		if(cached!=null){
+			return cached.toString();
+		}
+		
 		teachers.clear();
 		List<VideoLive> videos = VideoLiveServer.findRecoderLive(4);
 		if (videos != null) {
@@ -219,7 +227,9 @@ public class LiveList extends HttpServlet {
 				teachers.add(teacher);
 			}
 		}
-		return JsonUtil.getLiveList(videos, teachers);
+		String liveList = JsonUtil.getLiveList(videos, teachers);
+		new CacheUtils(Constant.VIDEO_CACHE).addToCache("recoderVideo", liveList);
+		return liveList;
 	}
 
 	private String initLive(int p, int uId) {
@@ -230,6 +240,11 @@ public class LiveList extends HttpServlet {
 			isPurch = 1;
 		}
 		teachers.clear();
+		Object cached = DataManager.getCached(Constant.VIDEO_CACHE, "allVideo"+p);
+		if(cached!=null){
+			return cached.toString();
+		}
+		
 		List<VideoLive> videos = VideoLiveServer.findAll(p);
 		if (videos != null) {
 			for (VideoLive live : videos) {
@@ -314,7 +329,9 @@ public class LiveList extends HttpServlet {
 				teachers.add(teacher);
 			}
 		}
-		return JsonUtil.getLiveList(videos, teachers);
+		String liveList = JsonUtil.getLiveList(videos, teachers);
+		new CacheUtils(Constant.VIDEO_CACHE).addToCache("allVideo"+p, liveList);
+		return liveList;
 	}
 
 	
