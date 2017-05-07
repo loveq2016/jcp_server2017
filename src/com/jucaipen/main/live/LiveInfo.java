@@ -5,18 +5,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.Contribute;
 import com.jucaipen.model.FamousTeacher;
 import com.jucaipen.model.User;
 import com.jucaipen.service.ContributeSer;
 import com.jucaipen.service.FamousTeacherSer;
 import com.jucaipen.service.UserServer;
+import com.jucaipen.utils.CacheUtils;
+import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.LoginUtil;
 import com.jucaipen.utils.RandomUtils;
@@ -87,6 +93,10 @@ public class LiveInfo extends HttpServlet {
 		// 1、贡献值
 		int bills=0;
 		int number=0;
+		Object cached = DataManager.getCached(Constant.TEACHER_CACHE,"liveInfo"+tId);
+		if(cached!=null){
+			return cached.toString();
+		}
 		List<Contribute> contributes = ContributeSer.findContributeGroupByTid("year");
 		//贡献排行
 		for(int i=0;i<contributes.size();i++){
@@ -102,7 +112,9 @@ public class LiveInfo extends HttpServlet {
 		int userId = teacher.getFk_UserId();
 		// 获取直播室信息
 		List<User> list = getMember(userId);
-		return JsonUtil.getOnLineData(bills, list,memberNum,number);
+		String onLineData = JsonUtil.getOnLineData(bills, list,memberNum,number);
+		new CacheUtils(Constant.TEACHER_CACHE).addToCache("liveInfo"+tId, onLineData);
+		return onLineData;
 	}
 
 	/**

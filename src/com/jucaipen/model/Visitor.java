@@ -12,6 +12,27 @@ public class Visitor {
 	private String head;
 	private String insertDate;
 	private String param;
+	private String url;
+	private String host;
+	private String hostAddress;
+	public String getHost() {
+		return host;
+	}
+	public void setHost(String host) {
+		this.host = host;
+	}
+	public String getHostAddress() {
+		return hostAddress;
+	}
+	public void setHostAddress(String hostAddress) {
+		this.hostAddress = hostAddress;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	public int getId() {
 		return id;
 	}

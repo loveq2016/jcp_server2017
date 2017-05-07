@@ -46,4 +46,20 @@ public class VisitorImp implements VisitorDao {
 		return null;
 	}
 
+	@Override
+	public int addVisitor(Visitor visitor) {
+		try {
+			Connection connMySql = JdbcUtil.connMySql();
+			PreparedStatement statement = connMySql.prepareStatement("INSERT INTO visitor("
+					+ "userId,ip,devType,header,insertDate,param,url,host,hostAddress)"
+					+ "VALUES ("+visitor.getUserId()+",'"+visitor.getIp()+"',"+visitor.getDevType()+",'"
+					+visitor.getHead()+"','"+visitor.getInsertDate()+"','"+visitor.getParam()+"','"
+					+visitor.getUrl()+"','"+visitor.getHost()+"','"+visitor.getHostAddress()+"')");
+			return statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
 }

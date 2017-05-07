@@ -12,5 +12,14 @@ public class VisitorService {
 		VisitorDao dao=new VisitorImp();
 		return dao.getAllVisitor();
 	}
+	
+	/**
+	 * @param visitor
+	 * @return  添加访客信息
+	 */
+	public static  int addVisitor(Visitor visitor){
+		VisitorDao dao=new VisitorImp();
+		return dao.addVisitor(visitor);
+	}
 
 }

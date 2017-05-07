@@ -43,8 +43,8 @@
 		memoryStoreEvictionPolicy="LRU" 
 		maxElementsInMemory="100" 
 		eternal="false"
-		timeToIdleSeconds="30"
-		timeToLiveSeconds="30" 
+		timeToIdleSeconds="10"
+		timeToLiveSeconds="10" 
 		overflowToDisk="false" />
 		
 		<!-- 缓存讲师排名、用户数据   实时性比较高 -->
@@ -55,6 +55,15 @@
 		eternal="false"
 		timeToIdleSeconds="30"
 		timeToLiveSeconds="30" 
+		overflowToDisk="false" />
+		
+		<cache 
+		name="cache_file" 
+		memoryStoreEvictionPolicy="LRU" 
+		maxElementsInMemory="100" 
+		eternal="false"
+		timeToIdleSeconds="60"
+		timeToLiveSeconds="600" 
 		overflowToDisk="false" />
 		
 </ehcache>
