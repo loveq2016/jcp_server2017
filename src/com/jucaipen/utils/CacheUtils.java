@@ -5,10 +5,11 @@ import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
 public class CacheUtils {  
-    private static final CacheManager cacheManager = new CacheManager("C:/Users/Administrator/git/jcp_server2017/AccumulateWealth/WebRoot/WEB-INF/ehcache.xml");  
-    private Cache cache; 
+	//private static final CacheManager cacheManagerLocal=new CacheManager("C:\\Users\\Administrator\\git\\jcp_server2017\\AccumulateWealth\\WebRoot\\WEB-INF\\ehcache.xml");
+    private static final CacheManager cacheManagerNormal = new CacheManager("C:/Program Files/Apache Software Foundation/Tomcat 7.0/webapps/ehcache.xml");  
+    private Cache cache;
     public CacheUtils(String chcheName){  
-        this.cache=cacheManager.getCache(chcheName);
+    	this.cache=cacheManagerNormal.getCache(chcheName);
     }  
   
     public Cache getCache() {  
@@ -18,6 +19,39 @@ public class CacheUtils {
     public void setCache(Cache cache) {  
         this.cache = cache;  
     }  
+    
+    
+    /**
+     * @param cacheStroeName
+     * 
+     *    ÒÆ³ýÕû¸ö»º´æ¿â
+     */
+    public void removeCacheElement(String cacheStroeName){
+    	Cache cache2 = cacheManagerNormal.getCache(cacheStroeName);
+    	 if(cache2!=null){
+    		 cacheManagerNormal.removeCache(cacheStroeName);
+    	 }
+    }
+    
+    
+    /**
+     *    ÒÆ³ýËùÓÐ»º´æ£¬¹Ø±Õ»º´æÊµÀý
+     */
+    public void removeAll(){
+    	cacheManagerNormal.removalAll();
+    	cacheManagerNormal.shutdown();
+    }
+    
+    /**
+     * @param key
+     *   ÒÆ³ý»º´ækey
+     */
+    public void removeCacheKey(String key){
+    	Element element = cache.get(key);
+    	if(element!=null){
+    		cache.remove(element);
+    	}
+    }
   
   
   

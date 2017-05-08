@@ -34,8 +34,50 @@ public class ApkInfo implements Serializable {
 	 * APK更新时间
 	 */
 	private String updateDate;
+	/**
+	 *   是否强制更新    0  是     1  否
+	 */
+	private int isForce;
+	/**
+	 *   备注说明
+	 */
+	private String remark;
+	private  String length;
 	
-	
+	public String getLength() {
+		return length;
+	}
+
+	public void setLength(String length) {
+		this.length = length;
+	}
+
+
+
+	public int getIsForce() {
+		return isForce;
+	}
+
+
+
+	public void setIsForce(int isForce) {
+		this.isForce = isForce;
+	}
+
+
+
+	public String getRemark() {
+		return remark;
+	}
+
+
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+
+
 	public String getUpdateDate() {
 		return updateDate;
 	}

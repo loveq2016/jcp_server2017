@@ -33,7 +33,9 @@ public class MyFilter implements Filter {
 		String localAddr = req.getLocalAddr();
 		String uri = req.getRequestURI();
 		String host = req.getRemoteHost();
-		new PrintLog(ua, req, resp,uri,localAddr,host).start();
+		if (localAddr.equals("121.40.227.121")){
+			new PrintLog(ua, req, resp,uri,localAddr,host).start();
+		}
 		chain.doFilter(new BaseRequest(req), resp);
 		// 过滤访问 ios android 第三方回调
 		/*if (localAddr.equals("121.40.227.121")) {

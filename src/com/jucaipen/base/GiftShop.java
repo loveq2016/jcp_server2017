@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.Account;
 import com.jucaipen.model.ClientOsInfo;
 import com.jucaipen.model.Gifts;
@@ -18,6 +19,8 @@ import com.jucaipen.service.AccountSer;
 import com.jucaipen.service.GiftsSer;
 import com.jucaipen.service.GradeService;
 import com.jucaipen.service.UserServer;
+import com.jucaipen.utils.CacheUtils;
+import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.HeaderUtil;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.StringUtil;
@@ -75,6 +78,11 @@ public class GiftShop extends HttpServlet {
 	private String initGiftByClassId(int t, int uId) {
 		//根据分类获取礼品信息
 		int ownJucaiBills;
+		Object cached = DataManager.getCached(Constant.VIDEO_CACHE, uId+"gift"+t);
+		if(cached!=null){
+			return cached.toString();
+		}
+		
 		Account account=AccountSer.findAccountByUserId(uId);
 		User user = UserServer.querryIntegeralByUid(uId);
 		Grade grade = GradeService.findGradByIntegeral(user.getAllIntegral());
@@ -97,7 +105,9 @@ public class GiftShop extends HttpServlet {
 			//按分类获取
 			 gifts=GiftsSer.findGiftByClassId(t);
 		}
-		return JsonUtil.getGiftList(gifts,ownJucaiBills,grade!=null ? grade.getGrade() : 0);
+		String giftList = JsonUtil.getGiftList(gifts,ownJucaiBills,grade!=null ? grade.getGrade() : 0);
+		new CacheUtils(Constant.VIDEO_CACHE).addToCache(uId+"gift"+t, giftList);
+		return giftList;
 	}
 
 

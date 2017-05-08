@@ -26,9 +26,6 @@ import com.jucaipen.utils.StringUtil;
 @SuppressWarnings("serial")
 public class UpdateVersion extends HttpServlet {
 	private String result;
-	private String rootPath;
-	private int length;
-
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doPost(request, response);
@@ -38,7 +35,6 @@ public class UpdateVersion extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		rootPath = "D:/apkInfo/apk/";
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -63,14 +59,14 @@ public class UpdateVersion extends HttpServlet {
 	private String initServerVersion() {
 		// 获取服务器app最新版本号
 		ApkInfo info = ApkInfoServer.findLastApkInfo(1);
-		String path = rootPath+info.getApkPath();
-		File file=new File(path);
-		if(file.exists()){
+		//String path = rootPath+info.getApkPath();
+		//File file=new File(path);
+	/*	if(file.exists()){
 			length=(int) file.length();
 		}else{
 			length=0;
-		}
-		return JsonUtil.getApkInfo(info,length);
+		}*/
+		return JsonUtil.getApkInfo(info);
 	}
 
 }

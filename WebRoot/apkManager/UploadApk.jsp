@@ -18,25 +18,59 @@
 <meta http-equiv="expires" content="0">
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
+<style type="text/css">
+* {
+	font-family: "微软雅黑";
+}
 
+fieldset {
+	width: 100%
+}
+
+div {
+	width: 50%;
+	padding: 10px;
+	line-height: 20px;
+}
+
+.btn {
+	width: 25%;
+	padding: 5px;
+	color: white;
+	font-size: 18spx;
+	background: #0099FF;
+	border: 0px;
+}
+
+.btn:ACTIVE {
+	background: #0080FF;
+	border: 0;
+}
+</style>
 
 </head>
-
 <body>
-	<form action="jucaipen/uploadApk" method="post" enctype="multipart/form-data">
-		<div align="center" style="margin-top: 20%">
-			APK版本名称: <input type="text" name="versionName">
-		</div>
-		<div align="center" style="margin-top: 10px">
-			APK版本号：<input type="text" name="versionCode">&nbsp;<font color="red" size="2">*&nbsp;格式必须为数字</font>
-		</div>
-		<div align="center" style="margin-top: 10px;margin-left: 50px">
-			APK文件：<input type="file" name="file">&nbsp;<font color="red" size="2">*&nbsp;文件格式：.apk</font>
-		</div>
-		<div align="center" style="margin-top: 10px">
-			<input type="submit" value="提交"> &nbsp;&nbsp;<input
-				type="reset" value="重置">
-		</div>
+	<form
+		action="http://www.wtlive.cn/interface/androidinterface.ashx?action=UpdateApk"
+		method="post" enctype="multipart/form-data">
+		<fieldset>
+			<legend>APK上传</legend>
+			<div>
+				APK版本名称: <input type="text" name="versionName">
+			</div>
+			<div>
+				APK版本号：<input type="text" name="versionCode">&nbsp;<font
+					color="red" size="2px">*&nbsp;格式必须为数字</font>
+			</div>
+			<div>
+				APK文件：<input type="file" name="file"><font color="red"
+					size="2px">*&nbsp;文件格式：.apk</font>
+			</div>
+			<div>
+				<input type="submit" value="提交" class="btn"> <input
+					type="reset" value="重置" class="btn">
+			</div>
+		</fieldset>
 	</form>
 </body>
 </html>

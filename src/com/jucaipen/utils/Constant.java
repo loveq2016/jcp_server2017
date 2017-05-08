@@ -86,6 +86,12 @@ public class Constant {
 	public static final String TEACHER_CACHE="cache_teacher";
 	
 	
+	/**
+	 *  3s»º´æ
+	 */
+	public static final String FAST_CANCHE="cache_fast";
+	
+	
 	
 
 }

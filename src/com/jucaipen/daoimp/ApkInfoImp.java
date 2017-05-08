@@ -55,12 +55,14 @@ public class ApkInfoImp implements ApkInfoDao {
 			dbConn = JdbcUtil.connMySql();
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("SELECT  versionCode,apkUrl FROM versionInfo ORDER BY versionCode DESC LIMIT 0,1");
+					.executeQuery("SELECT  versionCode,apkUrl,length FROM versionInfo ORDER BY versionCode DESC LIMIT 0,1");
 			while (res.next()) {
-				int versionCode = res.getInt("versionCode");
-				String apkPath = res.getString("apkUrl");
+				int versionCode = res.getInt(1);
+				String apkPath = res.getString(2);
+				String length=res.getString(3);
 				apkInfo = new ApkInfo();
 				apkInfo.setApkPath(apkPath);
+				apkInfo.setLength(length);
 				apkInfo.setVersionCode(versionCode);
 			}
 			return apkInfo;
@@ -122,7 +124,7 @@ public class ApkInfoImp implements ApkInfoDao {
 			dbConn = JdbcUtil.connMySql();
 			sta = dbConn.createStatement();
 			isSuccess = sta
-					.executeUpdate("INSERT INTO versionInfo ( Id ,pkgName,versionCode,versionName,apkUrl,updateDate ) VALUES ("
+					.executeUpdate("INSERT INTO versionInfo ( Id ,pkgName,versionCode,versionName,apkUrl,updateDate,isFoce,length) VALUES ("
 							+ info.getId()
 							+ ",'"
 							+ info.getPkgName()
@@ -132,7 +134,10 @@ public class ApkInfoImp implements ApkInfoDao {
 							+ info.getVsionName()
 							+ "','"
 							+ info.getApkPath()
-							+ "','" + info.getUpdateDate() + "')");
+							+ "','" + info.getUpdateDate() + "',"
+							+info.getIsForce()+","
+							+info.getLength()+")"
+							);
 			return isSuccess;
 		} catch (SQLException e) {
 			e.printStackTrace();

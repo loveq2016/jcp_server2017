@@ -50,7 +50,7 @@ public class QuerryBaseTeacherInfo extends HttpServlet {
 		out.close();
 	}
 	private String initTeacherBaseInfo(int tId,int uId) {
-		Object cached = DataManager.getCached(Constant.DEFAULT_CACHE, uId+"teacherInfo"+tId);
+		Object cached = DataManager.getCached(Constant.FAST_CANCHE, uId+"teacherInfo"+tId);
 		if(cached!=null){
 			return cached.toString();
 		}
@@ -58,7 +58,7 @@ public class QuerryBaseTeacherInfo extends HttpServlet {
 		Fans fans = FansSer.findIsFans(uId, tId);
 		teacher.setAttention(fans!=null);
 		String baseInfo = JsonUtil.getTeacherBaseInfo(teacher);
-		new CacheUtils(Constant.DEFAULT_CACHE).addToCache(uId+"teacherInfo"+tId, baseInfo);
+		new CacheUtils(Constant.FAST_CANCHE).addToCache(uId+"teacherInfo"+tId, baseInfo);
 		return baseInfo;
 	}
 
