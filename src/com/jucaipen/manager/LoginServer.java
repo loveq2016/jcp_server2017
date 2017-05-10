@@ -30,7 +30,7 @@ public class LoginServer extends HttpServlet {
 	private ServerManager manager;
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws ServletException, IOException {/*
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
@@ -65,9 +65,9 @@ public class LoginServer extends HttpServlet {
 		out.print(result);
 		out.flush();
 		out.close();
-	}
+	*/}
 
-	private ServerManager querryServerManagerInfo(String account) {
+/*	private ServerManager querryServerManagerInfo(String account) {
 		// 查询管理员信息
 		try {
 			dbConn = JdbcUtil.connMySql();
@@ -95,5 +95,5 @@ public class LoginServer extends HttpServlet {
 		return null;
 
 	}
-
+*/
 }

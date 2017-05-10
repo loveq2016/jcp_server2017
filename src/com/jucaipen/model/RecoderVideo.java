@@ -1,10 +1,12 @@
 package com.jucaipen.model;
 
+import java.io.Serializable;
+
 /**
  * @author 杨朗飞
  *    录播视频
  */
-public class RecoderVideo {
+public class RecoderVideo implements Serializable{
 	/**
 	 *   当前页数
 	 */

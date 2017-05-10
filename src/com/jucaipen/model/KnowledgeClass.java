@@ -1,11 +1,13 @@
 package com.jucaipen.model;
 
+import java.io.Serializable;
+
 /**
  * @author Administrator   -------------新增数据
  *
  *  知识分类   
  */
-public class KnowledgeClass {
+public class KnowledgeClass implements Serializable{
 	/**
 	 *  Id
 	 */

@@ -1,6 +1,4 @@
 package com.jucaipen.base;
-
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -10,9 +8,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.ApkInfo;
 import com.jucaipen.model.ClientOsInfo;
 import com.jucaipen.service.ApkInfoServer;
+import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.HeaderUtil;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.StringUtil;
@@ -26,6 +26,7 @@ import com.jucaipen.utils.StringUtil;
 @SuppressWarnings("serial")
 public class UpdateVersion extends HttpServlet {
 	private String result;
+	private int versionCode;
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doPost(request, response);
@@ -46,6 +47,7 @@ public class UpdateVersion extends HttpServlet {
 		String userAgent = request.getParameter("User-Agent");
 		ClientOsInfo os = HeaderUtil.getMobilOS(userAgent);
 		int isDevice = HeaderUtil.isVaildDevice(os, userAgent);
+		versionCode=(Integer) request.getServletContext().getAttribute("versionCode");
 		if (isDevice == HeaderUtil.PHONE_APP) {
 			result = initServerVersion();
 		} else {
@@ -58,14 +60,12 @@ public class UpdateVersion extends HttpServlet {
 
 	private String initServerVersion() {
 		// 获取服务器app最新版本号
+		Object cached = DataManager.getCached(Constant.FILE_CACHE, "apkInfo"+versionCode);
+		if(cached!=null){
+			return cached.toString();
+		}
 		ApkInfo info = ApkInfoServer.findLastApkInfo(1);
-		//String path = rootPath+info.getApkPath();
-		//File file=new File(path);
-	/*	if(file.exists()){
-			length=(int) file.length();
-		}else{
-			length=0;
-		}*/
+		
 		return JsonUtil.getApkInfo(info);
 	}
 

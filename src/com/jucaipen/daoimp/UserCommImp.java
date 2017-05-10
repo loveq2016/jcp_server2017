@@ -95,6 +95,12 @@ public class UserCommImp implements UserCommDao {
 			return sta.executeUpdate("DELETE FROM JCP_User_Comm WHERE Id="+id);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return 0;
 	}

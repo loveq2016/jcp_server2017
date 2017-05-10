@@ -89,7 +89,7 @@ public class JdbcUtil {
 	/**
 	 * @return 连接mySql 数据库
 	 */
-	public static Connection connMySql() {
+	/*public static Connection connMySql() {
 		try {
 			try {
 				Class.forName(Constant.MYSQL_DRIVER);
@@ -104,7 +104,7 @@ public class JdbcUtil {
 		}
 		return null;
 
-	}
+	}*/
 	
 	
 

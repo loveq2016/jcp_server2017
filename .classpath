@@ -40,7 +40,6 @@
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/mysql-connector-java-5.1.7-bin.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/org.json.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/protobuf-java-2.5.0.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/sqljdbc4.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/XingeApp.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jpush-client-3.2.9.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/slf4j-log4j12-1.6.1.jar"/>
@@ -57,5 +56,6 @@
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/alipay-sdk-java20170411150054-source.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/alipay-sdk-java20170411150054.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/ehcache.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/sqljdbc.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>

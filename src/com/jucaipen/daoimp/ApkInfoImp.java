@@ -25,7 +25,7 @@ public class ApkInfoImp implements ApkInfoDao {
 	 */
 	public int querrtMaxId() {
 		try {
-			dbConn = JdbcUtil.connMySql();
+			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
 			res = sta.executeQuery("select max(Id) from versionInfo");
 			while (res.next()) {
@@ -52,10 +52,10 @@ public class ApkInfoImp implements ApkInfoDao {
 	public ApkInfo findApkInfoById(int id) {
 		ApkInfo apkInfo = null;
 		try {
-			dbConn = JdbcUtil.connMySql();
+			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("SELECT  versionCode,apkUrl,length FROM versionInfo ORDER BY versionCode DESC LIMIT 0,1");
+					.executeQuery("SELECT TOP 1 versionCode,apkUrl,length FROM versionInfo ORDER BY versionCode DESC ");
 			while (res.next()) {
 				int versionCode = res.getInt(1);
 				String apkPath = res.getString(2);
@@ -85,7 +85,7 @@ public class ApkInfoImp implements ApkInfoDao {
 	public List<ApkInfo> findAll() {
 		infos.clear();
 		try {
-			dbConn = JdbcUtil.connMySql();
+			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
 			res = sta.executeQuery("SELECT * FROM versionInfo");
 			while (res.next()) {
@@ -121,7 +121,7 @@ public class ApkInfoImp implements ApkInfoDao {
 	 */
 	public int insertApkInfo(ApkInfo info) {
 		try {
-			dbConn = JdbcUtil.connMySql();
+			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
 			isSuccess = sta
 					.executeUpdate("INSERT INTO versionInfo ( Id ,pkgName,versionCode,versionName,apkUrl,updateDate,isFoce,length) VALUES ("
@@ -156,7 +156,7 @@ public class ApkInfoImp implements ApkInfoDao {
 	 */
 	public int deleteApkInfo() {
 		try {
-			dbConn = JdbcUtil.connMySql();
+			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
 			isSuccess = sta.executeUpdate("DELETE  versionInfo WHERE");
 			return isSuccess;

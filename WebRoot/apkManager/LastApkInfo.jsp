@@ -27,10 +27,10 @@
 
 <body>
 	<%
-		Connection dbConn = JdbcUtil.connMySql();
+		Connection dbConn = JdbcUtil.connSqlServer();
 		Statement sta = dbConn.createStatement();
 		ResultSet res = sta
-				.executeQuery("SELECT * FROM versionInfo ORDER BY versionCode DESC LIMIT 0,1");
+				.executeQuery("SELECT TOP 1 * FROM versionInfo ORDER BY versionCode DESC ");
 	%>
 
     <%

@@ -1,11 +1,13 @@
 package com.jucaipen.model;
 
+import java.io.Serializable;
+
 /**
  * @author Administrator
  *
  *  战法销售信息
  */
-public class TacticsSale {
+public class TacticsSale implements Serializable{
 	private int page;
 	private int totlePage;
 	/**

@@ -1,12 +1,14 @@
 package com.jucaipen.model;
 
+import java.io.Serializable;
+
 /**
  * @author Administrator
  *
  *
  *   广告bean           ----数据已更新   5.18
  */
-public class Advertive {
+public class Advertive implements Serializable{
 	/**
 	 *   广告id
 	 */

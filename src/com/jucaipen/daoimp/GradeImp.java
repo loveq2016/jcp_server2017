@@ -11,14 +11,16 @@ import com.jucaipen.utils.JdbcUtil;
 
 public class GradeImp implements GradeDao {
 	private Connection dbConn;
+	private PreparedStatement statement;
+	private ResultSet query;
 
 	@Override
 	public Grade findGradByIntegeral(int interal) {
 		try {
 			dbConn=JdbcUtil.connSqlServer();
-			PreparedStatement statement = dbConn.prepareStatement("SELECT Grade,GradeFace FROM JCP_Grade WHERE  ?  BETWEEN MinIntegral AND MaxIntegral");
+			statement = dbConn.prepareStatement("SELECT Grade,GradeFace FROM JCP_Grade WHERE  ?  BETWEEN MinIntegral AND MaxIntegral");
 			statement.setInt(1, interal);
-			ResultSet query = statement.executeQuery();
+			query = statement.executeQuery();
 			while (query.next()) {
 				int gradeNum = query.getInt(1);
 				String gradeFace=query.getString(2);
@@ -29,6 +31,12 @@ public class GradeImp implements GradeDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				JdbcUtil.closeConn(statement, dbConn, query);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}

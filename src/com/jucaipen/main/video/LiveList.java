@@ -260,7 +260,15 @@ public class LiveList extends HttpServlet {
 				// 播放url
 				if(live.getIsEnd()!=2){
 					liveType=2;
-					RecoderVideo recoderVideo=RecoderVideoServer.getLastRecoderVideo(tId);
+					RecoderVideo recoderVideo;
+					Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE, "recoderVideos"+live.getId());
+					if(cached2==null){
+						recoderVideo=RecoderVideoServer.getLastRecoderVideo(tId);
+						new CacheUtils(Constant.TEACHER_CACHE).addToCache("teacheVideos"+tId, recoderVideo);
+					}else{
+						recoderVideo=(RecoderVideo) cached2;
+					}
+					
 					//直播已经结束 --返回最近的录播url
 					// 是否收费 0 否 1 是
 					if(recoderVideo!=null){
@@ -291,10 +299,17 @@ public class LiveList extends HttpServlet {
 			//	if (live.isCharge()) {
 					if (uId > 0) {
 						// 是否开通守护
+						LiveRecoder resoder;
 						Account account = AccountSer.findAccountByUserId(uId);
 						live.setGradian(LiveUtil.isGradian(tId, uId));
-						LiveRecoder resoder = LiveRecoderSer
-						.getRecoderByLiveId(live.getId());
+						Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE, "recoderVideos"+live.getId());
+						if(cached2==null){
+							 resoder = LiveRecoderSer
+									.getRecoderByLiveId(live.getId());
+							new CacheUtils(Constant.TEACHER_CACHE).addToCache("recoderVideos"+live.getId(), resoder);
+						}else{
+							resoder=(LiveRecoder) cached2;
+						}
 						if(resoder!=null){
 							LiveRecoderSale liveSale=null;
 							LiveRecoderSale sale = LiveRecoderSaleSer

@@ -1,11 +1,13 @@
 package com.jucaipen.model;
 
+import java.io.Serializable;
+
 /**
  * @author Administrator
  *
  *   ัÝฒฅสา   JCP_Studio
  */
-public class Studio {
+public class Studio implements Serializable{
 	private int page;
 	private int totlePage;
 	/**

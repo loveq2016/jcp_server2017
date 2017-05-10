@@ -35,6 +35,12 @@ public class SharkInfoImp implements SharkInfoDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
@@ -47,6 +53,12 @@ public class SharkInfoImp implements SharkInfoDao {
 			return sta.executeUpdate("UPDATE JCP_Activity SET SYPrice="+rest+" WHERE GETDATE() between StartDate and EndDate");
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return -1;
 	}
@@ -73,6 +85,12 @@ public class SharkInfoImp implements SharkInfoDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}

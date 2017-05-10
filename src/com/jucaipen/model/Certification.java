@@ -1,11 +1,13 @@
 package com.jucaipen.model;
 
+import java.io.Serializable;
+
 /**
  * @author Administrator    ------------------新增数据
  *
  *   资格证书     JCP_Certification
  */
-public class Certification {
+public class Certification implements Serializable{
 	/**
 	 *  Id
 	 */

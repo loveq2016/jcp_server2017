@@ -29,7 +29,7 @@
 <body>
 	<%
 	    SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-		Connection dbConn = JdbcUtil.connMySql();
+		Connection dbConn = JdbcUtil.connSqlServer();
 		Statement sta = dbConn.createStatement();
 		ResultSet res = sta.executeQuery("SELECT * FROM versionInfo");
 	%>

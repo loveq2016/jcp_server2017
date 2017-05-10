@@ -61,10 +61,25 @@ public class LastTeacherList extends HttpServlet {
 			contributes=ContributeSer.findContributeGroupByTid("day");
 		}
 		for (Contribute contribute : contributes) {
+			FamousTeacher teacher;
+			VideoLive videoLive;
 			int teacherId = contribute.getTeacherId();
-			FamousTeacher teacher = FamousTeacherSer
-					.findTeacherBaseInfo(teacherId);
-			VideoLive videoLive=VideoLiveServer.findLiveBytId(teacherId);
+			Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE, "teacherInfo"+teacherId);
+			if(cached2==null){
+				teacher = FamousTeacherSer
+						.findTeacherBaseInfo(teacherId);
+				new CacheUtils(Constant.TEACHER_CACHE).addToCache("teacherInfo"+teacherId, teacher);
+			}else{
+				teacher=(FamousTeacher) cached2;
+			}
+			
+			Object cached3 = DataManager.getCached(Constant.VIDEO_CACHE, "teachervideo"+teacherId);
+			if(cached3==null){
+				videoLive=VideoLiveServer.findLiveBytId(teacherId);
+				new CacheUtils(Constant.TEACHER_CACHE).addToCache("teachervideo"+teacherId, videoLive);
+			}else{
+				videoLive=(VideoLive) cached3;
+			}
 			contribute.setFromName(teacher.getNickName());
 			contribute.setFromFace(teacher.getHeadFace());
 			contribute.setLeavel(teacher.getLevel());

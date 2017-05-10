@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.ClientOsInfo;
 import com.jucaipen.model.FamousTeacher;
 import com.jucaipen.model.Guardian;
@@ -17,6 +18,8 @@ import com.jucaipen.model.User;
 import com.jucaipen.service.FamousTeacherSer;
 import com.jucaipen.service.GuardianSer;
 import com.jucaipen.service.UserServer;
+import com.jucaipen.utils.CacheUtils;
+import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.HeaderUtil;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.StringUtil;
@@ -84,6 +87,19 @@ public class MyGuardian extends HttpServlet {
 		teachers.clear();
 		users.clear();
 		List<Guardian> guardians;
+		if(t==0){
+			Object cached = DataManager.getCached(Constant.TEACHER_CACHE,"gradinlist"+uId+p);
+			if(cached!=null){
+				return cached.toString();
+			}
+		}else{
+			Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "gradinMelist"+uId+p);
+			if(cached!=null){
+				return cached.toString();
+			}
+		}
+		
+		
 		if (t == 0) {
 			// Œ“ ÿª§µƒ
 			guardians = GuardianSer.findGurdianByUid(uId, p);
@@ -95,18 +111,35 @@ public class MyGuardian extends HttpServlet {
 			int tId = guardian.getTeacherId();
 			int uid = guardian.getUserId();
 			if (t == 0) {
-				FamousTeacher teacher = FamousTeacherSer
-						.findFamousTeacherById(tId);
+				FamousTeacher teacher;
+				Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "userInfo"+uId);
+				if(cached==null){
+					teacher = FamousTeacherSer.findFamousTeacherById(tId);
+					new CacheUtils(Constant.TEACHER_CACHE).addToCache("teacherInfo"+tId, teacher);
+				}else{
+					teacher=(FamousTeacher) cached;
+				}
 				teachers.add(teacher);
 			} else {
-				User user = UserServer.findUserById(uid);
+				User user;
+				Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "userInfo"+uId);
+				if(cached==null){
+					user = UserServer.findUserById(uid);
+					new CacheUtils(Constant.TEACHER_CACHE).addToCache("userInfo"+uId, user);
+				}else{
+					user=(User) cached;
+				}
 				users.add(user);
 			}
 		}
 		if (t == 0) {
-			return JsonUtil.getMyGuardian(guardians, teachers);
+			String myGuardian = JsonUtil.getMyGuardian(guardians, teachers);
+			new CacheUtils(Constant.VIDEO_CACHE).addToCache("gradinlist"+uId+p, myGuardian);
+			return myGuardian;
 		} else {
-			return JsonUtil.getGuardianMy(guardians, users);
+			 String guardianMy = JsonUtil.getGuardianMy(guardians, users);
+			 new CacheUtils(Constant.VIDEO_CACHE).addToCache("gradinMelist"+uId+p, guardianMy);
+			return guardianMy;
 		}
 	}
 

@@ -1,10 +1,15 @@
 package com.jucaipen.test;
+import com.jucaipen.model.User;
 import com.jucaipen.utils.CacheUtils;
+import com.jucaipen.utils.Constant;
 public class CmdTest {
 	public static void main(String[] args) throws Exception {
-		CacheUtils utils=new CacheUtils("cache_default");
-		utils.addToCache("name", "≈÷¥Û¡≥");
-		System.out.println("c==="+utils.getCacheElement("name"));
+		CacheUtils utils=new CacheUtils(Constant.DEFAULT_CACHE);
+		User user=new User();
+		user.setUserName("≈÷¥Û¡≥");
+		utils.addToCache("name", user);
+		User u=(User) utils.getCacheElement("name");
+		System.out.println("c==="+u.getUserName());
 		
 	}
 	public static int ran(int min,int max){

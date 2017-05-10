@@ -317,6 +317,12 @@ public class VideoLiveImp implements VideoLiveDao {
 			return sta.executeUpdate("UPDATE JCP_VideoLive SET XnRenQi="+xnRenQi+",RenQi="+renQi+" WHERE Id="+id);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return 0;
 	}

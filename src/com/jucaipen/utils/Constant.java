@@ -87,9 +87,21 @@ public class Constant {
 	
 	
 	/**
+	 *  ÍÆ¼ö½²Ê¦
+	 */
+	public static final String RECODER_TEACHER="cache_recoder_teacher";
+	
+	
+	/**
 	 *  3s»º´æ
 	 */
 	public static final String FAST_CANCHE="cache_fast";
+	
+	
+	/**
+	 *   1H 
+	 */
+	public static final String FILE_CACHE="cache_file";
 	
 	
 	

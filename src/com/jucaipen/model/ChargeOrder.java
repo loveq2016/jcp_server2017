@@ -1,10 +1,12 @@
 package com.jucaipen.model;
 
+import java.io.Serializable;
+
 /**
  * @author Administrator  ------------新增数据
  * 充值订单
  */
-public class ChargeOrder {
+public class ChargeOrder implements Serializable{
 	/**
 	 *  当前页数
 	 */

@@ -9,9 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.City;
 import com.jucaipen.model.ClientOsInfo;
 import com.jucaipen.service.CityServer;
+import com.jucaipen.utils.CacheUtils;
+import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.HeaderUtil;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.MsgCode;
@@ -50,8 +53,15 @@ public class QuerryCity extends HttpServlet {
 	}
 
 	private String initCityInfo(int pId) {
+		Object cached = DataManager.getCached(Constant.DEFAULT_CACHE, "city"+pId);
+		if(cached!=null){
+			return cached.toString();
+		}
+		
 		List<City> cities = CityServer.getCitys(pId);
-		return MsgCode.CURRENT_VERSION==MsgCode.HISTORY_VISION_1 ? JsonUtil.getObject(cities) : JsonUtil.getCityV2(cities, MsgCode.RET_SUCCESS_CODE, MsgCode.RET_SUCCESS);
+		String object = JsonUtil.getObject(cities);
+		new CacheUtils(Constant.DEFAULT_CACHE).addToCache("city"+pId, object);
+		return MsgCode.CURRENT_VERSION==MsgCode.HISTORY_VISION_1 ? object  : JsonUtil.getCityV2(cities, MsgCode.RET_SUCCESS_CODE, MsgCode.RET_SUCCESS);
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)

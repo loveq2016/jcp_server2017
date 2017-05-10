@@ -1,8 +1,10 @@
 package com.jucaipen.model;
 
+import java.io.Serializable;
+
 import com.jucaipen.utils.StringUtil;
 
-public class ClientOsInfo {
+public class ClientOsInfo implements Serializable{
 	/***
 	 * 比如 Android_3.0
 	 */

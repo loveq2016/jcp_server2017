@@ -1,12 +1,14 @@
 package com.jucaipen.model;
 
+import java.io.Serializable;
+
 /**
  * @author Administrator
  *
  *  //   opType    1   上线       2    聊天      3   下线
 	// {"fromId":1,"liveId:1","opType":2,"toId":0,msg:"hello"}
  */
-public class ChatMsgObject {
+public class ChatMsgObject implements Serializable{
 	private int id;
 	private int fromId;
 	private String fromName;

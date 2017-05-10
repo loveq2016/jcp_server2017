@@ -1,10 +1,12 @@
 package com.jucaipen.model;
 
+import java.io.Serializable;
+
 /**
  * @author ÑîÀÊ·É
  *   ·Ã¿Í¼ÇÂ¼
  */
-public class Visitor {
+public class Visitor implements Serializable{
 	private int id;
 	private int userId;
 	private String ip;

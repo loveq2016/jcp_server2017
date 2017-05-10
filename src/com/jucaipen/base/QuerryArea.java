@@ -3,13 +3,18 @@ package com.jucaipen.base;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.Area;
 import com.jucaipen.model.ClientOsInfo;
 import com.jucaipen.service.AreaServer;
+import com.jucaipen.utils.CacheUtils;
+import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.HeaderUtil;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.MsgCode;
@@ -57,9 +62,14 @@ public class QuerryArea extends HttpServlet {
 
 	private String initAreaData(int cId) {
 		// 初始化区信息
+		Object cached = DataManager.getCached(Constant.DEFAULT_CACHE, "area"+cId);
+		if(cached!=null){
+			return cached.toString();
+		}
 		List<Area> areas = AreaServer.getAreas(0, cId);
-		return MsgCode.CURRENT_VERSION == MsgCode.HISTORY_VISION_1 ? JsonUtil
-				.getObject(areas) : JsonUtil.getAreaV2(areas,
+		String object = JsonUtil.getObject(areas);
+		new CacheUtils(Constant.DEFAULT_CACHE).addToCache("area"+cId, object);
+		return MsgCode.CURRENT_VERSION == MsgCode.HISTORY_VISION_1 ? object : JsonUtil.getAreaV2(areas,
 				MsgCode.RET_SUCCESS_CODE, MsgCode.RET_SUCCESS);
 
 	}

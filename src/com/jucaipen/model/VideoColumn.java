@@ -1,11 +1,13 @@
 package com.jucaipen.model;
 
+import java.io.Serializable;
+
 /**
  * @author Administrator
  *
  *  Ö±²¥À¸Ä¿
  */
-public class VideoColumn {
+public class VideoColumn implements Serializable{
 	/**
 	 *  id 
 	 */

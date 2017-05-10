@@ -64,6 +64,12 @@ public class LiveRecoderSaleImp implements LiveRecoderSaleDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				JdbcUtil.closeConn(sta, conn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
@@ -83,6 +89,12 @@ public class LiveRecoderSaleImp implements LiveRecoderSaleDao {
 							+ sale.getUserId() + ",'" + sale.getRemark() + "',"+sale.getRecoderType()+")");
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				JdbcUtil.closeConn(sta, conn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return 0;
 	}
@@ -112,6 +124,12 @@ public class LiveRecoderSaleImp implements LiveRecoderSaleDao {
 			}
 			return sales;
 		} catch (Exception e) {
+		}finally{
+			try {
+				JdbcUtil.closeConn(sta, conn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}

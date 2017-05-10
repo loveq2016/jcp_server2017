@@ -13,14 +13,17 @@ import com.jucaipen.utils.JdbcUtil;
 
 public class VisitorImp implements VisitorDao {
 	private List<Visitor> visitors=new ArrayList<Visitor>();
+	private Connection connMySql;
+	private PreparedStatement statement;
+	private ResultSet query;
 
 	@Override
 	public List<Visitor> getAllVisitor() {
 		visitors.clear();
-		Connection connMySql = JdbcUtil.connMySql();
+		connMySql = JdbcUtil.connSqlServer();
 		try {
-			PreparedStatement statement = connMySql.prepareStatement("SELECT * FROM visitor");
-			ResultSet query = statement.executeQuery();
+			statement = connMySql.prepareStatement("SELECT * FROM visitor");
+			query = statement.executeQuery();
 			while (query.next()) {
 				int id=query.getInt(1);
 				int userId=query.getInt(2);
@@ -42,6 +45,12 @@ public class VisitorImp implements VisitorDao {
 			return visitors;
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				JdbcUtil.closeConn(statement, connMySql, query);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
@@ -49,8 +58,8 @@ public class VisitorImp implements VisitorDao {
 	@Override
 	public int addVisitor(Visitor visitor) {
 		try {
-			Connection connMySql = JdbcUtil.connMySql();
-			PreparedStatement statement = connMySql.prepareStatement("INSERT INTO visitor("
+			connMySql = JdbcUtil.connSqlServer();
+			statement = connMySql.prepareStatement("INSERT INTO visitor("
 					+ "userId,ip,devType,header,insertDate,param,url,host,hostAddress)"
 					+ "VALUES ("+visitor.getUserId()+",'"+visitor.getIp()+"',"+visitor.getDevType()+",'"
 					+visitor.getHead()+"','"+visitor.getInsertDate()+"','"+visitor.getParam()+"','"
@@ -58,6 +67,12 @@ public class VisitorImp implements VisitorDao {
 			return statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				JdbcUtil.closeConn(statement, connMySql, query);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return 0;
 	}

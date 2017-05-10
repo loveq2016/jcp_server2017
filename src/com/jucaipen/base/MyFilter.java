@@ -1,7 +1,6 @@
 package com.jucaipen.base;
 import java.io.IOException;
 import java.util.Date;
-
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -10,11 +9,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import cn.jpush.api.utils.StringUtils;
-
-import com.jucaipen.model.Visitor;
-import com.jucaipen.service.VisitorService;
 import com.jucaipen.utils.TimeUtils;
 
 public class MyFilter implements Filter {
@@ -83,36 +78,36 @@ public class MyFilter implements Filter {
 
 		@Override
 		public void run() {
-			Visitor visitor=new Visitor();
+		//	Visitor visitor=new Visitor();
 			String format = TimeUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
 			String ip1 = req.getHeader("x-forwarded-for");
 			System.out.println("时间:"
 					+format );
 			System.out.println("请求Agent:" + ua);
-			visitor.setHead(ua);
+		//	visitor.setHead(ua);
 			if (!StringUtils.isEmpty(ua)) {
 				if (ua.contains("Android")) {
-					visitor.setDevType(1);
+				//	visitor.setDevType(1);
 					System.out.println("设备类型:" + "Android");
 				} else if (ua.contains("iPhone")) {
-					visitor.setDevType(2);
+				//	visitor.setDevType(2);
 					System.out.println("设备类型:" + "iPhone");
 				} else {
-					visitor.setDevType(3);
+				//	visitor.setDevType(3);
 					System.out.println("设备类型:" + "Unknown");
 				}
 			} else {
-				visitor.setDevType(3);
+			//	visitor.setDevType(3);
 				System.out.println("设备类型:" + "Unknown");
 			}
-			visitor.setInsertDate(format);
+		//	visitor.setInsertDate(format);
 			System.out.println("请求URL:" + req.getRequestURI());
 			String ip = req.getRemoteAddr();
-			visitor.setIp(ip);
-			visitor.setUrl(uri);
-			visitor.setHost(host);
-			visitor.setHostAddress(hostAddress);
-			VisitorService.addVisitor(visitor);
+		//	visitor.setIp(ip);
+		//	visitor.setUrl(uri);
+		//	visitor.setHost(host);
+		//	visitor.setHostAddress(hostAddress);
+		//	VisitorService.addVisitor(visitor);
 			System.out.println("设备IP：" + (ip1 == null ? ip : ip1));
 			System.out
 					.println("===============================================");

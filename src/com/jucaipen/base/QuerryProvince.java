@@ -3,13 +3,18 @@ package com.jucaipen.base;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.ClientOsInfo;
 import com.jucaipen.model.Province;
 import com.jucaipen.service.ProvinceServer;
+import com.jucaipen.utils.CacheUtils;
+import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.HeaderUtil;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.MsgCode;
@@ -45,8 +50,14 @@ public class QuerryProvince extends HttpServlet {
 	}
 
 	private String initProvinceInfo() {
+		Object cached = DataManager.getCached(Constant.DEFAULT_CACHE, "province");
+		if(cached!=null){
+			return cached.toString();
+		}
 		List<Province> provinces = ProvinceServer.getProvinces();
-		return MsgCode.CURRENT_VERSION==MsgCode.HISTORY_VISION_1 ? JsonUtil.getObject(provinces) : JsonUtil.getProvinceV2(provinces, MsgCode.RET_SUCCESS_CODE, MsgCode.RET_SUCCESS);
+		String object = JsonUtil.getObject(provinces);
+		new CacheUtils(Constant.DEFAULT_CACHE).addToCache("province", object);
+		return MsgCode.CURRENT_VERSION==MsgCode.HISTORY_VISION_1 ? object : JsonUtil.getProvinceV2(provinces, MsgCode.RET_SUCCESS_CODE, MsgCode.RET_SUCCESS);
 
 	}
 

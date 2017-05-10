@@ -1,11 +1,13 @@
 package com.jucaipen.model;
 
+import java.io.Serializable;
+
 /**
  * @author Administrator  ---------新增数据
  *
  *  回答销售
  */
-public class AnswerSale {
+public class AnswerSale implements Serializable{
 	/**
 	 *  当前页数
 	 */

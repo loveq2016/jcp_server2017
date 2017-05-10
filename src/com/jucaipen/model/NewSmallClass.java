@@ -1,11 +1,13 @@
 package com.jucaipen.model;
 
+import java.io.Serializable;
+
 /**
  * @author Administrator
  *
  *   新闻二级分类
  */
-public class NewSmallClass {
+public class NewSmallClass implements Serializable{
 	
 	private int id;
 	

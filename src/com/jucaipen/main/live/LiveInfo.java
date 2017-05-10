@@ -91,9 +91,10 @@ public class LiveInfo extends HttpServlet {
 	 */
 	private String getOnLineInfo(int tId) {
 		// 1、贡献值
+		FamousTeacher teacher;
 		int bills=0;
 		int number=0;
-		Object cached = DataManager.getCached(Constant.TEACHER_CACHE,"liveInfo"+tId);
+		Object cached = DataManager.getCached(Constant.VIDEO_CACHE,"liveInfo"+tId);
 		if(cached!=null){
 			return cached.toString();
 		}
@@ -108,12 +109,26 @@ public class LiveInfo extends HttpServlet {
 			}
 		}
 		//获取讲师基本信息
-		FamousTeacher teacher = FamousTeacherSer.findTeacherBaseInfo(tId);
+		Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE, "teacherInfo"+tId);
+		if(cached2==null){
+			 teacher = FamousTeacherSer.findTeacherBaseInfo(tId);
+			 new CacheUtils(Constant.TEACHER_CACHE).addToCache("teacherInfo"+tId, teacher);
+		}else{
+			teacher=(FamousTeacher) cached2;
+		}
+		
 		int userId = teacher.getFk_UserId();
 		// 获取直播室信息
-		List<User> list = getMember(userId);
+		List<User> list;
+		Object cached3 = DataManager.getCached(Constant.TEACHER_CACHE, "userInfo"+userId);
+		if(cached3==null){
+			list = getMember(userId);
+			new CacheUtils(Constant.TEACHER_CACHE).addToCache("userInfo"+userId, list);
+		}else{
+			list=(List<User>) cached3;
+		}
 		String onLineData = JsonUtil.getOnLineData(bills, list,memberNum,number);
-		new CacheUtils(Constant.TEACHER_CACHE).addToCache("liveInfo"+tId, onLineData);
+		new CacheUtils(Constant.VIDEO_CACHE).addToCache("liveInfo"+tId, onLineData);
 		return onLineData;
 	}
 
@@ -141,8 +156,16 @@ public class LiveInfo extends HttpServlet {
 						String account = member.optString("Member_Account");
 						if (StringUtil.isNotNull(account)
 								&& StringUtil.isInteger(account)) {
-							User user = UserServer.findBaseInfoById(Integer
-									.parseInt(account));
+							int userId=Integer.parseInt(account);
+							User user;
+							Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "userInfo"+userId);
+							if(cached==null){
+								user = UserServer.findBaseInfoById(Integer
+										.parseInt(account));
+								new CacheUtils(Constant.TEACHER_CACHE).addToCache("userInfo"+userId, user);
+							}else{
+								user=(User) cached;
+							}
 							//不统计房间创建者
 							if (roomId != user.getId()) {
 								users.add(user);

@@ -3,13 +3,18 @@ package com.jucaipen.base;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.ClientOsInfo;
 import com.jucaipen.model.GiftClass;
 import com.jucaipen.service.GiftClassSer;
+import com.jucaipen.utils.CacheUtils;
+import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.HeaderUtil;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.StringUtil;
@@ -44,8 +49,15 @@ public class QuerryGiftType extends HttpServlet {
 
 	private String initClassData() {
 		// 初始化礼品分类信息 left
+		Object cached = DataManager.getCached(Constant.DEFAULT_CACHE, "giftType");
+		if(cached!=null){
+			return cached.toString();
+		}
+		
 		List<GiftClass> leftClass = GiftClassSer.findAllClass();
-		return JsonUtil.getGiftClass(leftClass);
+		String giftClass = JsonUtil.getGiftClass(leftClass);
+		new CacheUtils(Constant.DEFAULT_CACHE).addToCache("giftType", giftClass);
+		return giftClass;
 	}
 	
 

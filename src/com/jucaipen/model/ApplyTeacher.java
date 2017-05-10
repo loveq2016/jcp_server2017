@@ -1,11 +1,13 @@
 package com.jucaipen.model;
 
+import java.io.Serializable;
+
 /**
  * @author Administrator  --------------新增数据
  *
  *   申请讲师
  */
-public class ApplyTeacher {
+public class ApplyTeacher implements Serializable{
 	/**
 	 *   Id
 	 */

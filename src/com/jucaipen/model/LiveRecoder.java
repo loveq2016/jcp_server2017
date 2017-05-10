@@ -1,12 +1,14 @@
 package com.jucaipen.model;
 
+import java.io.Serializable;
+
 /**
  * @author 杨朗飞
  *2017年3月11日  上午11:26:27
  *
  *   直播记录
  */
-public class LiveRecoder {
+public class LiveRecoder implements Serializable{
 	/**
 	 *  id
 	 */

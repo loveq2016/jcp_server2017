@@ -96,7 +96,14 @@ public class QuerryTeacher extends HttpServlet {
 		if (teachers != null) {
 			for (FamousTeacher teacher : teachers) {
 				int tId = teacher.getId();
-				VideoLive videoLive = VideoLiveServer.findLiveBytId(tId);
+				VideoLive videoLive;
+				Object cached2 = DataManager.getCached(Constant.VIDEO_CACHE, tId+"teacherVideo"+uId+page);
+				if(cached2==null){
+					videoLive = VideoLiveServer.findLiveBytId(tId);
+					new CacheUtils(Constant.TEACHER_CACHE).addToCache(tId+"teacherVideo"+uId+page, videoLive);
+				}else{
+					videoLive=(VideoLive) cached2;
+				}
 				if (videoLive != null) {
 					teacher.setIsEnd(videoLive.getIsEnd());
 				}
@@ -109,7 +116,7 @@ public class QuerryTeacher extends HttpServlet {
 
 	private String initIndexData(int uId) {
 		// 初始化首页名师推荐列表信息
-		Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "indexTeacher"+uId);
+		Object cached = DataManager.getCached(Constant.RECODER_TEACHER, "indexTeacher");
 		if(cached!=null){
 			return cached.toString();
 		}
@@ -132,7 +139,7 @@ public class QuerryTeacher extends HttpServlet {
 			}
 		}
 		String list = JsonUtil.getFamousTeacherList(teachers, isAttentions);
-		new CacheUtils(Constant.TEACHER_CACHE).addToCache("indexTeacher"+uId, list);
+		new CacheUtils(Constant.RECODER_TEACHER).addToCache("indexTeacher", list);
 		return list;
 	}
 

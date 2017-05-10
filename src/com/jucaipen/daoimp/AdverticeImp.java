@@ -70,6 +70,12 @@ public class AdverticeImp implements AdverticeDao {
 			return sta.executeUpdate("UPDATE JCP_Slide SET LinkUrl='"+state+"' WHERE FK_ClassId="+classId+" AND ImageUrl='"+urls+"'");
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return 0;
 	}
