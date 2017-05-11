@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 /**
  * @author 杨朗飞
- *   多文件上传文件
+ *   多文件上传文件   ----测试
  */
 @MultipartConfig(location="C:\\Users\\Administrator\\git\\jcp_server2017\\AccumulateWealth\\WebRoot\\WEB-INF\\upload")
 public class UpLoadFile extends HttpServlet {

@@ -38,12 +38,23 @@ public class ApkInfo implements Serializable {
 	 *   是否强制更新    0  是     1  否
 	 */
 	private int isForce;
+	
 	/**
 	 *   备注说明
 	 */
 	private String remark;
 	private  String length;
 	
+	public String webUrl;
+	
+	public String getWebUrl() {
+		return webUrl;
+	}
+
+	public void setWebUrl(String webUrl) {
+		this.webUrl = webUrl;
+	}
+
 	public String getLength() {
 		return length;
 	}

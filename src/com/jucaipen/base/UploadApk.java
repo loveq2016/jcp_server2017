@@ -26,7 +26,8 @@ import com.jucaipen.utils.StringUtil;
 /**
  * @author YLF
  * 
- *         文件上传
+ *         上传APK ------121 服务器
+ *        
  *         versionName versionCode file
  * 
  */
@@ -87,9 +88,9 @@ public class UploadApk extends HttpServlet {
 							String filePath = uuId + "/" + tempFile.getName();
 							createApkDate(param, filePath);
 							if (info != null) {
-								updateApkInfo(info,saveFile+filePath);
+								int res=updateApkInfo(info,saveFile+filePath);
 								//pushUpdateInfo(filePath);
-								out.print("文件上传处理成功");
+								out.print(res>0 ? "文件上传处理成功" : "文件上传失败");
 							} else {
 								out.print("文件处理失败");
 							}
@@ -124,16 +125,10 @@ public class UploadApk extends HttpServlet {
 	 *            上传APK文件
 	 * @param string 
 	 */
-	private void updateApkInfo(ApkInfo info, String fileName) {
-		ApkInfoServer.insertApkInfo(info);
-		uploadFile(fileName);
+	private int updateApkInfo(ApkInfo info, String fileName) {
+		return ApkInfoServer.insertApkInfo(info);
 	}
 	
-
-	private void uploadFile(String fileName) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	/**
 	 * @param param

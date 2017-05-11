@@ -70,19 +70,16 @@ public class GiftShop extends HttpServlet {
 		}else{
 			result=StringUtil.isVaild;
 		}
+		System.out.println("result:"+result);
 		out.println(result);
 		out.flush();
 		out.close();
 	}
 
+	@SuppressWarnings("unchecked")
 	private String initGiftByClassId(int t, int uId) {
 		//根据分类获取礼品信息
 		int ownJucaiBills;
-		Object cached = DataManager.getCached(Constant.VIDEO_CACHE, uId+"gift"+t);
-		if(cached!=null){
-			return cached.toString();
-		}
-		
 		Account account=AccountSer.findAccountByUserId(uId);
 		User user = UserServer.querryIntegeralByUid(uId);
 		Grade grade = GradeService.findGradByIntegeral(user.getAllIntegral());
@@ -92,21 +89,26 @@ public class GiftShop extends HttpServlet {
 			ownJucaiBills=0;
 		}
 		List<Gifts> gifts;
-		if(t==10){
-			//按推荐查询
-			 gifts=GiftsSer.findIsTuijian(1);
-		}else if(t==0){
-			//所有礼品
-			gifts=GiftsSer.findAllGifts();
-		}else if(t==20){
-			  //视频直播
-			gifts=GiftsSer.findGiftByClassId(5);
+		Object cached = DataManager.getCached(Constant.FILE_CACHE, "gift"+t);
+		if(cached==null){
+			if(t==10){
+				//按推荐查询
+				 gifts=GiftsSer.findIsTuijian(1);
+			}else if(t==0){
+				//所有礼品
+				gifts=GiftsSer.findAllGifts();
+			}else if(t==20){
+				  //视频直播
+				gifts=GiftsSer.findGiftByClassId(5);
+			}else{
+				//按分类获取
+				 gifts=GiftsSer.findGiftByClassId(t);
+			}
+			 new CacheUtils(Constant.FILE_CACHE).addToCache("gift"+t, gifts);
 		}else{
-			//按分类获取
-			 gifts=GiftsSer.findGiftByClassId(t);
+			gifts=(List<Gifts>) cached;
 		}
 		String giftList = JsonUtil.getGiftList(gifts,ownJucaiBills,grade!=null ? grade.getGrade() : 0);
-		new CacheUtils(Constant.VIDEO_CACHE).addToCache(uId+"gift"+t, giftList);
 		return giftList;
 	}
 

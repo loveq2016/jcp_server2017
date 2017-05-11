@@ -17,7 +17,9 @@ import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.StringUtil;
 
 /**
- * @author Administrator 下载APK文件
+ * @author Administrator 
+ * 
+ * 下载APK文件   ---121服务器
  */
 @SuppressWarnings("serial")
 public class DownFile extends HttpServlet {

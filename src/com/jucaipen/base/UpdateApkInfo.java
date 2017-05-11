@@ -8,11 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.jucaipen.model.ApkInfo;
 import com.jucaipen.service.ApkInfoServer;
-import com.jucaipen.utils.CacheUtils;
-import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.StringUtil;
 import com.jucaipen.utils.TimeUtils;
+/**
+ * @author 杨朗飞
+ * 
+ *    更新版本信息     web服务器返回文件保存信息
+ */
 public class UpdateApkInfo extends HttpServlet {
 	private static final long serialVersionUID = -7105622510661532582L;
 	private String result;
@@ -34,7 +37,9 @@ public class UpdateApkInfo extends HttpServlet {
             		uploadInfo(filePath,versionCode,versionName,length);
             	}else{
             		ApkInfo info = ApkInfoServer.findLastApkInfo(1);
-            		result=info.getApkPath();
+            		String webUrl=info.getWebUrl();
+            		String apkUrl=info.getApkPath();
+            		result=apkUrl.startsWith("http") ? apkUrl : webUrl;
             	}
         	}else{
         		 result=JsonUtil.getRetMsg(4,"fromType 参数异常");
@@ -86,7 +91,6 @@ public class UpdateApkInfo extends HttpServlet {
 			int vCode = Integer.parseInt(versionCode);
 			info.setVersionCode(vCode);
 		}
-		new CacheUtils(Constant.FILE_CACHE).addToCache("apkInfo"+versionCode, info);;
 		return info;
 	}
 
@@ -97,7 +101,7 @@ public class UpdateApkInfo extends HttpServlet {
 	 * @param string 
 	 */
 	private int updateApkInfo(ApkInfo info) {
-		 return ApkInfoServer.insertApkInfo(info);
+		return ApkInfoServer.insertApkInfo(info);
 	}
 	
 	/**

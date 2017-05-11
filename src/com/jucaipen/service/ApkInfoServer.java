@@ -13,6 +13,23 @@ public class ApkInfoServer {
 		ApkInfoDao dao = new ApkInfoImp();
 		return dao.findApkInfoById(uId);
 	}
+	
+	public static ApkInfo   findInfoByCode(int code){
+		ApkInfoDao dao = new ApkInfoImp();
+		return dao.findInfoByCode(code);
+	}
+	
+	/**
+	 * @param code
+	 * @param type
+	 * @param url
+	 * @return  ¸üÐÂ°æ±¾ºÅ  url    1    webUrl     2   apkUrl
+	 */
+	public static int updateUrl(int code,int type,String url){
+		ApkInfoDao dao = new ApkInfoImp();
+		return dao.updateUrl(code, type, url);
+	}
+		
 
 	/**
 	 * @param info

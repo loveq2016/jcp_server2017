@@ -1,27 +1,25 @@
 package com.jucaipen.base;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.io.IOUtils;
-
-import com.jucaipen.model.ApkInfo;
-import com.jucaipen.service.ApkInfoServer;
-
+/**
+ * @author —Ó¿ ∑…  
+ * 
+ * œ¬‘ÿ apkŒƒº˛    ----≤‚ ‘
+ */
 public class DownLoad extends HttpServlet {
 	private String rootPath;
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		rootPath = "D:/apkInfo/apk/";
+		rootPath = "D:/apkInfo/";
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -30,11 +28,11 @@ public class DownLoad extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 		response.setHeader("content-disposition", "attachment;filename=wt.apk");
-		ApkInfo info = ApkInfoServer.findLastApkInfo(1);
-		String fileName = info.getApkPath();
+		/*ApkInfo info = ApkInfoServer.findLastApkInfo(1);
+		String fileName = info.getApkPath();*/
 		String mimeType = getServletContext().getMimeType("wt.apk");
 		response.setContentType(mimeType);
-		File f = new File(rootPath + fileName);
+		File f = new File(rootPath + "wt.apk");
 		if (f.exists()) {
 			IOUtils.copy(new FileInputStream(f), response.getOutputStream());
 		} else {

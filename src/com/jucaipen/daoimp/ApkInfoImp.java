@@ -18,10 +18,9 @@ public class ApkInfoImp implements ApkInfoDao {
 	private List<ApkInfo> infos = new ArrayList<ApkInfo>();
 	private int isSuccess;
 
-	
 	/*
 	 * 
-	 *  获取最大APK信息的id
+	 * 获取最大APK信息的id
 	 */
 	public int querrtMaxId() {
 		try {
@@ -34,7 +33,7 @@ public class ApkInfoImp implements ApkInfoDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				JdbcUtil.closeConn(sta, dbConn, res);
 			} catch (SQLException e) {
@@ -55,20 +54,22 @@ public class ApkInfoImp implements ApkInfoDao {
 			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("SELECT TOP 1 versionCode,apkUrl,length FROM versionInfo ORDER BY versionCode DESC ");
+					.executeQuery("SELECT TOP 1 versionCode,apkUrl,length,webUrl FROM versionInfo ORDER BY versionCode DESC ");
 			while (res.next()) {
 				int versionCode = res.getInt(1);
 				String apkPath = res.getString(2);
-				String length=res.getString(3);
+				String length = res.getString(3);
+				String webUrl=res.getString(4);
 				apkInfo = new ApkInfo();
 				apkInfo.setApkPath(apkPath);
 				apkInfo.setLength(length);
+				apkInfo.setWebUrl(webUrl);
 				apkInfo.setVersionCode(versionCode);
 			}
 			return apkInfo;
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				JdbcUtil.closeConn(sta, dbConn, res);
 			} catch (SQLException e) {
@@ -105,7 +106,7 @@ public class ApkInfoImp implements ApkInfoDao {
 			return infos;
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				JdbcUtil.closeConn(sta, dbConn, res);
 			} catch (SQLException e) {
@@ -124,7 +125,7 @@ public class ApkInfoImp implements ApkInfoDao {
 			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
 			isSuccess = sta
-					.executeUpdate("INSERT INTO versionInfo ( Id ,pkgName,versionCode,versionName,apkUrl,updateDate,isFoce,length) VALUES ("
+					.executeUpdate("INSERT INTO versionInfo ( Id ,pkgName,versionCode,versionName,apkUrl,updateDate,isFoce,length,webUrl) VALUES ("
 							+ info.getId()
 							+ ",'"
 							+ info.getPkgName()
@@ -134,14 +135,16 @@ public class ApkInfoImp implements ApkInfoDao {
 							+ info.getVsionName()
 							+ "','"
 							+ info.getApkPath()
-							+ "','" + info.getUpdateDate() + "',"
-							+info.getIsForce()+","
-							+info.getLength()+")"
-							);
+							+ "','"
+							+ info.getUpdateDate()
+							+ "',"
+							+ info.getIsForce()
+							+ ","
+							+ info.getLength()+")");
 			return isSuccess;
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				JdbcUtil.closeConn(sta, dbConn, res);
 			} catch (SQLException e) {
@@ -162,13 +165,68 @@ public class ApkInfoImp implements ApkInfoDao {
 			return isSuccess;
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				JdbcUtil.closeConn(sta, dbConn, res);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
+		return 0;
+	}
+
+	@Override
+	public ApkInfo findInfoByCode(int code) {
+		try {
+			dbConn = JdbcUtil.connSqlServer();
+			sta = dbConn.createStatement();
+			res = sta
+					.executeQuery("SELECT  Id FROM versionInfo WHERE versionCode="
+							+ code + " ORDER BY Id DESC ");
+			while (res.next()) {
+				int id = res.getInt(1);
+				ApkInfo apkInfo = new ApkInfo();
+				apkInfo.setId(id);
+				return apkInfo;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return null;
+	}
+
+	@Override
+	public int updateUrl(int code, int type, String url) {
+		try {
+			int res = 0;
+			dbConn = JdbcUtil.connSqlServer();
+			sta = dbConn.createStatement();
+			if (type == 1) {
+				res = sta.executeUpdate("UPDATE versionInfo SET webUrl='" + url
+						+ "' WHERE versionCode=" + code);
+			} else {
+				res = sta.executeUpdate("UPDATE versionInfo SET apkUrl='" + url
+						+ "' WHERE versionCode=" + code);
+			}
+
+			return res;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 		return 0;
 	}
 

@@ -51,7 +51,7 @@ div {
 </head>
 <body>
 	<form
-		action="jucaipen/uploadApk"
+		action="http://www.wtlive.cn/interface/androidinterface.ashx?action=UpdateApk"
 		method="post" enctype="multipart/form-data">
 		<fieldset>
 			<legend>APK上传</legend>

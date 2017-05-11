@@ -26,6 +26,14 @@ public interface ApkInfoDao {
 	 * @return   删除APK
 	 */
 	public int deleteApkInfo();
+	
+	public int updateUrl(int code,int type,String url);
+	
+	/**
+	 * @param code
+	 * @return  根据  code 获取版本信息
+	 */
+	public ApkInfo findInfoByCode(int code);
 	/**
 	 * @return  获取APK最大id
 	 */

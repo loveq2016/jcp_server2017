@@ -103,7 +103,7 @@ public class UserImp implements UserDao {
 			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("select UserLevel,UserName,ISNULL(FK_InvestmentTypeId,'') FK_InvestmentTypeId,ISNULL(TrueName,'') TrueName,ISNULL(NickName,'') NickName,ISNULL(Sex,'') Sex,ISNULL(MobileNum,'') MobileNum,ProvinceID,CiytID,AreaID,ISNULL(UserInformation,'') UserInformation,ISNULL(Birthday,'') Birthday,ISNULL(UserFace,'') UserFace from JCP_User where Id="
+					.executeQuery("select UserLevel,ISNULL(UserName,'') UserName,ISNULL(FK_InvestmentTypeId,'') FK_InvestmentTypeId,ISNULL(TrueName,'') TrueName,ISNULL(NickName,'') NickName,ISNULL(Sex,'') Sex,ISNULL(MobileNum,'') MobileNum,ProvinceID,CiytID,AreaID,ISNULL(UserInformation,'') UserInformation,ISNULL(Birthday,'') Birthday,ISNULL(UserFace,'') UserFace from JCP_User where Id="
 							+ id);
 			while (res.next()) {
 				String userName = res.getString("UserName");
@@ -273,7 +273,7 @@ public class UserImp implements UserDao {
 			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("select ISNULL (TrueName,'') TrueName,ISNULL (NickName,'') NickName,ISNULL (UserFace,'') UserFace,ISNULL (MobileNum,'') MobileNum,UserName from JCP_User where Id="
+					.executeQuery("select ISNULL (TrueName,'') TrueName,ISNULL (NickName,'') NickName,ISNULL (UserFace,'') UserFace,ISNULL (MobileNum,'') MobileNum,ISNULL(UserName,'') UserName from JCP_User where Id="
 							+ id);
 			while (res.next()) {
 				String NickName = res.getString(SqlUtil.USER_NICKNAME);
@@ -659,7 +659,7 @@ public class UserImp implements UserDao {
 			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("SELECT TrueName,IsRoomAdmin,IsSysAdmin,RegisterDate FROM JCP_User WHERE Id="
+					.executeQuery("SELECT ISNULL(TrueName,'') TrueName,IsRoomAdmin,IsSysAdmin,RegisterDate FROM JCP_User WHERE Id="
 							+ id);
 			while (res.next()) {
 				String trueName = res.getString(1);
@@ -847,7 +847,7 @@ public class UserImp implements UserDao {
 		try {
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("SELECT NickName,UserLevel,ISNULL(UserFace,'') UserFace,UserName,MobileNum,LoginTime,AllIntegral,InvitationCode,IsMobileVerification,PassWord FROM JCP_User WHERE Id="
+					.executeQuery("SELECT ISNULL(NickName,'') NickName,UserLevel,ISNULL(UserFace,'') UserFace,ISNULL(UserName,'') UserName,MobileNum,LoginTime,AllIntegral,InvitationCode,IsMobileVerification,PassWord FROM JCP_User WHERE Id="
 							+ id);
 			while (res.next()) {
 				String nickName = res.getString(1);
@@ -892,7 +892,7 @@ public class UserImp implements UserDao {
 		try {
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("SELECT NickName,BuyProductId,IsSysAdmin,IsRoomAdmin,"
+					.executeQuery("SELECT ISNULL(NickName,'') NickName,BuyProductId,IsSysAdmin,IsRoomAdmin,"
 							+ "FK_RoomTearchId,Isteacher,IsRoomManager,UserLevel,TrueName,UserName,"
 							+ "ServerId FROM JCP_User WHERE Id=" + uId);
 			while (res.next()) {

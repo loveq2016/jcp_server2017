@@ -49,14 +49,14 @@ public class QuerryGiftType extends HttpServlet {
 
 	private String initClassData() {
 		// 初始化礼品分类信息 left
-		Object cached = DataManager.getCached(Constant.DEFAULT_CACHE, "giftType");
+		Object cached = DataManager.getCached(Constant.FILE_CACHE, "giftType");
 		if(cached!=null){
 			return cached.toString();
 		}
 		
 		List<GiftClass> leftClass = GiftClassSer.findAllClass();
 		String giftClass = JsonUtil.getGiftClass(leftClass);
-		new CacheUtils(Constant.DEFAULT_CACHE).addToCache("giftType", giftClass);
+		new CacheUtils(Constant.FILE_CACHE).addToCache("giftType", giftClass);
 		return giftClass;
 	}
 	
