@@ -89,6 +89,7 @@ public class LiveInfo extends HttpServlet {
 	 * @param tId
 	 *            ½²Ê¦id
 	 */
+	@SuppressWarnings("unchecked")
 	private String getOnLineInfo(int tId) {
 		// 1¡¢¹±Ï×Öµ
 		FamousTeacher teacher;
