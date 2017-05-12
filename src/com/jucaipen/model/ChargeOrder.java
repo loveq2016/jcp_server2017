@@ -30,7 +30,7 @@ public class ChargeOrder implements Serializable{
 	/**
 	 *  充值金额
 	 */
-	private double chargeMoney;
+	private int chargeMoney;
 	/**
 	 * 充值时间
 	 */
@@ -94,10 +94,10 @@ public class ChargeOrder implements Serializable{
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-	public double getChargeMoney() {
+	public int getChargeMoney() {
 		return chargeMoney;
 	}
-	public void setChargeMoney(double chargeMoney) {
+	public void setChargeMoney(int chargeMoney) {
 		this.chargeMoney = chargeMoney;
 	}
 	public String getInsertDate() {

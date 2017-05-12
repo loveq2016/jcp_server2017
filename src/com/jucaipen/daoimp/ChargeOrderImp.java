@@ -59,7 +59,7 @@ public class ChargeOrderImp implements ChargeOrderDao {
 			while (res.next()) {
 				int userId = res.getInt(2); // UserId
 				String orderCode = res.getString(3); // OrderCode
-				double payMoney = res.getDouble(4); // Pay_money
+				int payMoney = res.getInt(4); // Pay_money
 				String insertDate = res.getString(5); // InsertDate
 				String payDate = res.getString(6); // PaymentDate
 				int payType = res.getInt(9); // PaymentMethod
@@ -104,7 +104,7 @@ public class ChargeOrderImp implements ChargeOrderDao {
 							+ "WHERE RowNumber > " + 15 * (page - 1));
 			while (res.next()) {
 				String orderCode = res.getString("OrderCode");
-				double payMoney = res.getDouble("Pay_money");
+				int payMoney = res.getInt("Pay_money");
 				String insertDate = res.getString("InsertDate");
 				String payDate = res.getString("PaymentDate");
 				int payType = res.getInt("PaymentMethod");
@@ -153,7 +153,7 @@ public class ChargeOrderImp implements ChargeOrderDao {
 			while (res.next()) {
 				int id=res.getInt("Id");
 				String orderCode = res.getString("OrderCode");
-				double payMoney = res.getDouble("Pay_money");
+				int payMoney = res.getInt("Pay_money");
 				String insertDate = res.getString("InsertDate");
 				String payDate = res.getString("PaymentDate");
 				int payType = res.getInt("PaymentMethod");
@@ -278,8 +278,10 @@ public class ChargeOrderImp implements ChargeOrderDao {
 				int id = res.getInt(1);
 				int userId = res.getInt(2);
 				int orderState = res.getInt(12);
+				int payMoney=res.getInt(4);
 				ChargeOrder order=new ChargeOrder();
 				order.setUserId(userId);
+				order.setChargeMoney(payMoney);
 				order.setOrderState(orderState);
 				order.setId(id);
 				return order;

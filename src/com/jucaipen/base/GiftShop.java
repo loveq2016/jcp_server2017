@@ -70,7 +70,6 @@ public class GiftShop extends HttpServlet {
 		}else{
 			result=StringUtil.isVaild;
 		}
-		System.out.println("result:"+result);
 		out.println(result);
 		out.flush();
 		out.close();

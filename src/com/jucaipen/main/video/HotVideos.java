@@ -1,28 +1,22 @@
 package com.jucaipen.main.video;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.jucaipen.model.FamousTeacher;
 import com.jucaipen.model.RecoderVideo;
-import com.jucaipen.model.Video;
 import com.jucaipen.model.VideoLive;
 import com.jucaipen.service.FamousTeacherSer;
 import com.jucaipen.service.RecoderVideoServer;
 import com.jucaipen.service.VideoLiveServer;
-import com.jucaipen.service.VideoServer;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.StringUtil;
-
 /**
  * @author Administrator
- * 
+ * s
  *         获取热门搜索视频
  */
 public class HotVideos extends HttpServlet {
@@ -72,5 +66,4 @@ public class HotVideos extends HttpServlet {
 		List<RecoderVideo>  videos=RecoderVideoServer.getHotVideos(5);
 		return JsonUtil.getHotVideo(videos);
 	}
-
 }

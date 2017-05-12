@@ -39,8 +39,7 @@
 		</marquee>
 	</h2>
 	<br>
-	<!-- <a href='/WEB-INF/admin.jsp'>admin</a> -->
-	<table>
+	  <table>
 		<tr>
 			<td align="center" valign="middle" bgColor="#c0c0c0" width="10%"><a
 				href="admin/user.jsp"><font size="5" color="green"><strong>用户管理</strong>

@@ -20,7 +20,7 @@
 		memoryStoreEvictionPolicy="LRU" 
 		eternal="false"  
 		maxElementsOnDisk="10"
-		timeToIdleSeconds="1" 
+		timeToIdleSeconds="3" 
 		timeToLiveSeconds="5" 
 		overflowToDisk="false" 
 		diskPersistent="false" 

@@ -5,12 +5,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.io.IOUtils;
+
 import com.jucaipen.model.ApkInfo;
 import com.jucaipen.service.ApkInfoServer;
 import com.jucaipen.utils.JsonUtil;
@@ -79,6 +83,7 @@ public class DownFile extends HttpServlet {
 	private void downLoadApk(HttpServletResponse response,
 			HttpServletRequest request, File apkFile) {
 		FileInputStream in = null;
+		ServletOutputStream outputStream = null;
 		// 设置响应头，控制浏览器下载该文件
 		try {
 			response.setHeader("content-disposition", "attachment;filename="
@@ -86,16 +91,13 @@ public class DownFile extends HttpServlet {
 			response.setHeader("Content_Type", "apk");
 			// 读取要下载的文件，保存到文件输入流
 			in = new FileInputStream(loadPath);
-			IOUtils.copy(in, response.getOutputStream());
+			outputStream = response.getOutputStream();
+			IOUtils.copy(in,outputStream);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				in.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
+			IOUtils.closeQuietly(in);
+			IOUtils.closeQuietly(outputStream);
 		}
 		/*
 		 * try { // 设置响应头，控制浏览器下载该文件 response.setHeader("content-disposition",

@@ -4,6 +4,10 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	metadata-complete="true" version="2.5">
 	<display-name>jucaipen</display-name>
+	<welcome-file-list>
+	        <welcome-file>login.jsp</welcome-file>
+	</welcome-file-list>
+	
 	<servlet>
 		<servlet-name>QuerryAdvise</servlet-name>
 		<servlet-class>com.jucaipen.base.QuerryAdvise</servlet-class>
@@ -1008,7 +1012,7 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>LoginServer</servlet-name>
-		<url-pattern>/LoginServer</url-pattern>
+		<url-pattern>/login</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>WebPush</servlet-name>
@@ -1337,6 +1341,8 @@
         <filter-name>osFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    
+    
   
   
 </web-app>

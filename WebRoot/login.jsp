@@ -22,7 +22,7 @@
 </head>
 
 <body>
-    <form action="LoginServer" method="post">
+    <form action="login" method="post">
 	<div align="center" style="text-align: center; margin-top:20%;">
 		输入账号:&nbsp;&nbsp;&nbsp;<input type="text" name="account">
 	</div>

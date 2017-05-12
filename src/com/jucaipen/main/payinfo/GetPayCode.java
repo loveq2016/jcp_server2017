@@ -63,43 +63,30 @@ public class GetPayCode extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		
 		String type = request.getParameter("type");
-		String bills = request.getParameter("bills");
 		String code = request.getParameter("orderCode");
+		System.out.println("type=="+type);
 		if (StringUtil.isNotNull(type) && StringUtil.isInteger(type)) {
 			int t = Integer.parseInt(type);
 			if (t == 1) {
 				// 支付宝
-				if (StringUtil.isNotNull(bills) && StringUtil.isInteger(bills)) {
-					int b = Integer.parseInt(bills);
-					DecimalFormat df = new DecimalFormat(".00");
-					result = getPayInfo(df.format(b));
-				} else {
-					result = JsonUtil.getRetMsg(1, "bills 参数异常");
-				}
+				
 			} else {
 				// 微信
-				if (StringUtil.isNotNull(bills) && StringUtil.isInteger(bills)) {
 					if(StringUtil.isNotNull(code)){
 						ChargeOrder order = ChargeOrderSer.findOrderByOrderCode(code);
 						if(order!=null){
-							result = orderInit(bills+"",request.getRemoteAddr(),code);
+							result = orderInit(order.getChargeMoney()+"",request.getRemoteAddr(),code);
 						}else{
 							result=JsonUtil.getRetMsg(9,"订单不存在");
 						}
 					}else{
 						result=JsonUtil.getRetMsg(8,"订单号不能为空");
 					}
-					
-				} else {
-					result = JsonUtil.getRetMsg(1, "bills 参数异常");
-				}
 			}
 		} else {
 			result = JsonUtil.getRetMsg(2, "type 参数异常");
 		}
-		System.out.println(result);
 		out.println(result);
 		out.flush();
 		out.close();
@@ -136,7 +123,7 @@ public class GetPayCode extends HttpServlet {
 
 	/**
 	 * @param bills
-	 * @return 微信订单      //ULquRXtJG6tyiUU23H8bSbdJJE9z6yFv
+	 * @return 微信订单      //ULquRXtJG6tyiUU23H8bSbdJJE9z6yFv  
 	 */
 	public String orderInit(String bills,String ip,String order) {
 		String sendPostStr = LoginUtil.sendPostStr(wxUrl,genProductArgs(order,bills,ip),null);
@@ -169,7 +156,7 @@ public class GetPayCode extends HttpServlet {
 			packageParams.add(new BasicNameValuePair("notify_url", "http://121.40.227.121:8080/AccumulateWealth/jucaipen/rechargeResult"));
 			packageParams.add(new BasicNameValuePair("out_trade_no",order));
 			packageParams.add(new BasicNameValuePair("spbill_create_ip",ip));
-			packageParams.add(new BasicNameValuePair("total_fee", bills));
+			packageParams.add(new BasicNameValuePair("total_fee", Integer.parseInt(bills)*100+""));
 			packageParams.add(new BasicNameValuePair("trade_type", "APP"));
 			String sign = genPackageSign(packageParams);
 			packageParams.add(new BasicNameValuePair("sign", sign));
