@@ -206,7 +206,13 @@ public class OpenGurdian extends HttpServlet {
 
 		AccountDetail detailJ = new AccountDetail();
 		detailJ.setDetailMoney(b);
-		detailJ.setRemark("成为【" + teacher.getNickName() + "】的守护者【" + d + "】天");
+		if(type==1){
+			detailJ.setRemark("购买【" + teacher.getNickName() + "】的视频直播");
+		}else if(type==2){
+			detailJ.setRemark("购买【" + teacher.getNickName() + "】的视频点播");
+		}else{
+			detailJ.setRemark("成为【" + teacher.getNickName() + "】的守护者【" + d + "】天");
+		}
 		detailJ.setDetailType(1);
 		detailJ.setState(0);
 		detailJ.setOrderCode("");
@@ -217,8 +223,14 @@ public class OpenGurdian extends HttpServlet {
 
 		AccountDetail detailIntegeral = new AccountDetail();
 		detailIntegeral.setDetailMoney(b);
-		detailIntegeral.setRemark("成为【" + teacher.getNickName() + "】的守护者【" + d
-				+ "】天，账户积分+" + b);
+		if(type==1){
+			detailIntegeral.setRemark("购买【" + teacher.getNickName() + "】的视频直播,账户积分+" + b);
+		}else if(type==2){
+			detailIntegeral.setRemark("购买【" + teacher.getNickName() + "】的视频点播,账户积分+" + b);
+		}else{
+			detailIntegeral.setRemark("成为【" + teacher.getNickName() + "】的守护者【" + d
+					+ "】天，账户积分+" + b);
+		}
 		detailIntegeral.setDetailType(0);
 		detailIntegeral.setState(1);
 		detailIntegeral.setOrderCode("");
@@ -238,10 +250,15 @@ public class OpenGurdian extends HttpServlet {
 		detailAccount.setRecoderType(2);
 		detailAccount.setType(8);
 		detailAccount.setIp(ip);
-		detailAccount.setRemark("成为【" + teacher.getNickName() + "】的守护者【" + d
-				+ "】天");
+		if(type==1){
+			detailAccount.setRemark("购买【" + teacher.getNickName() + "】的视频直播");
+		}else if(type==2){
+			detailAccount.setRemark("购买【" + teacher.getNickName() + "】的视频点播");
+		}else{
+			detailAccount.setRemark("成为【" + teacher.getNickName() + "】的守护者【" + d
+					+ "】天");
+		}
 		detailAccount.setUserId(uId);
-
 		Contribute contribute = new Contribute();
 		contribute.setAllJucaiBills(b);
 		contribute.setComType(3);

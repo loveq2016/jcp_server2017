@@ -27,6 +27,7 @@ import com.jucaipen.utils.StringUtil;
 @SuppressWarnings("serial")
 public class QuerryCity extends HttpServlet {
 	private String result;
+	private boolean hasCache;
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
@@ -36,6 +37,7 @@ public class QuerryCity extends HttpServlet {
 		String userAgent=request.getParameter("User-Agent");
 		ClientOsInfo os=HeaderUtil.getMobilOS(userAgent);
 		int isDevice=HeaderUtil.isVaildDevice(os, userAgent);
+		hasCache=(Boolean) request.getServletContext().getAttribute("hasCache");
 		if(isDevice==HeaderUtil.PHONE_APP){
 			String provinceId=request.getParameter("provinceId");
 			if(StringUtil.isInteger(provinceId)){
@@ -53,7 +55,7 @@ public class QuerryCity extends HttpServlet {
 	}
 
 	private String initCityInfo(int pId) {
-		Object cached = DataManager.getCached(Constant.DEFAULT_CACHE, "city"+pId);
+		Object cached = DataManager.getCached(Constant.DEFAULT_CACHE, "city"+pId,hasCache);
 		if(cached!=null){
 			return cached.toString();
 		}

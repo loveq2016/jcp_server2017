@@ -8,7 +8,7 @@ public class CmdTest {
 		User user=new User();
 		user.setUserName("≈÷¥Û¡≥");
 		utils.addToCache("name", user);
-		User u=(User) utils.getCacheElement("name");
+		User u=(User) utils.getCacheElement("name",true);
 		System.out.println("c==="+u.getUserName());
 		
 	}

@@ -27,6 +27,7 @@ import com.jucaipen.utils.StringUtil;
 public class LatestList extends HttpServlet {
 	private static final long serialVersionUID = -1470334903009105509L;
 	private String result;
+	private boolean hasCache;
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
@@ -36,6 +37,7 @@ public class LatestList extends HttpServlet {
 		String userAgent = request.getParameter("User-Agent");
 		ClientOsInfo os = HeaderUtil.getMobilOS(userAgent);
 		int isDevice = HeaderUtil.isVaildDevice(os, userAgent);
+		hasCache=(Boolean) request.getServletContext().getAttribute("hasCache");
 		if (isDevice == HeaderUtil.PHONE_APP) {
 			String type = request.getParameter("type");
 			String teacherId = request.getParameter("teacherId");
@@ -66,7 +68,7 @@ public class LatestList extends HttpServlet {
 	public String initlist(int t, int tId) {
 		// 初始化榜单信息
 		List<Contribute> contributes;
-		Object cached = DataManager.getCached(Constant.TEACHER_CACHE,t+"userLast"+tId);
+		Object cached = DataManager.getCached(Constant.TEACHER_CACHE,t+"userLast"+tId,hasCache);
 		if(cached!=null){
 			return cached.toString();
 		}
@@ -83,7 +85,7 @@ public class LatestList extends HttpServlet {
 		for (Contribute contribute : contributes) {
 			int userId = contribute.getUserId();
 			User user ;
-			Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE, "userInfo"+userId);
+			Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE, "userInfo"+userId,hasCache);
 			if(cached2==null){
 				user = UserServer.findUserById(userId);
 				new CacheUtils(Constant.TEACHER_CACHE).addToCache( "userInfo"+userId, user);

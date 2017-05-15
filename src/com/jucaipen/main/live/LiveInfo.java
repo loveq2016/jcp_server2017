@@ -41,6 +41,7 @@ public class LiveInfo extends HttpServlet {
 	private String result;
 	//在线人数
 	private int memberNum;
+	private boolean hasCache;
 	//腾讯云APPID
 	private static final String appId="1400028429";
 	//获取用户 userSign url
@@ -55,6 +56,7 @@ public class LiveInfo extends HttpServlet {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		String teacherId = request.getParameter("teacherId");
+		hasCache=(Boolean) request.getServletContext().getAttribute("hasCache");
 		if (StringUtil.isNotNull(teacherId) && StringUtil.isInteger(teacherId)) {
 			int tId = Integer.parseInt(teacherId);
 			result = getOnLineInfo(tId);
@@ -95,7 +97,7 @@ public class LiveInfo extends HttpServlet {
 		FamousTeacher teacher;
 		int bills=0;
 		int number=0;
-		Object cached = DataManager.getCached(Constant.VIDEO_CACHE,"liveInfo"+tId);
+		Object cached = DataManager.getCached(Constant.VIDEO_CACHE,"liveInfo"+tId,hasCache);
 		if(cached!=null){
 			return cached.toString();
 		}
@@ -110,7 +112,7 @@ public class LiveInfo extends HttpServlet {
 			}
 		}
 		//获取讲师基本信息
-		Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE, "teacherInfo"+tId);
+		Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE, "teacherInfo"+tId,hasCache);
 		if(cached2==null){
 			 teacher = FamousTeacherSer.findTeacherBaseInfo(tId);
 			 new CacheUtils(Constant.TEACHER_CACHE).addToCache("teacherInfo"+tId, teacher);
@@ -121,7 +123,7 @@ public class LiveInfo extends HttpServlet {
 		int userId = teacher.getFk_UserId();
 		// 获取直播室信息
 		List<User> list;
-		Object cached3 = DataManager.getCached(Constant.TEACHER_CACHE, "userInfo"+userId);
+		Object cached3 = DataManager.getCached(Constant.TEACHER_CACHE, "userInfo"+userId,hasCache);
 		if(cached3==null){
 			list = getMember(userId);
 			new CacheUtils(Constant.TEACHER_CACHE).addToCache("userInfo"+userId, list);
@@ -159,7 +161,7 @@ public class LiveInfo extends HttpServlet {
 								&& StringUtil.isInteger(account)) {
 							int userId=Integer.parseInt(account);
 							User user;
-							Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "userInfo"+userId);
+							Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "userInfo"+userId,hasCache);
 							if(cached==null){
 								user = UserServer.findBaseInfoById(Integer
 										.parseInt(account));

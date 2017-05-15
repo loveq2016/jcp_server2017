@@ -46,7 +46,7 @@ public class LoginServer extends HttpServlet {
 						response.addCookie(cookie);*/
 						HttpSession session = request.getSession(true);
 						session.setAttribute("account", account);
-						session.setMaxInactiveInterval(60);
+						session.setMaxInactiveInterval(60*10);
 						request.getRequestDispatcher("index.jsp").forward(
 								request, response);
 					} else {

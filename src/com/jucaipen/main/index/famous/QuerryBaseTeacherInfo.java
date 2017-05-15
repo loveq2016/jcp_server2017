@@ -1,10 +1,12 @@
 package com.jucaipen.main.index.famous;
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.FamousTeacher;
 import com.jucaipen.model.Fans;
@@ -22,6 +24,7 @@ import com.jucaipen.utils.StringUtil;
 @SuppressWarnings("serial")
 public class QuerryBaseTeacherInfo extends HttpServlet {
 	private String result;
+	private boolean hasCache;
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
@@ -30,6 +33,7 @@ public class QuerryBaseTeacherInfo extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		String teacherId=request.getParameter("teacherId");
 		String userId=request.getParameter("userId");
+		hasCache=(Boolean) request.getServletContext().getAttribute("hasCache");
 		if(StringUtil.isNotNull(teacherId)){
 			if(StringUtil.isInteger(teacherId)){
 				int tId=Integer.parseInt(teacherId);
@@ -50,7 +54,7 @@ public class QuerryBaseTeacherInfo extends HttpServlet {
 		out.close();
 	}
 	private String initTeacherBaseInfo(int tId,int uId) {
-		Object cached = DataManager.getCached(Constant.FAST_CANCHE, uId+"teacherInfo"+tId);
+		Object cached = DataManager.getCached(Constant.FAST_CANCHE, uId+"teacherInfo"+tId,hasCache);
 		if(cached!=null){
 			return cached.toString();
 		}

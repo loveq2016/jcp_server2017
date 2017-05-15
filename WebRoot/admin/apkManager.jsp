@@ -23,6 +23,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
     <div align="center" style="margin-top: 10px"><a href="apkManager/LastApkInfo.jsp">最新APK版本信息</a></div>
     <div align="center" style="margin-top: 10px"><a href="apkManager/ApkRecoder.jsp">APK版本更新记录</a></div>
-    <div align="center" style="margin-top: 10px"><a href="apkManager/UploadApk.jsp">上传APK文件</a></div>
+    <div align="center" style="margin-top: 10px"><a href="apkManager/UploadWebApk.jsp">上传APK文件</a></div>
   </body>
 </html>

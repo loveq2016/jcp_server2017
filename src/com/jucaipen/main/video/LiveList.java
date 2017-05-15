@@ -3,14 +3,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.Account;
 import com.jucaipen.model.ClientOsInfo;
 import com.jucaipen.model.FamousTeacher;
@@ -32,8 +29,6 @@ import com.jucaipen.service.TxtLiveSaleSer;
 import com.jucaipen.service.TxtLiveSer;
 import com.jucaipen.service.VideoLiveServer;
 import com.jucaipen.service.VideoServer;
-import com.jucaipen.utils.CacheUtils;
-import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.HeaderUtil;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.LiveUtil;
@@ -77,6 +72,7 @@ public class LiveList extends HttpServlet {
 		userAgent = request.getParameter("User-Agent");
 		ClientOsInfo os = HeaderUtil.getMobilOS(userAgent);
 		int isDevice = HeaderUtil.isVaildDevice(os, userAgent);
+		response.setDateHeader("expires", 0); 
 		ServletContext servletContext = request.getServletContext();
 		check=(Boolean) servletContext.getAttribute("check");
 		if (isDevice == HeaderUtil.PHONE_APP) {
@@ -137,10 +133,10 @@ public class LiveList extends HttpServlet {
 		if (uId <= 0) {
 			isPurch = 1;
 		}
-		Object cached = DataManager.getCached(Constant.VIDEO_CACHE, "recoderVideo");
+		/*Object cached = DataManager.getCached(Constant.VIDEO_CACHE, "recoderVideo");
 		if(cached!=null){
 			return cached.toString();
-		}
+		}*/
 		
 		teachers.clear();
 		List<VideoLive> videos = VideoLiveServer.findRecoderLive(4);
@@ -228,7 +224,7 @@ public class LiveList extends HttpServlet {
 			}
 		}
 		String liveList = JsonUtil.getLiveList(videos, teachers);
-		new CacheUtils(Constant.VIDEO_CACHE).addToCache("recoderVideo", liveList);
+		//new CacheUtils(Constant.VIDEO_CACHE).addToCache("recoderVideo", liveList);
 		return liveList;
 	}
 
@@ -240,10 +236,10 @@ public class LiveList extends HttpServlet {
 			isPurch = 1;
 		}
 		teachers.clear();
-		Object cached = DataManager.getCached(Constant.VIDEO_CACHE, "allVideo"+p);
+		/*Object cached = DataManager.getCached(Constant.VIDEO_CACHE, "allVideo"+p);
 		if(cached!=null){
 			return cached.toString();
-		}
+		}*/
 		
 		List<VideoLive> videos = VideoLiveServer.findAll(p);
 		if (videos != null) {
@@ -260,14 +256,14 @@ public class LiveList extends HttpServlet {
 				// 播放url
 				if(live.getIsEnd()!=2){
 					liveType=2;
-					RecoderVideo recoderVideo;
-					Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE, "recoderVideos"+live.getId());
+					RecoderVideo recoderVideo=RecoderVideoServer.getLastRecoderVideo(tId);;
+					/*Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE, "recoderVideos"+live.getId());
 					if(cached2==null){
-						recoderVideo=RecoderVideoServer.getLastRecoderVideo(tId);
+						
 						new CacheUtils(Constant.TEACHER_CACHE).addToCache("teacheVideos"+tId, recoderVideo);
 					}else{
 						recoderVideo=(RecoderVideo) cached2;
-					}
+					}*/
 					
 					//直播已经结束 --返回最近的录播url
 					// 是否收费 0 否 1 是
@@ -299,17 +295,18 @@ public class LiveList extends HttpServlet {
 			//	if (live.isCharge()) {
 					if (uId > 0) {
 						// 是否开通守护
-						LiveRecoder resoder;
+						LiveRecoder resoder= LiveRecoderSer
+								.getRecoderByLiveId(live.getId());
 						Account account = AccountSer.findAccountByUserId(uId);
 						live.setGradian(LiveUtil.isGradian(tId, uId));
-						Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE, "recoderVideos"+live.getId());
+						/*Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE, "recoderVideos"+live.getId());
 						if(cached2==null){
 							 resoder = LiveRecoderSer
 									.getRecoderByLiveId(live.getId());
 							new CacheUtils(Constant.TEACHER_CACHE).addToCache("recoderVideos"+live.getId(), resoder);
 						}else{
 							resoder=(LiveRecoder) cached2;
-						}
+						}*/
 						if(resoder!=null){
 							LiveRecoderSale liveSale=null;
 							LiveRecoderSale sale = LiveRecoderSaleSer
@@ -345,7 +342,7 @@ public class LiveList extends HttpServlet {
 			}
 		}
 		String liveList = JsonUtil.getLiveList(videos, teachers);
-		new CacheUtils(Constant.VIDEO_CACHE).addToCache("allVideo"+p, liveList);
+	//	new CacheUtils(Constant.VIDEO_CACHE).addToCache("allVideo"+p, liveList);
 		return liveList;
 	}
 

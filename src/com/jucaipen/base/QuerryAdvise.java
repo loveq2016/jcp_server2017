@@ -28,6 +28,7 @@ import com.jucaipen.utils.StringUtil;
 public class QuerryAdvise extends HttpServlet {
 	private static final long serialVersionUID = 6773256897253049118L;
 	private String result;
+	private boolean hasCache;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -37,6 +38,7 @@ public class QuerryAdvise extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		String userAgent = request.getHeader("User-Agent");
 		ClientOsInfo os = HeaderUtil.getMobilOS(userAgent);
+		hasCache=(Boolean) request.getServletContext().getAttribute("hasCache");
 		int isDevice = HeaderUtil.isVaildDevice(os, userAgent);
 		if (isDevice == HeaderUtil.PHONE_APP) {
 			String typeId = request.getParameter("type");
@@ -70,7 +72,7 @@ public class QuerryAdvise extends HttpServlet {
 
 	private String initIndexPageData(int type) {
 		// ≈–∂œª∫¥Ê «∑Ò¥Ê‘⁄
-		Object cached = DataManager.getCached(Constant.DEFAULT_CACHE,"ads");
+		Object cached = DataManager.getCached(Constant.DEFAULT_CACHE,"ads"+type,hasCache);
 		if (cached != null) {
 			return cached.toString();
 		}
@@ -83,7 +85,7 @@ public class QuerryAdvise extends HttpServlet {
 			advertives = AdverSer.findAdverByPid(13);
 		}
 		String advertive1 = JsonUtil.getAdvertive1(advertives);
-		new CacheUtils(Constant.DEFAULT_CACHE).addToCache("ads", advertive1);
+		new CacheUtils(Constant.DEFAULT_CACHE).addToCache("ads"+type, advertive1);
 		return MsgCode.CURRENT_VERSION == MsgCode.HISTORY_VISION_1 ? advertive1
 				: JsonUtil.getAdvertive(advertives, MsgCode.RET_SUCCESS_CODE,
 						MsgCode.RET_SUCCESS);

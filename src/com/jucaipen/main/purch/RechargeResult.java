@@ -140,9 +140,11 @@ public class RechargeResult extends HttpServlet {
 				}
 			}else{
 				System.out.println("正在进行微信支付-------------------------------------------");
-				System.out.println("appId="+appid+"\n"+"tradeNo="+tradeNo+"\n"+"total_amount="+total_amount+"\n"+"orderTime="+orderTime+"\n"
-						+"payTime="+payTime
-						);
+				System.out.println("appId="+appid);
+				System.out.println("tradeNo="+tradeNo);
+				System.out.println("total_amount="+total_amount);
+				System.out.println("orderTime="+orderTime);
+				System.out.println("payTime="+payTime);
 			}
 			int uId = order.getUserId();
 			double amount = Double.valueOf(total_amount);

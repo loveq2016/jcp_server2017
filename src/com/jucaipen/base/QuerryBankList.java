@@ -25,6 +25,7 @@ import com.jucaipen.utils.MsgCode;
 @SuppressWarnings("serial")
 public class QuerryBankList extends HttpServlet {
 	private String result;
+	private boolean hasCache;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -32,6 +33,7 @@ public class QuerryBankList extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
+		hasCache=(Boolean) request.getServletContext().getAttribute("hasCache");
 		result = initBankList();
 		out.println(result);
 		out.flush();
@@ -40,7 +42,7 @@ public class QuerryBankList extends HttpServlet {
 
 	private String initBankList() {
 		// 初始化银行卡列表
-		Object cached = DataManager.getCached(Constant.DEFAULT_CACHE, "bankList");
+		Object cached = DataManager.getCached(Constant.DEFAULT_CACHE, "bankList",hasCache);
 		if(cached!=null){
 			return cached.toString();
 		}

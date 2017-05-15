@@ -1,8 +1,6 @@
 package com.jucaipen.main.order;
-
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +12,6 @@ import com.jucaipen.model.Special;
 import com.jucaipen.model.Tactics;
 import com.jucaipen.model.TacticsSale;
 import com.jucaipen.model.User;
-import com.jucaipen.model.Video;
 import com.jucaipen.service.AccountSer;
 import com.jucaipen.service.FamousTeacherSer;
 import com.jucaipen.service.GuardianSer;
@@ -23,7 +20,6 @@ import com.jucaipen.service.SpecialSer;
 import com.jucaipen.service.TacticsSaleSer;
 import com.jucaipen.service.TacticsSer;
 import com.jucaipen.service.UserServer;
-import com.jucaipen.service.VideoServer;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.StringUtil;
 import com.jucaipen.utils.TimeUtils;

@@ -25,6 +25,8 @@ public class Control extends HttpServlet {
 		String yy=request.getParameter("yy");
 		String fun=request.getParameter("fun");
 		String code=request.getParameter("code");
+		String cacheSwith=request.getParameter("cacheSwith");
+		// 审核状态
 		if(StringUtil.isNotNull(code)&&code.equals("jcp123")&&StringUtil.isNotNull(yy)){
 			if(yy.equals("on")){
 				 request.getServletContext().setAttribute("check", true);
@@ -38,7 +40,7 @@ public class Control extends HttpServlet {
 		}
 		
 		
-		
+		// 功能展示
 		if(StringUtil.isNotNull(code)&&code.equals("jcp123")&&StringUtil.isNotNull(fun)){
 			if(fun.equals("on")){
 				 request.getServletContext().setAttribute("expand", true);
@@ -50,6 +52,20 @@ public class Control extends HttpServlet {
 		}else{
 			result="操作码验证失败";
 		}
+		
+		//  启用 关闭缓存
+		if(StringUtil.isNotNull(code)&&code.equals("jcp123")&&StringUtil.isNotNull(cacheSwith)){
+			if(fun.equals("on")){
+				 request.getServletContext().setAttribute("hasCache", true);
+				 result="开启缓存--操作成功";
+			}else{
+				 request.getServletContext().setAttribute("hasCache", false);
+				 result="关闭缓存--操作成功";
+			}
+		}else{
+			result="操作码验证失败";
+		}
+		
 		request.setAttribute("result", result);
 		request.getRequestDispatcher("result.jsp").forward(request, response);
 		out.flush();

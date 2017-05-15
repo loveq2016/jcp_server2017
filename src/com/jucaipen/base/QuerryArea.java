@@ -29,6 +29,7 @@ import com.jucaipen.utils.StringUtil;
 @SuppressWarnings("serial")
 public class QuerryArea extends HttpServlet {
 	private String result;
+	private boolean hasCache;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -39,6 +40,7 @@ public class QuerryArea extends HttpServlet {
 		String userAgent = request.getParameter("User-Agent");
 		ClientOsInfo os = HeaderUtil.getMobilOS(userAgent);
 		int isDevice = HeaderUtil.isVaildDevice(os, userAgent);
+		hasCache=(Boolean) request.getServletContext().getAttribute("hasCache");
 		if (isDevice == HeaderUtil.PHONE_APP) {
 			String cityId = request.getParameter("cityId");
 			if (StringUtil.isInteger(cityId)) {
@@ -62,7 +64,7 @@ public class QuerryArea extends HttpServlet {
 
 	private String initAreaData(int cId) {
 		// 初始化区信息
-		Object cached = DataManager.getCached(Constant.DEFAULT_CACHE, "area"+cId);
+		Object cached = DataManager.getCached(Constant.DEFAULT_CACHE, "area"+cId,hasCache);
 		if(cached!=null){
 			return cached.toString();
 		}

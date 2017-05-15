@@ -31,6 +31,7 @@ import com.jucaipen.utils.StringUtil;
 @SuppressWarnings("serial")
 public class QuerryTeacher extends HttpServlet {
 	private String result;
+	private boolean hasCache;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -41,6 +42,7 @@ public class QuerryTeacher extends HttpServlet {
 		String userAgent = request.getParameter("User-Agent");
 		ClientOsInfo os = HeaderUtil.getMobilOS(userAgent);
 		int isDevice = HeaderUtil.isVaildDevice(os, userAgent);
+		hasCache=(Boolean) request.getServletContext().getAttribute("hasCache");
 		if (isDevice == HeaderUtil.PHONE_APP) {
 			String isIndex = request.getParameter("isIndex");
 			String userId = request.getParameter("userId");
@@ -87,7 +89,7 @@ public class QuerryTeacher extends HttpServlet {
 
 	private String initAllData(int page, int uId) {
 		// 初始化全部名师信息
-		Object cached = DataManager.getCached(Constant.TEACHER_CACHE, uId+"allTeacher"+page);
+		Object cached = DataManager.getCached(Constant.TEACHER_CACHE, uId+"allTeacher"+page,hasCache);
 		if(cached!=null){
 			return cached.toString();
 		}
@@ -97,7 +99,7 @@ public class QuerryTeacher extends HttpServlet {
 			for (FamousTeacher teacher : teachers) {
 				int tId = teacher.getId();
 				VideoLive videoLive;
-				Object cached2 = DataManager.getCached(Constant.VIDEO_CACHE, tId+"teacherVideo"+uId+page);
+				Object cached2 = DataManager.getCached(Constant.VIDEO_CACHE, tId+"teacherVideo"+uId+page,hasCache);
 				if(cached2==null){
 					videoLive = VideoLiveServer.findLiveBytId(tId);
 					new CacheUtils(Constant.TEACHER_CACHE).addToCache(tId+"teacherVideo"+uId+page, videoLive);
@@ -116,7 +118,7 @@ public class QuerryTeacher extends HttpServlet {
 
 	private String initIndexData(int uId) {
 		// 初始化首页名师推荐列表信息
-		Object cached = DataManager.getCached(Constant.RECODER_TEACHER, "indexTeacher");
+		Object cached = DataManager.getCached(Constant.RECODER_TEACHER, "indexTeacher",hasCache);
 		if(cached!=null){
 			return cached.toString();
 		}

@@ -21,6 +21,7 @@ import com.jucaipen.utils.StringUtil;
 @SuppressWarnings("serial")
 public class FamousDetailInfo extends HttpServlet {
 	private String result;
+	private boolean hasCache;
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
@@ -28,6 +29,7 @@ public class FamousDetailInfo extends HttpServlet {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		String teacherId=request.getParameter("teacherId");
+		hasCache=(Boolean) request.getServletContext().getAttribute("hasCache");
 		if(StringUtil.isNotNull(teacherId)){
 			if(StringUtil.isInteger(teacherId)){
 				int tId=Integer.parseInt(teacherId);
@@ -45,7 +47,7 @@ public class FamousDetailInfo extends HttpServlet {
 
 	private String initDetail(int tId) {
 		//初始化讲师详细信息
-		Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "teacherDetail"+tId);
+		Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "teacherDetail"+tId,hasCache);
 		if(cached!=null){
 			return cached.toString();
 		}

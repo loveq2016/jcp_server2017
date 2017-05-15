@@ -54,6 +54,13 @@ public class Recharge extends HttpServlet {
 			String payDate = request.getParameter("payDate");
 			String payType = request.getParameter("payType");
 			String ip = request.getRemoteAddr();
+			System.out.println("正在进行支付----------------------");
+			System.out.println("payType:"+payType);
+			System.out.println("payState:"+payState);
+			System.out.println("prePayDate:"+prePayDate);
+			System.out.println("payDate:"+payDate);
+			System.out.println("orderCode:"+orderCode);
+			System.out.println("userId:"+userId);
 			if (StringUtil.isNotNull(userId) && StringUtil.isInteger(userId)) {
 				int uId = Integer.parseInt(userId);
 				if (uId > 0) {
@@ -128,7 +135,7 @@ public class Recharge extends HttpServlet {
 		detailAccount.setRecoderType(1);
 		detailAccount.setType(1);
 		detailAccount.setIp(ip);
-		// 1网上银行（通联） 2支付宝 3微信支付4：余额支付 5网上银行(汇付宝)
+		// 1网上银行（通联） 2支付宝 3微信支付4：余额支付 5网上银行(汇付宝) 6 苹果支付
 		if (type == 1) {
 			detailAccount.setRemark("用户通联充值聚财币");
 		} else if (type == 2) {
@@ -137,13 +144,20 @@ public class Recharge extends HttpServlet {
 			detailAccount.setRemark("用户微信充值聚财币");
 		} else if (type == 4) {
 			detailAccount.setRemark("用户余额充值聚财币");
-		} else {
+		} else if(type==5){
 			detailAccount.setRemark("用户汇付宝充值聚财币");
+		}else if(type==6){
+			detailAccount.setRemark("苹果支付充值聚财币");
 		}
 		detailAccount.setUserId(uId);
 		int isSuccess = RollBackUtil.getInstance().recharge(orderCode, pState, payDate, ip,
 				bills, a, uId, detail, account, detailAccount, type,prePayDate,orderCodes);
-		int restBills=a.getJucaiBills()+bills;
+		int restBills=0;
+		if(pState==2){
+			restBills=a.getJucaiBills()+bills;
+		}else{
+			restBills=a.getJucaiBills();
+		}
 		return isSuccess == 1 ? JsonUtil.getPurchrResult(0, "账单更新成功",restBills,0) : JsonUtil
 				.getRetMsg(1, "账单更新失败");
 	}

@@ -67,6 +67,10 @@
 				href="admin/pushInfoManager.jsp"><font color="green" size="5"><strong>消息推送管理</strong>
 				</font> </a>
 			</td>
+			<td align="center" valign="middle" bgColor="#c0c0c0" width="10%"><a
+				href="admin/yao.jsp"><font color="green" size="5"><strong>配置管理</strong>
+				</font> </a>
+			</td>
 		</tr>
 
 

@@ -29,6 +29,7 @@ import com.jucaipen.utils.StringUtil;
 @SuppressWarnings("serial")
 public class QuerryProvince extends HttpServlet {
 	private String result;
+	private boolean hasCache;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -37,6 +38,7 @@ public class QuerryProvince extends HttpServlet {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		String userAgent=request.getParameter("User-Agent");
+		hasCache=(Boolean) request.getServletContext().getAttribute("hasCache");
 		ClientOsInfo os=HeaderUtil.getMobilOS(userAgent);
 		int isDevice=HeaderUtil.isVaildDevice(os, userAgent);
 		if(isDevice==HeaderUtil.PHONE_APP){
@@ -50,7 +52,7 @@ public class QuerryProvince extends HttpServlet {
 	}
 
 	private String initProvinceInfo() {
-		Object cached = DataManager.getCached(Constant.DEFAULT_CACHE, "province");
+		Object cached = DataManager.getCached(Constant.DEFAULT_CACHE, "province",hasCache);
 		if(cached!=null){
 			return cached.toString();
 		}

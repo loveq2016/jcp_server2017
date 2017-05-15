@@ -64,6 +64,11 @@ fieldset {
 			</div>
 			<br />
 			<div>
+				<input type="radio" name="cacheSwith" value="on" checked="checked">启用缓存<input
+					type="radio" name="cacheSwith" value="off" >关闭缓存
+			</div>
+			<br />
+			<div>
 				操作码：<input type="password" name="code">
 			</div>
 			<br />

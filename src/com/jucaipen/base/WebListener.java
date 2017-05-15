@@ -10,9 +10,12 @@ public class WebListener implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent config) {
-		//初始化缓存数据
+		//是否审核
 		config.getServletContext().setAttribute("check", false);
+		//是否启用完整功能
 		config.getServletContext().setAttribute("expand", true);
+		//是否缓存
+		config.getServletContext().setAttribute("hasCache", true);
 	/*	List<Advertive> findAdver = AdverSer.findAdverByPid(12);
 		String advertive1 = JsonUtil.getAdvertive1(findAdver);
 		new CacheUtils(Constant.DEFAULT_CACHE).addToCache("ads", advertive1);*/

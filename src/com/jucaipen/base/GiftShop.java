@@ -32,6 +32,7 @@ import com.jucaipen.utils.StringUtil;
 @SuppressWarnings("serial")
 public class GiftShop extends HttpServlet {
 	private String result;
+	private boolean hasCache;
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
@@ -41,6 +42,7 @@ public class GiftShop extends HttpServlet {
 		String userAgent=request.getParameter("User-Agent");
 		ClientOsInfo os=HeaderUtil.getMobilOS(userAgent);
 		int isDevice=HeaderUtil.isVaildDevice(os, userAgent);
+		hasCache=(Boolean) request.getServletContext().getAttribute("hasCache");
 		if(isDevice==HeaderUtil.PHONE_APP){
 			String userId = request.getParameter("userId");
 			String type = request.getParameter("type");
@@ -88,7 +90,7 @@ public class GiftShop extends HttpServlet {
 			ownJucaiBills=0;
 		}
 		List<Gifts> gifts;
-		Object cached = DataManager.getCached(Constant.FILE_CACHE, "gift"+t);
+		Object cached = DataManager.getCached(Constant.FILE_CACHE, "gift"+t,hasCache);
 		if(cached==null){
 			if(t==10){
 				//°´ÍÆ¼ö²éÑ¯

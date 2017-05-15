@@ -25,6 +25,7 @@ import com.jucaipen.utils.StringUtil;
 public class LastTeacherList extends HttpServlet {
 	private static final long serialVersionUID = 2779291546693682575L;
 	private String result;
+	private boolean hasCache;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -33,6 +34,7 @@ public class LastTeacherList extends HttpServlet {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		String type = request.getParameter("type");
+		hasCache=(Boolean) request.getServletContext().getAttribute("hasCache");
 		if (StringUtil.isNotNull(type) && StringUtil.isInteger(type)) {
 			int typeId = Integer.parseInt(type);
 			result = getTeacherLastList(typeId);
@@ -47,7 +49,7 @@ public class LastTeacherList extends HttpServlet {
 	 * @return 获取最近的讲师排行榜
 	 */
 	private String getTeacherLastList(int typeId) {
-		Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "teacherLase"+typeId);
+		Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "teacherLase"+typeId,hasCache);
 		if(cached!=null){
 			return cached.toString();
 		}
@@ -64,7 +66,7 @@ public class LastTeacherList extends HttpServlet {
 			FamousTeacher teacher;
 			VideoLive videoLive;
 			int teacherId = contribute.getTeacherId();
-			Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE, "teacherInfo"+teacherId);
+			Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE, "teacherInfo"+teacherId,hasCache);
 			if(cached2==null){
 				teacher = FamousTeacherSer
 						.findTeacherBaseInfo(teacherId);
@@ -73,7 +75,7 @@ public class LastTeacherList extends HttpServlet {
 				teacher=(FamousTeacher) cached2;
 			}
 			
-			Object cached3 = DataManager.getCached(Constant.VIDEO_CACHE, "teachervideo"+teacherId);
+			Object cached3 = DataManager.getCached(Constant.VIDEO_CACHE, "teachervideo"+teacherId,hasCache);
 			if(cached3==null){
 				videoLive=VideoLiveServer.findLiveBytId(teacherId);
 				new CacheUtils(Constant.TEACHER_CACHE).addToCache("teachervideo"+teacherId, videoLive);

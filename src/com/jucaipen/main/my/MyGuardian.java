@@ -34,6 +34,7 @@ public class MyGuardian extends HttpServlet {
 	private String result;
 	private List<FamousTeacher> teachers = new ArrayList<FamousTeacher>();
 	private List<User> users = new ArrayList<User>();
+	private boolean hasCache;
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
@@ -47,6 +48,7 @@ public class MyGuardian extends HttpServlet {
 			String userId = request.getParameter("userId");
 			String page = request.getParameter("page");
 			String type = request.getParameter("type");
+			hasCache=(Boolean) request.getServletContext().getAttribute("hasCache");
 			if (StringUtil.isNotNull(userId)) {
 				if (StringUtil.isInteger(userId)) {
 					int uId = Integer.parseInt(userId);
@@ -87,7 +89,7 @@ public class MyGuardian extends HttpServlet {
 		teachers.clear();
 		users.clear();
 		List<Guardian> guardians;
-		if(t==0){
+		/*if(t==0){
 			Object cached = DataManager.getCached(Constant.TEACHER_CACHE,"gradinlist"+uId+p);
 			if(cached!=null){
 				return cached.toString();
@@ -97,7 +99,7 @@ public class MyGuardian extends HttpServlet {
 			if(cached!=null){
 				return cached.toString();
 			}
-		}
+		}*/
 		
 		
 		if (t == 0) {
@@ -112,7 +114,7 @@ public class MyGuardian extends HttpServlet {
 			int uid = guardian.getUserId();
 			if (t == 0) {
 				FamousTeacher teacher;
-				Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "userInfo"+uId);
+				Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "userInfo"+uId,hasCache);
 				if(cached==null){
 					teacher = FamousTeacherSer.findFamousTeacherById(tId);
 					new CacheUtils(Constant.TEACHER_CACHE).addToCache("teacherInfo"+tId, teacher);
@@ -122,7 +124,7 @@ public class MyGuardian extends HttpServlet {
 				teachers.add(teacher);
 			} else {
 				User user;
-				Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "userInfo"+uId);
+				Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "userInfo"+uId,hasCache);
 				if(cached==null){
 					user = UserServer.findUserById(uid);
 					new CacheUtils(Constant.TEACHER_CACHE).addToCache("userInfo"+uId, user);
@@ -134,11 +136,11 @@ public class MyGuardian extends HttpServlet {
 		}
 		if (t == 0) {
 			String myGuardian = JsonUtil.getMyGuardian(guardians, teachers);
-			new CacheUtils(Constant.VIDEO_CACHE).addToCache("gradinlist"+uId+p, myGuardian);
+		//	new CacheUtils(Constant.VIDEO_CACHE).addToCache("gradinlist"+uId+p, myGuardian);
 			return myGuardian;
 		} else {
 			 String guardianMy = JsonUtil.getGuardianMy(guardians, users);
-			 new CacheUtils(Constant.VIDEO_CACHE).addToCache("gradinMelist"+uId+p, guardianMy);
+		//	 new CacheUtils(Constant.VIDEO_CACHE).addToCache("gradinMelist"+uId+p, guardianMy);
 			return guardianMy;
 		}
 	}

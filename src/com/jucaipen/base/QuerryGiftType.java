@@ -27,6 +27,7 @@ import com.jucaipen.utils.StringUtil;
 @SuppressWarnings("serial")
 public class QuerryGiftType extends HttpServlet {
 	private String result;
+	private boolean hasCache;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -37,6 +38,7 @@ public class QuerryGiftType extends HttpServlet {
 		String userAgent = request.getParameter("User-Agent");
 		ClientOsInfo os = HeaderUtil.getMobilOS(userAgent);
 		int isDevice = HeaderUtil.isVaildDevice(os, userAgent);
+		hasCache=(Boolean) request.getServletContext().getAttribute("hasCache");
 		if (isDevice == HeaderUtil.PHONE_APP) {
 		   result = initClassData();
 		} else {
@@ -49,7 +51,7 @@ public class QuerryGiftType extends HttpServlet {
 
 	private String initClassData() {
 		// 初始化礼品分类信息 left
-		Object cached = DataManager.getCached(Constant.FILE_CACHE, "giftType");
+		Object cached = DataManager.getCached(Constant.FILE_CACHE, "giftType",hasCache);
 		if(cached!=null){
 			return cached.toString();
 		}

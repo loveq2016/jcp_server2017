@@ -9,10 +9,10 @@ public class DataManager {
 	 * 
 	 *   ªÒ»°ª∫¥Ê
 	 */
-	public static Object  getCached(String cacheStore,String key){
+	public static Object  getCached(String cacheStore,String key,boolean isCache){
 		CacheUtils utils=new CacheUtils(cacheStore);
 		try {
-			return utils.getCacheElement(key);
+			return utils.getCacheElement(key,isCache);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

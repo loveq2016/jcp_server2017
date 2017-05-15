@@ -1342,6 +1342,20 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     
+    <filter>
+        <filter-name>accountFilter</filter-name>
+        <filter-class>com.jucaipen.base.AccountFilter</filter-class>
+    </filter>
+     <filter-mapping>
+        <filter-name>accountFilter</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+    </filter-mapping>
+     <filter-mapping>
+        <filter-name>accountFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
+    
+    
     
   
   

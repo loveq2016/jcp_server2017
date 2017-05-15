@@ -1,16 +1,12 @@
 package com.jucaipen.main.my;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.ApplyDetails;
 import com.jucaipen.model.ApplyTeacher;
 import com.jucaipen.model.FamousTeacher;
@@ -19,8 +15,6 @@ import com.jucaipen.service.ApplyDetailsSer;
 import com.jucaipen.service.ApplyTeacherSer;
 import com.jucaipen.service.FamousTeacherSer;
 import com.jucaipen.service.UserServer;
-import com.jucaipen.utils.CacheUtils;
-import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.LoginUtil;
 import com.jucaipen.utils.StringUtil;
@@ -66,10 +60,10 @@ public class UserBaseInfo extends HttpServlet {
 	}
 
 	private String initBaseInfo(int uId) {
-		Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "userBaseInfo"+uId);
+		/*Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "userBaseInfo"+uId);
 		if(cached!=null){
 			return cached.toString();
-		}
+		}*/
 		// 是否是讲师
 		FamousTeacher teacher = FamousTeacherSer.findFamousTeacherByUserId(uId);
 		// 申请是否成功
@@ -99,7 +93,7 @@ public class UserBaseInfo extends HttpServlet {
 
 		user.setApplyState(apply != null ? apply.getState() : -1);
 		String baseInfo = JsonUtil.getBaseInfo(user);
-		new CacheUtils(Constant.TEACHER_CACHE).addToCache("userBaseInfo"+uId, baseInfo);
+	//	new CacheUtils(Constant.TEACHER_CACHE).addToCache("userBaseInfo"+uId, baseInfo);
 		return baseInfo;
 	}
 
