@@ -32,26 +32,6 @@ public class MyFilter implements Filter {
 			new PrintLog(ua, req, resp,uri,localAddr,host).start();
 		}
 		chain.doFilter(new BaseRequest(req), resp);
-		// 过滤访问 ios android 第三方回调
-		/*if (localAddr.equals("121.40.227.121")) {
-			if (ua.contains("iPhone") || ua.contains("Android")
-					|| ua.contains("iOS") || 
-					uri.contains("livenotify")
-					||uri.contains("rechargeResult")
-					||uri.contains("jsp")
-					||uri.contains("html")
-					||uri.contains("upload")
-					||host.equals("192.168.1.134")
-					) {
-				chain.doFilter(new BaseRequest(req), resp);
-			} else {
-				//resp.sendError(205, "请求失败");
-			}
-		} else if (localAddr.equals("192.168.1.134")) {
-			 chain.doFilter(new BaseRequest(req), resp);
-		} else {
-			//resp.sendError(205, "请求失败");
-		}*/
 	}
 
 	@Override
@@ -78,36 +58,24 @@ public class MyFilter implements Filter {
 
 		@Override
 		public void run() {
-		//	Visitor visitor=new Visitor();
 			String format = TimeUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
 			String ip1 = req.getHeader("x-forwarded-for");
 			System.out.println("时间:"
 					+format );
 			System.out.println("请求Agent:" + ua);
-		//	visitor.setHead(ua);
 			if (!StringUtils.isEmpty(ua)) {
 				if (ua.contains("Android")) {
-				//	visitor.setDevType(1);
 					System.out.println("设备类型:" + "Android");
 				} else if (ua.contains("iPhone")) {
-				//	visitor.setDevType(2);
 					System.out.println("设备类型:" + "iPhone");
 				} else {
-				//	visitor.setDevType(3);
 					System.out.println("设备类型:" + "Unknown");
 				}
 			} else {
-			//	visitor.setDevType(3);
 				System.out.println("设备类型:" + "Unknown");
 			}
-		//	visitor.setInsertDate(format);
 			System.out.println("请求URL:" + req.getRequestURI());
 			String ip = req.getRemoteAddr();
-		//	visitor.setIp(ip);
-		//	visitor.setUrl(uri);
-		//	visitor.setHost(host);
-		//	visitor.setHostAddress(hostAddress);
-		//	VisitorService.addVisitor(visitor);
 			System.out.println("设备IP：" + (ip1 == null ? ip : ip1));
 			System.out
 					.println("===============================================");
