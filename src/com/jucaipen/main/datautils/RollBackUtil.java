@@ -102,11 +102,11 @@ public class RollBackUtil {
 				if (gurdianId > 0) {
 					// ÐøÔ¼
 					sta.executeUpdate("UPDATE JCP_ShouHuZhe SET EndDate='"
-							+ guardian.getEndDate() + "',State=0 WHERE Id="
+							+ guardian.getEndDate() + "',State=0,Price="+guardian.getPrice()+",Remark='"+guardian.getRemark()+"' WHERE Id="
 							+ gurdianId);
 				} else {
 					// Ç©Ô¼
-					sta.executeUpdate("INSERT INTO JCP_ShouHuZhe(FK_UserId,FK_TearchId,InsertDate,Ip,StartDate,EndDate,State) VALUES ("
+					sta.executeUpdate("INSERT INTO JCP_ShouHuZhe(FK_UserId,FK_TearchId,InsertDate,Ip,StartDate,EndDate,State,Price,Remark) VALUES ("
 							+ guardian.getUserId()
 							+ ","
 							+ guardian.getTeacherId()
@@ -119,7 +119,11 @@ public class RollBackUtil {
 							+ "','"
 							+ guardian.getEndDate()
 							+ "',"
-							+ guardian.getState() + ")");
+							+ guardian.getState() 
+							+ ","
+							+guardian.getPrice()+",'"
+							+guardian.getRemark()+"')"
+							);
 				}
 
 			}

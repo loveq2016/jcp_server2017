@@ -19,6 +19,12 @@ public class UserServer {
 		UserDao dao = new UserImp();
 		return dao.findUserChatInfo(uId);
 	}
+	
+	
+	public static int findIsTest(int uId){
+		UserDao dao = new UserImp();
+		return dao.findIsTest(uId);
+	}
 
 	public static User findUserByUserNameOrMobile(String uName) {
 		UserDao dao = new UserImp();

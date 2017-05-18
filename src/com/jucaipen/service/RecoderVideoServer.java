@@ -31,9 +31,9 @@ public class RecoderVideoServer{
 	 * @param page
 	 * @return  获取讲师下的所有录播
 	 */
-	public static List<RecoderVideo>  getAllRecoderVideo(int teacherId,int page){
+	public static List<RecoderVideo>  getAllRecoderVideo(int teacherId,int page,double pageSize){
 		RecoderVideoDao dao=new RecoderVideoImp();
-		return dao.getAllRecoderVideo(teacherId,page);
+		return dao.getAllRecoderVideo(teacherId,page,pageSize);
 	}
 	
 	

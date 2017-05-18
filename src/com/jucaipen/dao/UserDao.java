@@ -20,6 +20,8 @@ public interface UserDao {
 	
 	public User findUserByUserNameOrMobile(String uName);
 	
+	public  int findIsTest(int uId);
+	
 	
 	/**
 	 * @param userId

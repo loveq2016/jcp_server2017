@@ -1,22 +1,20 @@
 package com.jucaipen.main.live;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
+import com.google.gson.JsonObject;
 import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.Contribute;
-import com.jucaipen.model.FamousTeacher;
 import com.jucaipen.model.User;
 import com.jucaipen.service.ContributeSer;
 import com.jucaipen.service.FamousTeacherSer;
@@ -33,34 +31,38 @@ import com.jucaipen.utils.StringUtil;
  *         更新直播间信息
  */
 public class LiveInfo extends HttpServlet {
-	//获取群成员 url
-	private String baseUrl = "https://console.tim.qq.com/v4/group_open_http_svc/get_group_info";
+	// 获取群成员 url
+	private String baseUrl = "https://console.tim.qq.com/v4/group_open_http_svc/get_group_member_info";
+	// private String baseUrl =
+	// "https://console.tim.qq.com/v4/group_open_http_svc/get_group_info";
 	private Map<String, String> param = new HashMap<String, String>();
-	//房间id 集合列表
+	// 房间id 集合列表
 	private List<String> ids = new ArrayList<String>();
 	private String result;
-	//在线人数
+	// 在线人数
 	private int memberNum;
 	private boolean hasCache;
-	//腾讯云APPID
-	private static final String appId="1400028429";
-	//获取用户 userSign url
+	// 腾讯云APPID
+	private static final String appId = "1400028429";
+	// 获取用户 userSign url
 	private static final String GET_SIGN = "http://www.jucaipen.com/ashx/AndroidUser.ashx?action=GetUserSig";
 	private static final long serialVersionUID = 1L;
-	//管理者账号
-	private static final String account = "admin";
+
+	// 管理者账号
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
+		hasCache = (Boolean) request.getServletContext().getAttribute("hasCache");
 		String teacherId = request.getParameter("teacherId");
-		hasCache=(Boolean) request.getServletContext().getAttribute("hasCache");
+		hasCache = (Boolean) request.getServletContext().getAttribute(
+				"hasCache");
 		if (StringUtil.isNotNull(teacherId) && StringUtil.isInteger(teacherId)) {
 			int tId = Integer.parseInt(teacherId);
 			result = getOnLineInfo(tId);
-		} else{
+		} else {
 			result = JsonUtil.getRetMsg(1, "参数异常");
 		}
 		out.println(result);
@@ -72,19 +74,26 @@ public class LiveInfo extends HttpServlet {
 	 * 获取聊天室详细信息
 	 */
 	public String getRoomInfo(List<String> ids) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("{");
-		buffer.append("\"GroupIdList\":[");
-		for (String id : ids) {
-			buffer.append("\"" + id + "\"");
-			buffer.append(",");
-		}
-		buffer.replace(buffer.length() - 1, buffer.length(), "");
-		buffer.append("]");
-		buffer.append("}");
-		return LoginUtil.sendPostStr(
-				createUrl(baseUrl, getSign(account), account),
-				buffer.toString(),null);
+		/*
+		 * StringBuffer buffer = new StringBuffer(); buffer.append("{"); //
+		 * groupList buffer.append("\"GroupIdList\":["); for (String id : ids) {
+		 * buffer.append("\"" + id + "\""); buffer.append(","); }
+		 * buffer.replace(buffer.length() - 1, buffer.length(), "");
+		 * buffer.append("]"); buffer.append("}");
+		 */
+
+		/*
+		 * { "GroupId":"@TGS#1NVTZEAE4", // 群组ID（必填） "Limit": 100, //
+		 * 最多获取多少个成员的资料 "Offset": 0 // 从第多少个成员开始获取资料 }
+		 */
+
+		JsonObject object = new JsonObject();
+		object.addProperty("GroupId", ids.get(0));
+		object.addProperty("Limit", 10);
+		object.addProperty("Offset", 0);
+
+		return LoginUtil.sendPostStr(createUrl(baseUrl, getSign("admin")),
+				object.toString(), null);
 	}
 
 	/**
@@ -94,44 +103,52 @@ public class LiveInfo extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	private String getOnLineInfo(int tId) {
 		// 1、贡献值
-		FamousTeacher teacher;
-		int bills=0;
-		int number=0;
-		Object cached = DataManager.getCached(Constant.VIDEO_CACHE,"liveInfo"+tId,hasCache);
-		if(cached!=null){
+		int roomId;
+		int bills = 0;
+		int number = 0;
+		Object cached = DataManager.getCached(Constant.VIDEO_CACHE, "liveInfo"
+				+ tId, hasCache);
+		if (cached != null) {
 			return cached.toString();
 		}
-		List<Contribute> contributes = ContributeSer.findContributeGroupByTid("year");
-		//贡献排行
-		for(int i=0;i<contributes.size();i++){
+		List<Contribute> contributes = ContributeSer
+				.findContributeGroupByTid("month");
+		// 贡献排行
+		for (int i = 0; i < contributes.size(); i++) {
 			int teacherId = contributes.get(i).getTeacherId();
-			if(teacherId==tId){
-				bills= contributes.get(i).getAllJucaiBills();
-                number=i+1;
-                break ;
+			if (teacherId == tId) {
+				bills = contributes.get(i).getAllJucaiBills();
+				number = i + 1;
+				break;
 			}
 		}
-		//获取讲师基本信息
-		Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE, "teacherInfo"+tId,hasCache);
-		if(cached2==null){
-			 teacher = FamousTeacherSer.findTeacherBaseInfo(tId);
-			 new CacheUtils(Constant.TEACHER_CACHE).addToCache("teacherInfo"+tId, teacher);
-		}else{
-			teacher=(FamousTeacher) cached2;
+		// 获取讲师基本信息
+		Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE,
+				"teacherInfo" + tId, hasCache);
+		if (cached2 == null) {
+			roomId = FamousTeacherSer.findRoomInfo(tId);
+			new CacheUtils(Constant.TEACHER_CACHE).addToCache("teacherInfo"
+					+ tId, roomId+"");
+		} else {
+			roomId = Integer.parseInt(cached2.toString());
 		}
-		
-		int userId = teacher.getFk_UserId();
 		// 获取直播室信息
 		List<User> list;
-		Object cached3 = DataManager.getCached(Constant.TEACHER_CACHE, "userInfo"+userId,hasCache);
-		if(cached3==null){
-			list = getMember(userId);
-			new CacheUtils(Constant.TEACHER_CACHE).addToCache("userInfo"+userId, list);
-		}else{
-			list=(List<User>) cached3;
+		Object cached3 = DataManager.getCached(Constant.TEACHER_CACHE,
+				"userInfo" + roomId, hasCache);
+		if (cached3 == null) {
+			list = getMember(roomId);
+			new CacheUtils(Constant.TEACHER_CACHE).addToCache("userInfo"
+					+ roomId, list);
+		} else {
+			list = (List<User>) cached3;
 		}
-		String onLineData = JsonUtil.getOnLineData(bills, list,memberNum,number);
-		new CacheUtils(Constant.VIDEO_CACHE).addToCache("liveInfo"+tId, onLineData);
+		String onLineData = JsonUtil.getOnLineData(bills, list, memberNum,
+				number);
+		if(list.size()>0){
+			new CacheUtils(Constant.VIDEO_CACHE).addToCache("liveInfo" + tId,
+					onLineData);
+		}
 		return onLineData;
 	}
 
@@ -148,34 +165,32 @@ public class LiveInfo extends HttpServlet {
 		JSONObject object = new JSONObject(roomInfo);
 		String ok = object.optString("ActionStatus");
 		if ("OK".equals(ok)) {
-			JSONArray groupInfo = object.optJSONArray("GroupInfo");
-			for (int i = 0; i < groupInfo.length();) {
-				JSONObject detail = groupInfo.optJSONObject(i);
-				JSONArray memberList = detail.optJSONArray("MemberList");
-				memberNum = detail.optInt("MemberNum", 0);
-				if (memberList != null) {
-					for (int j = 0; j < memberList.length(); j++) {
-						JSONObject member = memberList.optJSONObject(j);
-						String account = member.optString("Member_Account");
-						if (StringUtil.isNotNull(account)
-								&& StringUtil.isInteger(account)) {
-							int userId=Integer.parseInt(account);
-							User user;
-							Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "userInfo"+userId,hasCache);
-							if(cached==null){
-								user = UserServer.findBaseInfoById(Integer
-										.parseInt(account));
-								new CacheUtils(Constant.TEACHER_CACHE).addToCache("userInfo"+userId, user);
-							}else{
-								user=(User) cached;
-							}
-							//不统计房间创建者
-							if (roomId != user.getId()) {
-								users.add(user);
-							}
-						}
+			memberNum = object.optInt("MemberNum", 0);
+			JSONArray memberList = object.optJSONArray("MemberList");
+			for (int i = 0; i < memberList.length(); i++) {
+				JSONObject member = memberList.optJSONObject(i);
+				String account = member.optString("Member_Account");
+				if (StringUtil.isNotNull(account)
+						&& StringUtil.isInteger(account)) {
+					int userId = Integer.parseInt(account);
+					User user;
+					Object cached = DataManager.getCached(
+							Constant.TEACHER_CACHE, "userInfo" + userId,
+							hasCache);
+					if (cached == null) {
+						String userFace = UserServer.findFaceImageById(userId);
+						user=new User();
+						user.setId(userId);
+						user.setFaceImage(userFace);
+						new CacheUtils(Constant.TEACHER_CACHE).addToCache(
+								"userInfo" + userId, user);
+					} else {
+						user = (User) cached;
 					}
-					return users;
+					// 不统计房间创建者
+					if (roomId != user.getId()) {
+						users.add(user);
+					}
 				}
 			}
 		}
@@ -186,13 +201,19 @@ public class LiveInfo extends HttpServlet {
 	 * @return 获取管理员sign
 	 */
 	private String getSign(String a) {
+		Object cached = DataManager.getCached(Constant.CACHE_SIGN, "userSign"+a, hasCache);
+		if(cached!=null){
+			return cached.toString();
+		}
 		param.clear();
 		param.put("username", a);
 		String signResult = LoginUtil.sendHttpPost(GET_SIGN, param);
 		JSONObject object = new JSONObject(signResult);
 		boolean isCreate = object.optBoolean("Result");
-		if(isCreate) {
-			return object.optString("UserSig");
+		if (isCreate) {
+			String sign = object.optString("UserSig");
+			new CacheUtils(Constant.CACHE_SIGN).addToCache("userSign"+a, sign);
+			return sign;
 		}
 		return null;
 	}
@@ -202,11 +223,11 @@ public class LiveInfo extends HttpServlet {
 	 * @param sign
 	 * @return 拼接腾讯云URL
 	 */
-	private String createUrl(String base, String sign, String acct) {
+	private String createUrl(String base, String sign) {
 		StringBuffer buffer = new StringBuffer(base);
 		buffer.append("?usersig=" + sign + "&");
-		buffer.append("identifier=" + acct + "&");
-		buffer.append("sdkappid="+appId+"&");
+		buffer.append("identifier=admin" + "&");
+		buffer.append("sdkappid=" + appId + "&");
 		buffer.append("random=" + RandomUtils.getRandomData(8) + "&");
 		buffer.append("contenttype=json");
 		return buffer.toString();

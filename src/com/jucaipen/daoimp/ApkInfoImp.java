@@ -140,7 +140,9 @@ public class ApkInfoImp implements ApkInfoDao {
 							+ "',"
 							+ info.getIsForce()
 							+ ","
-							+ info.getLength()+")");
+							+ info.getLength()+",'"
+							+info.getWebUrl()+"')"
+							);
 			return isSuccess;
 		} catch (SQLException e) {
 			e.printStackTrace();

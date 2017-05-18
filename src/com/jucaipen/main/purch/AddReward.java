@@ -106,6 +106,10 @@ public class AddReward extends HttpServlet {
 		AccountDetail detailIntegeral = new AccountDetail();
 		Account account = AccountSer.findAccountByUserId(uId);
 		int integeral = account.getIntegeral();
+		int isTest = UserServer.findIsTest(uId);
+		if(isTest==1){
+			return JsonUtil.getPurchrResult(0,"测试账号打赏成功",account.getJucaiBills(),0);
+		}
        
 		if(markerMoney<=0){
 			return JsonUtil.getRetMsg(6,"打赏金额异常");

@@ -70,10 +70,24 @@ public class Guardian implements Serializable{
 	 */
 	private int state;
 	
+	/**
+	 *    Ö§¸¶¼Û¸ñ
+	 */
+	private int price;
 	
-	
-	
-	
+	private String remark;
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 	public String getUserFace() {
 		return userFace;
 	}

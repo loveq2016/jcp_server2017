@@ -218,8 +218,17 @@ public class User implements Serializable {
 	
 	private String applyFailReason;
 	
+	/**
+	 *   是否是测试用户    1  是     0  否
+	 */
+	private int isTestUser;
 	
-	
+	public int getIsTestUser() {
+		return isTestUser;
+	}
+	public void setIsTestUser(int isTestUser) {
+		this.isTestUser = isTestUser;
+	}
 	public String getApplyFailReason() {
 		return applyFailReason;
 	}

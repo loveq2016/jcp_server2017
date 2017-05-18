@@ -27,6 +27,7 @@ import com.jucaipen.service.LiveRecoderSer;
 import com.jucaipen.service.RecoderVideoServer;
 import com.jucaipen.service.TxtLiveSaleSer;
 import com.jucaipen.service.TxtLiveSer;
+import com.jucaipen.service.UserServer;
 import com.jucaipen.service.VideoLiveServer;
 import com.jucaipen.service.VideoServer;
 import com.jucaipen.utils.HeaderUtil;
@@ -161,6 +162,7 @@ public class LiveList extends HttpServlet {
 					if(recoderVideo!=null){
 						live.setCharge(recoderVideo.getLiveIsFree() == 2);
 						// 单次直播价格
+						live.setId(recoderVideo.getId());
 						live.setLivePrice(recoderVideo.getLivePrice());
 						live.setVideoUrl(recoderVideo.getLiveUrl1());
 						live.setRecoderId(Integer.parseInt(recoderVideo.getExt1()));
@@ -197,9 +199,9 @@ public class LiveList extends HttpServlet {
 							if(recoderId>0){
 								liveSale= LiveRecoderSaleSer
 										.getLiveSaleByUidAndLiveId(uId,recoderId,1);
-								
 							}
-							if(recoderSale!=null||liveSale!=null){
+							int isTest=UserServer.findIsTest(uId);
+							if(recoderSale!=null||liveSale!=null||isTest==1){
 								isPurch = 0;
 							}else{
 								isPurch = 1;
@@ -241,7 +243,7 @@ public class LiveList extends HttpServlet {
 			return cached.toString();
 		}*/
 		
-		List<VideoLive> videos = VideoLiveServer.findAll(p);
+		List<VideoLive> videos = VideoLiveServer.findAll(p,10.0);
 		if (videos != null) {
 			for (VideoLive live : videos) {
 				int liveType;
@@ -270,6 +272,7 @@ public class LiveList extends HttpServlet {
 					if(recoderVideo!=null){
 						live.setCharge(recoderVideo.getLiveIsFree() == 2);
 						// 单次直播价格
+						live.setId(recoderVideo.getId());
 						live.setLivePrice(recoderVideo.getLivePrice());
 						live.setVideoUrl(recoderVideo.getLiveUrl1());
 						live.setRecoderId(Integer.parseInt(recoderVideo.getExt1()));
@@ -317,7 +320,8 @@ public class LiveList extends HttpServlet {
 										.getLiveSaleByUidAndLiveId(uId,recoderId,1);
 								
 							}
-							if(sale!=null||liveSale!=null){
+							int isTest=UserServer.findIsTest(uId);
+							if(sale!=null||liveSale!=null||isTest==1){
 								isPurch = 0;
 							}else{
 								isPurch = 1;

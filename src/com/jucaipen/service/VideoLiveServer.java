@@ -32,9 +32,9 @@ public class VideoLiveServer {
 	 * @param page
 	 * @return 获取所有的直播信息
 	 */
-	public static List<VideoLive> findAll(int page) {
+	public static List<VideoLive> findAll(int page,double pageSize) {
 		VideoLiveDao dao = new VideoLiveImp();
-		return dao.getAllRoom(page);
+		return dao.getAllRoom(page,pageSize);
 	}
 	
 	

@@ -4,13 +4,10 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.http.NameValuePair;
 public class LoginUtil {
-	private static StringBuilder builder;
 	/**
 	 * @param param
 	 * @return postÇëÇóÊý¾Ý ==>string
@@ -27,7 +24,7 @@ public class LoginUtil {
 			conn.setDoInput(true);
 			conn.setDoOutput(true);
 			PrintWriter out = new PrintWriter(conn.getOutputStream());
-			builder = new StringBuilder();
+			StringBuilder builder = new StringBuilder();
 			if (param != null && param.size() > 0) {
 				for (Map.Entry<String, String> p : param.entrySet()) {
 					builder.append(p.getKey());
@@ -62,7 +59,7 @@ public class LoginUtil {
 	 */
 	public static byte[] sendGetByte(String url, Map<String, String> param) {
 		try {
-			builder = new StringBuilder(url);
+			StringBuilder builder = new StringBuilder(url);
 			if (param != null && param.size() > 0) {
 				builder.append("?");
 				for (Map.Entry<String, String> p : param.entrySet()) {
@@ -106,8 +103,7 @@ public class LoginUtil {
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");
 			conn.setRequestProperty("Proxy-Connection", "Keep-Alive");
-			  conn.setRequestProperty("Content-Type", "text/xml; charset=UTF-8");  
-			conn.setRequestProperty("accept", "*/");
+			  conn.setRequestProperty("Content-Type", "text/xml/json; charset=UTF-8");  
 			conn.setReadTimeout(1000 * 10);
 			conn.setConnectTimeout(1000 * 10);
 			conn.setDoInput(true);
@@ -140,7 +136,7 @@ public class LoginUtil {
 	 */
 	public static String sendHttpGet(String url, Map<String, String> param) {
 		try {
-			builder = new StringBuilder(url);
+			StringBuilder builder = new StringBuilder(url);
 			if (param != null && param.size() > 0) {
 				builder.append("?");
 				for (Map.Entry<String, String> p : param.entrySet()) {

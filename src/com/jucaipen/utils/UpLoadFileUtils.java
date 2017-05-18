@@ -1,4 +1,4 @@
-package com.jucaipen.utils;
+/*package com.jucaipen.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,10 +22,10 @@ import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-/**
+*//**
  * @author ylf 文件工具类
  * 
- */
+ *//*
 public class UpLoadFileUtils {
 	private Map<String, String> map;
 	private String userId;
@@ -46,7 +46,7 @@ public class UpLoadFileUtils {
 		return utils;
 	}
 
-	/**
+	*//**
 	 * @param request
 	 *            请求数据
 	 * @param tmpFile
@@ -55,7 +55,7 @@ public class UpLoadFileUtils {
 	 *            保存文件URL
 	 * @param loadPath   下载的url
 	 * @return 上传文件 返回 用户id 路径
-	 */
+	 *//*
 	public Map<String, String> upLoad(HttpServletRequest request, File tmpFile,
 			String savePath, String loadPath) {
 		map = new HashMap<String, String>();
@@ -112,10 +112,10 @@ public class UpLoadFileUtils {
 					// 注意：不同的浏览器提交的文件名是不一样的，有些浏览器提交上来的文件名是带有路径的，如：
 					// c:\a\b\1.txt，而有些只是单纯的文件名，如：1.txt
 					// 处理获取到的上传文件的文件名的路径部分，只保留文件名部分
-					/*
+					
 					 * filename = filename .substring(filename.lastIndexOf("\\")
 					 * + 1);
-					 */
+					 
 					// 得到上传文件的扩展名
 					String fileExtName = filename.substring(filename
 							.lastIndexOf(".") + 1);
@@ -177,20 +177,20 @@ public class UpLoadFileUtils {
 		return null;
 	}
 
-	/**
+	*//**
 	 * @Method: makeFileName
 	 * @Description: 生成上传文件的文件名，文件名以：uuid+"_"+文件的原始名称
 	 * @Anthor:ylf
 	 * @param filename
 	 *            文件的原始名称
 	 * @return uuid+"_"+文件的原始名称
-	 */
+	 *//*
 	private String makeFileName(String filename) { // 2.jpg
 		// 为防止文件覆盖的现象发生，要为上传文件产生一个唯一的文件名
 		return UUID.randomUUID().toString() + "_" + filename;
 	}
 
-	/**
+	*//**
 	 * 为防止一个目录下面出现太多文件，要使用hash算法打散存储
 	 * 
 	 * @Method: makePath
@@ -202,7 +202,7 @@ public class UpLoadFileUtils {
 	 * @param savePath
 	 *            文件存储路径
 	 * @return 新的存储目录
-	 */
+	 *//*
 	private String makePath(String filename, String savePath) {
 		// 得到文件名的hashCode的值，得到的就是filename这个字符串对象在内存中的地址
 		int hashcode = filename.hashCode();
@@ -221,7 +221,7 @@ public class UpLoadFileUtils {
 		return dir;
 	}
 
-	/**
+	*//**
 	 * @param fileName
 	 *            文件名
 	 * @param fileSaveRootPath
@@ -229,7 +229,7 @@ public class UpLoadFileUtils {
 	 * @param response
 	 *            给客户端响应数据
 	 * @return 下载文件
-	 */
+	 *//*
 	public Integer downFile(String fileName, String fileSaveRootPath,
 			HttpServletResponse response) {
 		// 通过文件名找出文件的所在目录
@@ -287,3 +287,4 @@ public class UpLoadFileUtils {
 	}
 
 }
+*/

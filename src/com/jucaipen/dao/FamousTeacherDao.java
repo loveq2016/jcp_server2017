@@ -19,6 +19,8 @@ public interface FamousTeacherDao {
 	 */
 	public List<FamousTeacher>  findHotTeacher(int top);
 	
+	public  int findRoomInfo(int tId);
+	
 	
 	/**
 	 * @param tId

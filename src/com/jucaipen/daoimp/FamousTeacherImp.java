@@ -577,4 +577,28 @@ public class FamousTeacherImp implements FamousTeacherDao {
 		return null;
 	}
 
+
+	@Override
+	public int findRoomInfo(int tId) {
+		try {
+			teachers.clear();
+			dbConn = JdbcUtil.connSqlServer();
+			sta = dbConn.createStatement();
+			res = sta
+					.executeQuery("SELECT FK_UserId FROM JCP_Tearcher WHERE State=0 AND Id="+tId);
+			while (res.next()) {
+				return  res.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return 0;
+	}
+
 }

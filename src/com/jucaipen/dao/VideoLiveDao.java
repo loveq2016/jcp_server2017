@@ -37,7 +37,7 @@ public interface VideoLiveDao {
 	/**
 	 * @return   获取所有房间信息
 	 */
-	public List<VideoLive> getAllRoom(int page);
+	public List<VideoLive> getAllRoom(int page,double pageSize);
 	
 	/**
 	 * @param tId

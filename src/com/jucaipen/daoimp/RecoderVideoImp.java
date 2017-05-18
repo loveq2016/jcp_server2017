@@ -18,12 +18,12 @@ public class RecoderVideoImp implements RecoderVideoDao {
 	/**
 	 * @return 查询地区信息总页数
 	 */
-	public int findTotlePager(String condition) {
+	public int findTotlePager(String condition,double pageSize) {
 		try {
 			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("SELECT  CEILING(COUNT(*)/15.0) as totlePager from JCP_Live_Recorded "
+					.executeQuery("SELECT  CEILING(COUNT(*)/"+pageSize+") as totlePager from JCP_Live_Recorded "
 							+ condition);
 			res.next();
 			int totlePager = res.getInt("totlePager");
@@ -45,24 +45,22 @@ public class RecoderVideoImp implements RecoderVideoDao {
 		try {
 			Connection dbConn = JdbcUtil.connSqlServer();
 			PreparedStatement statement = dbConn
-					.prepareStatement("SELECT TOP 1 VideoUrl_1,VideoUrl_2,VideoUrl_3,ImageUrl,LiveIdFree,FreePrice,Ext_1,PlayCountSham FROM JCP_Live_Recorded WHERE TeacherId=? AND VideoUrl_1 IS NOT NULL AND DATALENGTH(VideoUrl_1)>0 ORDER BY EndDate DESC");
+					.prepareStatement("SELECT TOP 1 VideoUrl_1,ImageUrl,LiveIdFree,FreePrice,Ext_1,PlayCountSham,Id FROM JCP_Live_Recorded WHERE TeacherId=? AND VideoUrl_1 IS NOT NULL AND DATALENGTH(VideoUrl_1)>0 ORDER BY EndDate DESC");
 			statement.setInt(1, teacherId);
 			ResultSet query = statement.executeQuery();
 			while (query.next()) {
 				String url1 = query.getString(1);
-				String url2 = query.getString(2);
-				String url3 = query.getString(3);
-				String image = query.getString(4);
-				int isFree = query.getInt(5);
-				int plice = query.getInt(6);
-				String ext1 = query.getString(7);
-				int xn=query.getInt(8);
+				String image = query.getString(2);
+				int isFree = query.getInt(3);
+				int plice = query.getInt(4);
+				String ext1 = query.getString(5);
+				int xn=query.getInt(6);
+				int id=query.getInt(7);
 				RecoderVideo recoderVideo = new RecoderVideo();
 				recoderVideo.setLiveUrl1(url1);
-				recoderVideo.setLiveUrl2(url2);
-				recoderVideo.setLiveUrl3(url3);
 				recoderVideo.setImageUrl(image);
 				recoderVideo.setLiveIsFree(isFree);
+				recoderVideo.setId(id);
 				recoderVideo.setLivePrice(plice);
 				recoderVideo.setXnPlayCount(xn);
 				recoderVideo.setExt1(ext1 != null && !ext1.equals("") ? ext1
@@ -82,17 +80,17 @@ public class RecoderVideoImp implements RecoderVideoDao {
 	}
 
 	@Override
-	public List<RecoderVideo> getAllRecoderVideo(int teacherId, int page) {
+	public List<RecoderVideo> getAllRecoderVideo(int teacherId, int page,double pageSize) {
 		try {
 			recoderVideos.clear();
-			int totlePage = findTotlePager(" 	WHERE TeacherId=" + teacherId+" AND VideoUrl_1 IS NOT NULL AND DATALENGTH(VideoUrl_1)>0");
+			int totlePage = findTotlePager(" 	WHERE TeacherId=" + teacherId+" AND VideoUrl_1 IS NOT NULL AND DATALENGTH(VideoUrl_1)>0",pageSize);
 			Connection dbConn = JdbcUtil.connSqlServer();
 			PreparedStatement statement = dbConn
-					.prepareStatement("SELECT TOP 5 Id,Title,LiveIdFree,FreePrice,VideoUrl_1,ImageUrl,PlayCountSham,StartDate,Ext_1 FROM "
+					.prepareStatement("SELECT TOP "+(int)pageSize+" Id,Title,LiveIdFree,FreePrice,VideoUrl_1,ImageUrl,PlayCountSham,StartDate,Ext_1 FROM "
 							+ "(SELECT ROW_NUMBER() OVER (ORDER BY InsertDate DESC) AS RowNumber,* FROM JCP_Live_Recorded"
 							+ " WHERE TeacherId=? AND VideoUrl_1 IS NOT NULL AND DATALENGTH(VideoUrl_1)>0) A "
 							+ "WHERE RowNumber > "
-							+ 5 * (page - 1));
+							+ (int)pageSize * (page - 1));
 			statement.setInt(1, teacherId);
 			ResultSet query = statement.executeQuery();
 			while (query.next()) {

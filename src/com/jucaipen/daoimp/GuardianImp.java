@@ -257,14 +257,16 @@ public class GuardianImp implements GuardianDao {
 	     dbConn=JdbcUtil.connSqlServer();
 	     try {
 			sta=dbConn.createStatement();
-			res=sta.executeQuery("SELECT Id,StartDate,EndDate FROM JCP_ShouHuZhe WHERE FK_UserId="+userId+" AND FK_TearchId="+teacherId+" AND State=0");
+			res=sta.executeQuery("SELECT Id,StartDate,EndDate,Price FROM JCP_ShouHuZhe WHERE FK_UserId="+userId+" AND FK_TearchId="+teacherId+" AND State=0");
 			while (res.next()) {
 				int id=res.getInt(1);
 				String startDate=res.getString(2);
 				String endDate=res.getString(3);
+				int price=res.getInt(4);
 				if(TimeUtils.isLive(startDate, endDate)){
 					Guardian guardian=new Guardian();
 					guardian.setId(id);
+					guardian.setPrice(price);
 					guardian.setStartDate(startDate);
 					guardian.setEndDate(endDate);
 					return guardian;

@@ -1,4 +1,4 @@
-package com.jucaipen.utils;
+/*package com.jucaipen.utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,12 +9,12 @@ import com.tencent.xinge.Style;
 import com.tencent.xinge.TimeInterval;
 import com.tencent.xinge.XingeApp;
 
-/**
+*//**
  * @author Administrator
  *
  *
  *   信鸽推送
- */
+ *//*
 public class XinGeUtil {
 	public static final String APP_KEY = "10f91058cbe939b1972867e74860af07";
 	public static final int APP_ID = 2100139212;
@@ -38,11 +38,11 @@ public class XinGeUtil {
 		return xUtil;
 	}
 
-	/**
+	*//**
 	 * @param isMsg
 	 * 
 	 *            发送消息类型 true 透传消息 false 通知消息
-	 */
+	 *//*
 	private static void initMessage(boolean isMsg) {
 		if (isMsg) {
 			// 推送透传消息
@@ -58,11 +58,11 @@ public class XinGeUtil {
 	}
 
 	
-	/**
+	*//**
 	 * @param msg
 	 * @param account
 	 * @return  向指定账号发送聊天信息
-	 */
+	 *//*
 	public JSONObject pushAccountDevice(String msg, String account) {
 		if (xinge == null) {
 			xinge = new XingeApp(APP_ID, APP_KEY);
@@ -77,12 +77,12 @@ public class XinGeUtil {
 		return ret;
 	}
 
-	/** 
+	*//** 
 	 * @param liveId
 	 * @param title
 	 * @param msg
 	 * @return 推送直播信息
-	 */
+	 *//*
 	public JSONObject pushAllDevice(int liveId, String title, String msg) {
 		if (xinge == null) {
 			xinge = new XingeApp(APP_ID, APP_KEY);
@@ -102,12 +102,12 @@ public class XinGeUtil {
 		return res;
 	}
 
-	/**
+	*//**
 	 * @param liveId
 	 * @param title
 	 * @param msg
 	 * @return 推送更新信息
-	 */
+	 *//*
 	public JSONObject pushAllUpdateDevice(int versionId, String title,
 			String msg) {
 		if (xinge == null) {
@@ -128,12 +128,12 @@ public class XinGeUtil {
 		return res;
 	}
 
-	/**
+	*//**
 	 * @param token
 	 * @param title
 	 * @param msg
 	 * @return 发送指定Token设备消息
-	 */
+	 *//*
 	public JSONObject pushTokenDevMsg(String token, String title, String msg) {
 		ClickAction action = new ClickAction();
 		action.setActionType(ClickAction.TYPE_URL);
@@ -147,12 +147,12 @@ public class XinGeUtil {
 		return res;
 	}
 
-	/**
+	*//**
 	 * @param tag
 	 * @param title
 	 * @param msg
 	 * @return    推送指定Tag设备消息
-	 */
+	 *//*
 	public JSONObject pushTagDevMsg(String tag, String title, String msg) {
 		ClickAction action = new ClickAction();
 		action.setActionType(ClickAction.TYPE_URL);
@@ -167,11 +167,11 @@ public class XinGeUtil {
 	}
 	
 	
-	/**
+	*//**
 	 * @param title
 	 * @param msg
 	 * @return   推送所有设备消息
-	 */
+	 *//*
 	public JSONObject pushAllDevMsg(String title,String msg){
 		if (xinge == null) {
 			xinge = new XingeApp(APP_ID, APP_KEY);
@@ -194,3 +194,4 @@ public class XinGeUtil {
 	}
 
 }
+*/

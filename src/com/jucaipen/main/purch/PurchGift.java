@@ -106,6 +106,12 @@ public class PurchGift extends HttpServlet {
 		// 1、查看聚财币是否足够
 		User user = UserServer.findBaseInfoById(uId);
 		Account a = AccountSer.findAccountByUserId(uId);
+		
+		int isTest = UserServer.findIsTest(uId);
+		if(isTest==1){
+			return JsonUtil.getPurchrResult(0, "测试账号礼品购买成功",b,0);
+		}
+		
 		if(b<=0){
 			return JsonUtil.getRetMsg(6,"暂不支持购买");
 		}

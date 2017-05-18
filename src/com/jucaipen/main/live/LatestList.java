@@ -41,6 +41,7 @@ public class LatestList extends HttpServlet {
 		if (isDevice == HeaderUtil.PHONE_APP) {
 			String type = request.getParameter("type");
 			String teacherId = request.getParameter("teacherId");
+			String page=request.getParameter("page");
 			if (!StringUtil.isNotNull(type)) {
 				result = JsonUtil.getRetMsg(1, "type 参数不能为空");
 			} else {
@@ -49,7 +50,7 @@ public class LatestList extends HttpServlet {
 					if (StringUtil.isNotNull(teacherId)
 							&& StringUtil.isInteger(teacherId)) {
 						int tId = Integer.parseInt(teacherId);
-						result = initlist(t, tId);
+						result = initlist(t, tId,page);
 					} else {
 						result = JsonUtil.getRetMsg(3, "teacherId 参数异常");
 					}
@@ -65,7 +66,7 @@ public class LatestList extends HttpServlet {
 		out.close();
 	}
 
-	public String initlist(int t, int tId) {
+	public String initlist(int t, int tId, String page) {
 		// 初始化榜单信息
 		List<Contribute> contributes;
 		Object cached = DataManager.getCached(Constant.TEACHER_CACHE,t+"userLast"+tId,hasCache);
@@ -74,13 +75,13 @@ public class LatestList extends HttpServlet {
 		}
 		if (t == 0) {
 			// 日榜单 
-			contributes=ContributeSer.findContributeByTid(tId, "day");
+			contributes=ContributeSer.findTopContributeByTid(tId, "day",15);
 		} else if (t == 1) {
 			// 月榜单
-			contributes=ContributeSer.findContributeByTid(tId, "month");
+			contributes=ContributeSer.findTopContributeByTid(tId, "month",15);
 		} else {
 			// 年榜单
-			contributes=ContributeSer.findContributeByTid(tId, "year");
+			contributes=ContributeSer.findTopContributeByTid(tId, "year",15);
 		}
 		for (Contribute contribute : contributes) {
 			int userId = contribute.getUserId();

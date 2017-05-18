@@ -11,7 +11,8 @@
 <head>
 <base href="<%=basePath%>">
 
-<title>app后台数据管理</title>
+<title>app后台管理</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
@@ -33,42 +34,30 @@
 <body>
 	<!-- 设置背景音乐-->
 	<!-- <bgsound src="www.baidu.com/" loop="infinite"> -->
-	<h2>
+	<h2 >
 		<marquee direction="right">
 			<font color="pink"> APP后台数据管理</font>
 		</marquee>
 	</h2>
-	<br>
 	  <table>
 		<tr>
 			<td align="center" valign="middle" bgColor="#c0c0c0" width="10%"><a
-				href="admin/user.jsp"><font size="5" color="green"><strong>用户管理</strong>
+				href="admin/user.jsp"><font size="2" color="green"><strong>用户管理</strong>
 				</font> </a></td>
-			<td align="center" valign="middle" width="10%" bgColor="#c0c0c0"><a
-				href="admin/finalcenter.jsp"><font size="5" color="green"><strong>理财中心</strong>
-				</font> </a></td>
-			<td align="center" valign="middle" width="10%" bgColor="#c0c0c0"><a
-				href="admin/teachmanage.jsp"><font color="green" size="5"><strong>教学管理中心</strong>
+			<td align="center" valign="middle" bgColor="#c0c0c0" width="10%"><a
+				href="admin/finalnews.jsp"><font size="2" color="green"><strong>账号管理</strong>
 				</font> </a>
 			</td>
 			<td align="center" valign="middle" bgColor="#c0c0c0" width="10%"><a
-				href="admin/finalnews.jsp"><font size="5" color="green"><strong>财经资讯</strong>
+				href="admin/apkManager.jsp"><font color="green" size="2"><strong>APK管理</strong>
 				</font> </a>
 			</td>
 			<td align="center" valign="middle" bgColor="#c0c0c0" width="10%"><a
-				href="admin/peterhouse.jsp"><font color="green" size="5"><strong>学堂</strong>
+				href="admin/pushInfoManager.jsp"><font color="green" size="2"><strong>消息推送管理</strong>
 				</font> </a>
 			</td>
 			<td align="center" valign="middle" bgColor="#c0c0c0" width="10%"><a
-				href="admin/apkManager.jsp"><font color="green" size="5"><strong>APK管理</strong>
-				</font> </a>
-			</td>
-			<td align="center" valign="middle" bgColor="#c0c0c0" width="10%"><a
-				href="admin/pushInfoManager.jsp"><font color="green" size="5"><strong>消息推送管理</strong>
-				</font> </a>
-			</td>
-			<td align="center" valign="middle" bgColor="#c0c0c0" width="10%"><a
-				href="admin/yao.jsp"><font color="green" size="5"><strong>配置管理</strong>
+				href="admin/yao.jsp"><font color="green" size="2"><strong>配置管理</strong>
 				</font> </a>
 			</td>
 		</tr>

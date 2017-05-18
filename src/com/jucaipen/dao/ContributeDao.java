@@ -25,6 +25,9 @@ public interface ContributeDao {
 	 */
 	public List<Contribute> findContributeByTid(int teacherIds,String type);
 	
+	public  List<Contribute> findContributeByTid(int tId,String type,int page);
+	
+	public  List<Contribute> findTopContributeByTid(int tId,String type,int top);
 	
 	/**
 	 * @param teacherId

@@ -104,6 +104,12 @@ public class Constant {
 	public static final String FILE_CACHE="cache_file";
 	
 	
+	/**
+	 *   ´æ´¢  sign
+	 */
+	public static final String CACHE_SIGN="cache_sign";
+	
+	
 	
 
 }

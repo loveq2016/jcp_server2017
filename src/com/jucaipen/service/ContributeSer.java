@@ -21,6 +21,26 @@ public class ContributeSer{
 		ContributeDao dao=new ContributeImp();
 		return dao.findContributeById(id);
 	}
+	
+	
+	/**
+	 * @param uId
+	 * @return  根据单个讲师贡献榜     年 、月、日榜
+	 */ 
+	public static List<Contribute> findTopContributeByTid(int tId,String type,int top) {
+		ContributeDao dao=new ContributeImp();
+		return dao.findTopContributeByTid(tId,type,top);
+	}
+	
+	
+	/**
+	 * @param uId
+	 * @return  根据单个讲师贡献榜     年 、月、日榜
+	 */ 
+	public static List<Contribute> findContributeByTid(int tId,String type,int page) {
+		ContributeDao dao=new ContributeImp();
+		return dao.findContributeByTid(tId,type,page);
+	}
 
 	/**
 	 * @param uId

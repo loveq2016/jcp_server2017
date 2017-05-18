@@ -1,4 +1,4 @@
-package com.jucaipen.main.user;
+/*package com.jucaipen.main.user;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,12 +18,12 @@ import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.StringUtil;
 import com.jucaipen.utils.UpLoadFileUtils;
 
-/**
+*//**
  * @author ylf
  * 
  *         文件上传(用户头像)
  * 
- */
+ *//*
 public class UploadUserLogo extends HttpServlet {
 	private static final long serialVersionUID = 8708695153137084211L;
 	private Map<String, String> map;
@@ -105,4 +105,4 @@ public class UploadUserLogo extends HttpServlet {
 
 	}
 
-}
+}*/

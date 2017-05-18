@@ -72,9 +72,13 @@ public class LastTeacherList extends HttpServlet {
 						.findTeacherBaseInfo(teacherId);
 				new CacheUtils(Constant.TEACHER_CACHE).addToCache("teacherInfo"+teacherId, teacher);
 			}else{
-				teacher=(FamousTeacher) cached2;
+				try {
+					teacher=(FamousTeacher) cached2;
+				} catch (Exception e) {
+					teacher = FamousTeacherSer
+							.findTeacherBaseInfo(teacherId);
+				}
 			}
-			
 			Object cached3 = DataManager.getCached(Constant.VIDEO_CACHE, "teachervideo"+teacherId,hasCache);
 			if(cached3==null){
 				videoLive=VideoLiveServer.findLiveBytId(teacherId);

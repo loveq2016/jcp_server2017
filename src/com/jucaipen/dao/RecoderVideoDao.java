@@ -17,7 +17,7 @@ public interface RecoderVideoDao {
 	 * @param teacherId
 	 * @return  获取所有讲师录播视频
 	 */
-	public List<RecoderVideo>   getAllRecoderVideo(int teacherId,int page);
+	public List<RecoderVideo>   getAllRecoderVideo(int teacherId,int page,double pageSize);
 	
 	
 	/**

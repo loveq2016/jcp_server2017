@@ -26,12 +26,12 @@ public class VideoLiveImp implements VideoLiveDao {
 	/**
 	 * @return 查询直播室总页数
 	 */
-	public int getTotlePage(String condition) {
+	public int getTotlePage(String condition,double pageSize) {
 		try {
 			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("SELECT  CEILING(COUNT(*)/15.0) as totlePager from JCP_VideoLive "
+					.executeQuery("SELECT  CEILING(COUNT(*)/"+pageSize+") as totlePager from JCP_VideoLive "
 							+ condition);
 			res.next();
 			int totlePager = res.getInt("totlePager");
@@ -128,17 +128,20 @@ public class VideoLiveImp implements VideoLiveDao {
 		}
 		return null;
 	}
+	
+	
 
-	public List<VideoLive> getAllRoom(int page) {
+	public List<VideoLive> getAllRoom(int page,double pageSize) {
 		chatRooms.clear();
-		int totlePage = getTotlePage("");
+		int totlePage = getTotlePage("",pageSize);
+		System.out.println("t="+totlePage);
 		dbConn = JdbcUtil.connSqlServer();
 		try {
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("SELECT TOP 10 * FROM "
+					.executeQuery("SELECT TOP "+(int)pageSize+" * FROM "
 							+ "(SELECT ROW_NUMBER() OVER (ORDER BY IsEnd ASC,RenQi DESC) AS RowNumber,* FROM JCP_VideoLive"
-							+ ") A " + "WHERE RowNumber > " + 10 * (page - 1));
+							+ ") A " + "WHERE RowNumber > " +(int)pageSize * (page - 1));
 			while (res.next()) {
 				int id = res.getInt("Id");
 				String title = res.getString("Title"); // Title

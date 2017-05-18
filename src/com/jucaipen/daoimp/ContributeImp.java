@@ -57,6 +57,50 @@ public class ContributeImp implements ContributeDao {
 		}
 		return null;
 	}
+	
+	
+	
+	@Override
+	public List<Contribute> findContributeByTid(int tId, String type, int page) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Contribute> findTopContributeByTid(int tId, String type, int top) {
+		// 获取用户的所有贡献信息
+		contributes.clear();
+		dbConn = JdbcUtil.connSqlServer();
+		try {
+			sta = dbConn.createStatement();
+			res=sta.executeQuery("SELECT TOP "+top+" SUM(AllJucaibi) AS A,FK_UserId from JCP_Contribute WHERE FK_TearchId="
+							+ tId
+							+ "  AND   DATEDIFF("+type+", InsertDate, GETDATE())=0  GROUP BY FK_UserId ORDER BY A DESC");
+			while (res.next()) {
+				int bills = res.getInt(1);
+				int userId = res.getInt(2); // FK_TearchId
+				Contribute contribute = new Contribute();
+				contribute.setAllJucaiBills(bills);
+				contribute.setUserId(userId);
+				contributes.add(contribute);
+			}
+			return contributes;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+	
+	
+	
+	
+	
 
 	@Override
 	public List<Contribute> findContributeByTid(int tId,String type) {
@@ -286,5 +330,6 @@ public class ContributeImp implements ContributeDao {
 		return 0;
 	
 	}
+
 
 }

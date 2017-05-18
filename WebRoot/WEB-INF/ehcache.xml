@@ -86,4 +86,15 @@
 		timeToLiveSeconds="60" 
 		overflowToDisk="false" />
 		
+		
+		<!-- 存储   userSign -->
+		<cache 
+		name="cache_sign" 
+		memoryStoreEvictionPolicy="LRU" 
+		maxElementsInMemory="10" 
+		eternal="false"
+		timeToIdleSeconds="60"
+		timeToLiveSeconds="1800" 
+		overflowToDisk="false" />
+		
 </ehcache>

@@ -333,7 +333,8 @@ public class QuerryTeacherIdea extends HttpServlet {
 							LiveRecoderSale sale = LiveRecoderSaleSer
 									.getLiveSaleByUidAndLiveId(usId, 
 											recoder.getId(),1);
-							if (sale != null) {
+							int isTest=UserServer.findIsTest(usId);
+							if (sale != null||isTest==1) {
 								live.setIsPurch(0);
 							} else {
 								live.setIsPurch(1);
@@ -357,7 +358,7 @@ public class QuerryTeacherIdea extends HttpServlet {
 				//new CacheUtils(Constant.VIDEO_CACHE).addToCache("indexLive", indexVideoLive);
 				return indexVideoLive;
 			}
-			List<RecoderVideo>  videos=RecoderVideoServer.getAllRecoderVideo(tId,p);
+			List<RecoderVideo>  videos=RecoderVideoServer.getAllRecoderVideo(tId,p,10.0);
 			Video video2 = VideoServer.findLastVideoByTeacher(tId);
 			if (videos != null) {
 				for (RecoderVideo video : videos) {
@@ -375,7 +376,8 @@ public class QuerryTeacherIdea extends HttpServlet {
 							LiveRecoderSale liveSale = LiveRecoderSaleSer
 									.getLiveSaleByUidAndLiveId(usId, 
 											recoderId,1);
-							if (recoderSale != null||liveSale!=null) {
+							int isTest=UserServer.findIsTest(usId);
+							if (recoderSale != null||liveSale!=null||isTest==1) {
 								video.setIsPurch(0);
 							} else {
 								video.setIsPurch(1);

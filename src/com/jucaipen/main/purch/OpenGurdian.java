@@ -16,6 +16,7 @@ import com.jucaipen.model.AccountDetail;
 import com.jucaipen.model.ClientOsInfo;
 import com.jucaipen.model.Contribute;
 import com.jucaipen.model.FamousTeacher;
+import com.jucaipen.model.Grade;
 import com.jucaipen.model.Guardian;
 import com.jucaipen.model.LiveRecoder;
 import com.jucaipen.model.LiveRecoderSale;
@@ -123,7 +124,11 @@ public class OpenGurdian extends HttpServlet {
 		String endDate = null;
 		int gurdianId = 0;
 		LiveRecoderSale sale=null;
-		Guardian guardian=null;
+		Guardian guardian = new Guardian();
+		int isTest = UserServer.findIsTest(uId);
+		if(isTest==1){
+			return JsonUtil.getRetMsg(0, "测试账号开通守护成功");
+		}
 		
 		Account account = AccountSer.findAccountByUserId(uId);
 		FamousTeacher teacher = FamousTeacherSer.findTeacherBaseInfo(tId);
@@ -159,6 +164,9 @@ public class OpenGurdian extends HttpServlet {
 			Guardian guardianM = GuardianSer.findIsGuardian(tId, uId);
 			if (guardianM != null) {
 				// 续约
+				int bs = b+guardianM.getPrice();
+				guardian.setPrice(bs);
+				guardian.setRemark("用户开通守护支付"+bs+"个聚财币");
 				gurdianId = guardianM.getId();
 				startDate = guardianM.getStartDate();
 				try {
@@ -170,12 +178,13 @@ public class OpenGurdian extends HttpServlet {
 					e.printStackTrace();
 				}
 			} else {
+				guardian.setPrice(b);
+				guardian.setRemark("用户开通守护支付"+b+"个聚财币");
 				startDate = TimeUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
 				endDate = TimeUtils.format(TimeUtils.addBaseDay(new Date(), d),
 						"yyyy-MM-dd HH:mm:ss");
 			}
 			
-			guardian = new Guardian();
 			guardian.setIp(ip);
 			guardian.setTeacherId(tId);
 			guardian.setUserId(uId);

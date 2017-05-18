@@ -384,22 +384,24 @@ public class UserImp implements UserDao {
 		}
 		return null;
 	}
-	
-	
+
 	public int delAccountId(int id, int accountType) {
 		// 解除用户的第三方账号信息-----accountType 0 (QQ) 1 (微信) 2 (新浪)
 		try {
 			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
 			if (accountType == 0) {
-				isSuccess = sta.executeUpdate("UPDATE JCP_User SET QQOpenId=NULL"
-						+" WHERE Id=" + id);
+				isSuccess = sta
+						.executeUpdate("UPDATE JCP_User SET QQOpenId=NULL"
+								+ " WHERE Id=" + id);
 			} else if (accountType == 1) {
-				isSuccess = sta.executeUpdate("UPDATE JCP_User SET WeiXinId=NULL"
-						+  " WHERE Id=" + id);
+				isSuccess = sta
+						.executeUpdate("UPDATE JCP_User SET WeiXinId=NULL"
+								+ " WHERE Id=" + id);
 			} else if (accountType == 2) {
-				isSuccess = sta.executeUpdate("UPDATE JCP_User SET WeiboId=NULL"
-						+  " WHERE Id=" + id);
+				isSuccess = sta
+						.executeUpdate("UPDATE JCP_User SET WeiboId=NULL"
+								+ " WHERE Id=" + id);
 			}
 			return isSuccess;
 		} catch (SQLException e) {
@@ -413,8 +415,6 @@ public class UserImp implements UserDao {
 		}
 		return 0;
 	}
-	
-	
 
 	public int upDataAccountId(int id, int accountType, String accountId) {
 		// 修改用户的第三方账号信息-----accountType 0 (QQ) 1 (微信) 2 (新浪)
@@ -858,8 +858,8 @@ public class UserImp implements UserDao {
 				int loginNum = res.getInt(6);
 				int integeral = res.getInt(7);
 				String investCode = res.getString(8);
-				int isCheckMobile=res.getInt(9);
-				String pwd=res.getString(10);
+				int isCheckMobile = res.getInt(9);
+				String pwd = res.getString(10);
 				User user = new User();
 				user.setId(id);
 				user.setLoginNum(loginNum);
@@ -904,8 +904,8 @@ public class UserImp implements UserDao {
 				int isTeacher = res.getInt(6);
 				int isChatMess = res.getInt(7);
 				int userLeavel = res.getInt(8);
-				String trueName=res.getString(9);
-				String UserName=res.getString(10);
+				String trueName = res.getString(9);
+				String UserName = res.getString(10);
 				User user = new User();
 				user.setNickName(nickName);
 				user.setIsRoomAdmin(isRoom);
@@ -974,7 +974,7 @@ public class UserImp implements UserDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				JdbcUtil.closeConn(sta, dbConn, res);
 			} catch (SQLException e) {
@@ -989,9 +989,8 @@ public class UserImp implements UserDao {
 		try {
 			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
-			res = sta
-					.executeQuery("SELECT Id FROM JCP_User WHERE UserName='"
-							+ uName+"' OR MobileNum='"+uName+"'");
+			res = sta.executeQuery("SELECT Id FROM JCP_User WHERE UserName='"
+					+ uName + "' OR MobileNum='" + uName + "'");
 			while (res.next()) {
 				int id = res.getInt(1);
 				User user = new User();
@@ -1000,7 +999,7 @@ public class UserImp implements UserDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				JdbcUtil.closeConn(sta, dbConn, res);
 			} catch (SQLException e) {
@@ -1008,6 +1007,28 @@ public class UserImp implements UserDao {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public int findIsTest(int uId) {
+		try {
+			dbConn = JdbcUtil.connSqlServer();
+			sta = dbConn.createStatement();
+			res = sta.executeQuery("SELECT IsTestUser FROM JCP_User WHERE Id="
+					+ uId);
+			while (res.next()) {
+				return res.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return 0;
 	}
 
 }

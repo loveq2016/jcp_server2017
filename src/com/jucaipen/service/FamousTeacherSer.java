@@ -81,12 +81,23 @@ public class FamousTeacherSer {
 	
 	/**
 	 * @param tId
+	 * @return  获取讲师聊天室id
+	 */
+	public static int findRoomInfo(int tId){
+		FamousTeacherDao dao = new FamousTeacherImp();
+		return dao.findRoomInfo(tId);
+	}
+	
+	
+	/**
+	 * @param tId
 	 * @return  获取讲师基本信息
 	 */
 	public static FamousTeacher findTeacherBaseInfo(int tId){
 		FamousTeacherDao dao = new FamousTeacherImp();
 		return dao.findTeacherBaseInfo(tId);
 	}
+	
 	
 	/**
 	 * @param fans

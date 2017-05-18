@@ -1,4 +1,4 @@
-package com.jucaipen.utils;
+/*package com.jucaipen.utils;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
@@ -21,17 +21,17 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 
-/**
+*//**
  * 图片处理工具类：<br>
  * 功能：缩放图像、切割图像、图像类型转换、彩色转黑白、文字水印、图片水印等
  * @author Administrator
- */
+ *//*
 public class ImageUtils {
 
 
-    /**
+    *//**
      * 几种常见的图片格式
-     */
+     *//*
     public static String IMAGE_TYPE_GIF = "gif";// 图形交换格式
     public static String IMAGE_TYPE_JPG = "jpg";// 联合照片专家组
     public static String IMAGE_TYPE_JPEG = "jpeg";// 联合照片专家组
@@ -40,10 +40,10 @@ public class ImageUtils {
     public static String IMAGE_TYPE_PSD = "psd";// Photoshop的专用格式Photoshop
 
 
-    /**
+    *//**
      * 程序入口：用于测试
      * @param args
-     */
+     *//*
     public static void main(String[] args) {
         // 1-缩放图像：
         // 方法一：按比例缩放
@@ -80,13 +80,13 @@ public class ImageUtils {
     }
 
 
-    /**
+    *//**
      * 缩放图像（按比例缩放）
      * @param srcImageFile 源图像文件地址
      * @param result 缩放后的图像地址
      * @param scale 缩放比例
      * @param flag 缩放选择:true 放大; false 缩小;
-     */
+     *//*
     public final static void scale(String srcImageFile, String result,
             int scale, boolean flag) {
         try {
@@ -114,14 +114,14 @@ public class ImageUtils {
     }
 
 
-    /**
+    *//**
      * 缩放图像（按高度和宽度缩放）
      * @param srcImageFile 源图像文件地址
      * @param result 缩放后的图像地址
      * @param height 缩放后的高度
      * @param width 缩放后的宽度
      * @param bb 比例不对时是否需要补白：true为补白; false为不补白;
-     */
+     *//*
     @SuppressWarnings("static-access")
 	public final static void scale2(String srcImageFile, String result, int height, int width, boolean bb) {
         try {
@@ -164,7 +164,7 @@ public class ImageUtils {
         }
     }
     
-    /**
+    *//**
      * 图像切割(按指定起点坐标和宽高切割)
      * @param srcImageFile 源图像地址
      * @param result 切片后的图像地址
@@ -172,7 +172,7 @@ public class ImageUtils {
      * @param y 目标切片起点坐标Y
      * @param width 目标切片宽度
      * @param height 目标切片高度
-     */
+     *//*
     public final static void cut(String srcImageFile, String result,
             int x, int y, int width, int height) {
         try {
@@ -201,13 +201,13 @@ public class ImageUtils {
         }
     }
     
-    /**
+    *//**
      * 图像切割（指定切片的行数和列数）
      * @param srcImageFile 源图像地址
      * @param descDir 切片目标文件夹
      * @param rows 目标切片行数。默认2，必须是范围 [1, 20] 之内
      * @param cols 目标切片列数。默认2，必须是范围 [1, 20] 之内
-     */
+     *//*
     public final static void cut2(String srcImageFile, String descDir,
             int rows, int cols) {
         try {
@@ -262,13 +262,13 @@ public class ImageUtils {
     }
 
 
-    /**
+    *//**
      * 图像切割（指定切片的宽度和高度）
      * @param srcImageFile 源图像地址
      * @param descDir 切片目标文件夹
      * @param destWidth 目标切片宽度。默认200
      * @param destHeight 目标切片高度。默认150
-     */
+     *//*
     public final static void cut3(String srcImageFile, String descDir,
             int destWidth, int destHeight) {
         try {
@@ -323,12 +323,12 @@ public class ImageUtils {
     }
 
 
-    /**
+    *//**
      * 图像类型转换：GIF->JPG、GIF->PNG、PNG->JPG、PNG->GIF(X)、BMP->PNG
      * @param srcImageFile 源图像地址
      * @param formatName 包含格式非正式名称的 String：如JPG、JPEG、GIF等
      * @param destImageFile 目标图像地址
-     */
+     *//*
     public final static void convert(String srcImageFile, String formatName, String destImageFile) {
         try {
             File f = new File(srcImageFile);
@@ -342,11 +342,11 @@ public class ImageUtils {
     }
 
 
-    /**
+    *//**
      * 彩色转为黑白 
      * @param srcImageFile 源图像地址
      * @param destImageFile 目标图像地址
-     */
+     *//*
     public final static void gray(String srcImageFile, String destImageFile) {
         try {
             BufferedImage src = ImageIO.read(new File(srcImageFile));
@@ -360,7 +360,7 @@ public class ImageUtils {
     }
 
 
-    /**
+    *//**
      * 给图片添加文字水印
      * @param pressText 水印文字
      * @param srcImageFile 源图像地址
@@ -372,7 +372,7 @@ public class ImageUtils {
      * @param x 修正值
      * @param y 修正值
      * @param alpha 透明度：alpha 必须是范围 [0.0, 1.0] 之内（包含边界值）的一个浮点数字
-     */
+     *//*
     public final static void pressText(String pressText,
             String srcImageFile, String destImageFile, String fontName,
             int fontStyle, Color color, int fontSize,int x,
@@ -401,7 +401,7 @@ public class ImageUtils {
     }
 
 
-    /**
+    *//**
      * 给图片添加文字水印
      * @param pressText 水印文字
      * @param srcImageFile 源图像地址
@@ -413,7 +413,7 @@ public class ImageUtils {
      * @param x 修正值
      * @param y 修正值
      * @param alpha 透明度：alpha 必须是范围 [0.0, 1.0] 之内（包含边界值）的一个浮点数字
-     */
+     *//*
     public final static void pressText2(String pressText, String srcImageFile,String destImageFile,
             String fontName, int fontStyle, Color color, int fontSize, int x,
             int y, float alpha) {
@@ -441,7 +441,7 @@ public class ImageUtils {
     }
 
 
-    /**
+    *//**
      * 给图片添加图片水印
      * @param pressImg 水印图片
      * @param srcImageFile 源图像地址
@@ -449,7 +449,7 @@ public class ImageUtils {
      * @param x 修正值。 默认在中间
      * @param y 修正值。 默认在中间
      * @param alpha 透明度：alpha 必须是范围 [0.0, 1.0] 之内（包含边界值）的一个浮点数字
-     */
+     *//*
     public final static void pressImage(String pressImg, String srcImageFile,String destImageFile,
             int x, int y, float alpha) {
         try {
@@ -478,11 +478,11 @@ public class ImageUtils {
     }
 
 
-    /**
+    *//**
      * 计算text的长度（一个中文算两个字符）
      * @param text
      * @return
-     */
+     *//*
     public final static int getLength(String text) {
         int length = 0;
         for (int i = 0; i < text.length(); i++) {
@@ -494,4 +494,4 @@ public class ImageUtils {
         }
         return length / 2;
     }
-}
+}*/
