@@ -1,39 +1,62 @@
 package com.jucaipen.base;
 import net.sf.ehcache.CacheException;
-import net.sf.ehcache.Status;
-import net.sf.ehcache.event.CacheManagerEventListener;
-
-public class CacheListener implements CacheManagerEventListener{
+import net.sf.ehcache.Ehcache;
+import net.sf.ehcache.Element;
+import net.sf.ehcache.event.CacheEventListener;
+/**
+ * @author ÑîÀÊ·É
+ * 
+ *   ¼àÌý  Cache ±ä»¯
+ */
+public class CacheListener implements CacheEventListener{
+	public Object clone() throws CloneNotSupportedException {  
+	      throw new CloneNotSupportedException();  
+	   } 
 
 	@Override
-	public void dispose() throws CacheException {
+	public void dispose() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public Status getStatus() {
-		//»ñÈ¡×´Ì¬ STATUS_UNINITIALISED¡¢ STATUS_ALIVEºÍSTATUS_SHUTDOWN
-		return null;
-	}
-
-	@Override
-	public void init() throws CacheException {
-		//³õÊ¼»¯
+	public void notifyElementEvicted(Ehcache arg0, Element arg1) {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void notifyCacheAdded(String arg0) {
-		//Ìí¼Ó»º´æ
-		System.out.println("Ìí¼Ó»º´æ==================");
+	public void notifyElementExpired(Ehcache arg0, Element arg1) {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void notifyCacheRemoved(String arg0) {
-		//ÒÆ³ý»º´æ
+	public void notifyElementPut(Ehcache arg0, Element arg1)
+			throws CacheException {
+		// TODO Auto-generated method stub
 		
 	}
 
+	@Override
+	public void notifyElementRemoved(Ehcache arg0, Element arg1)
+			throws CacheException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notifyElementUpdated(Ehcache arg0, Element arg1)
+			throws CacheException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notifyRemoveAll(Ehcache arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 }

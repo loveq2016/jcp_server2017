@@ -26,6 +26,7 @@
 		diskPersistent="false" 
 		/>
 		
+		
 	<!--  缓存广告  -->
 	<cache 
 		name="cache_default" 
@@ -34,7 +35,8 @@
 		eternal="false"
 		timeToIdleSeconds="600"
 		timeToLiveSeconds="7200" 
-		overflowToDisk="false" />
+		overflowToDisk="false" >
+		</cache>
 		
 		
 		<!-- 缓存视频  更新较快 -->
@@ -45,7 +47,8 @@
 		eternal="false"
 		timeToIdleSeconds="2"
 		timeToLiveSeconds="2" 
-		overflowToDisk="false" />
+		overflowToDisk="false" >
+		</cache>
 		
 		<!--  人气名师  -->
 		<cache 
@@ -55,7 +58,8 @@
 		eternal="false"
 		timeToIdleSeconds="15"
 		timeToLiveSeconds="35" 
-		overflowToDisk="false" />
+		overflowToDisk="false" >
+		</cache>
 		
 		
 		<!-- 缓存讲师排名、用户数据   实时性比较高 -->
@@ -66,7 +70,8 @@
 		eternal="false"
 		timeToIdleSeconds="5"
 		timeToLiveSeconds="5" 
-		overflowToDisk="false" />
+		overflowToDisk="false" >
+		</cache>
 		
 		<cache 
 		name="cache_fast" 
@@ -75,7 +80,8 @@
 		eternal="false"
 		timeToIdleSeconds="1"
 		timeToLiveSeconds="10" 
-		overflowToDisk="false" />
+		overflowToDisk="false" >
+		</cache>
 		
 		<cache 
 		name="cache_file" 
@@ -84,7 +90,8 @@
 		eternal="false"
 		timeToIdleSeconds="60"
 		timeToLiveSeconds="60" 
-		overflowToDisk="false" />
+		overflowToDisk="false" >
+		</cache>
 		
 		
 		<!-- 存储   userSign -->
@@ -95,6 +102,7 @@
 		eternal="false"
 		timeToIdleSeconds="60"
 		timeToLiveSeconds="1800" 
-		overflowToDisk="false" />
+		overflowToDisk="false" >
+		</cache>
 		
 </ehcache>

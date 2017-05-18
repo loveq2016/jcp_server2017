@@ -6,10 +6,10 @@ import net.sf.ehcache.Element;
 
 public class CacheUtils {
 	// private static final String
-	//private static final String localCache="C:\\Users\\Administrator\\git\\jcp_server2017\\AccumulateWealth\\WebRoot\\WEB-INF\\ehcache.xml";
-	private static final String norlMal = "C:/Program Files/Apache Software Foundation/Tomcat 7.0/webapps/ehcache.xml";
+	private static final String localCache="C:\\Users\\Administrator\\git\\jcp_server2017\\AccumulateWealth\\WebRoot\\WEB-INF\\ehcache.xml";
+	//private static final String norlMal = "C:/Program Files/Apache Software Foundation/Tomcat 7.0/webapps/ehcache.xml";
 	private static final CacheManager cacheManagerNormal = new CacheManager(
-			norlMal);
+			localCache);
 	private Cache cache;
 	public CacheUtils(String chcheName) {
 		this.cache = cacheManagerNormal.getCache(chcheName);
@@ -55,9 +55,9 @@ public class CacheUtils {
 	}
 
 	/*
-	 * 通过名称从缓存中获取数据
+	 * 通过名称从缓存中获取 Serializable 数据
 	 */
-	public Object getCacheElement(String cacheKey, boolean isCache)
+	public Object getCacheElementSerializable(String cacheKey, boolean isCache)
 			throws Exception {
 		if (!isCache) {
 			return null;
@@ -68,6 +68,24 @@ public class CacheUtils {
 		}
 		return e.getValue();
 	}
+	
+	/*
+	 * 通过名称从缓存中获取 非 Serializable 数据
+	 */
+	public Object getCacheElement(String cacheKey, boolean isCache)
+			throws Exception {
+		if (!isCache) {
+			return null;
+		}
+		net.sf.ehcache.Element e = cache.get(cacheKey);
+		if (e == null) {
+			return null;
+		}
+		return e.getObjectValue();
+	}
+	
+	
+	
 
 	/*
 	 * 将对象添加到缓存中
