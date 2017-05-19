@@ -12,12 +12,37 @@
 <base href="<%=basePath%>">
 
 <title>登录APP后台管理系统</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="" />
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
+
+<script type="text/javascript">
+    window.onload=function(){
+    var meta=document.getElementsByTagName("meta")[0];
+    var form=document.getElementsByTagName("form")[0];
+    if(!isPC()){
+       //手机端
+       meta.setAttribute("content","width=device-width, initial-scale=1");
+    }else{
+      // PC
+       form.setAttribute("style","font-size:22px !important;margin-top:10px !important;");
+       form.style.cssText="font-size:22px !important;margin-top:10px !important;";
+    }
+    function isPC() 
+       { 
+           var userAgentInfo = navigator.userAgent; 
+           var Agents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"); 
+           var flag = true; 
+           for (var v = 0; v < Agents.length; v++) { 
+               if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = false; break; } 
+           } 
+           return flag; 
+       } 
+    };
+</script>
 <style>
 *{
    font-family: "微软雅黑";
@@ -29,7 +54,7 @@ form {
 	margin-top: 49%;
 }
 #btn_reset{
-  margin-left: 20px;
+  margin-left: 20px ;
   width: 25%;
   padding:3px;
   font-size:14px;
@@ -43,7 +68,7 @@ form {
   font-size:14px;
   border: 0px;
   background: green;
-  color: white;
+  color: white ;
 }
 </style>
 

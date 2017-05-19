@@ -40,6 +40,8 @@ public class User implements Serializable {
 	 * 用户头像
 	 */
 	private String faceImage;
+	
+	private int onLineNum;
 	/**
 	 * 手机号
 	 */
@@ -223,6 +225,12 @@ public class User implements Serializable {
 	 */
 	private int isTestUser;
 	
+	public int getOnLineNum() {
+		return onLineNum;
+	}
+	public void setOnLineNum(int onLineNum) {
+		this.onLineNum = onLineNum;
+	}
 	public int getIsTestUser() {
 		return isTestUser;
 	}

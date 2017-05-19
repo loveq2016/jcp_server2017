@@ -6,10 +6,10 @@ import net.sf.ehcache.Element;
 
 public class CacheUtils {
 	// private static final String
-	private static final String localCache="C:\\Users\\Administrator\\git\\jcp_server2017\\AccumulateWealth\\WebRoot\\WEB-INF\\ehcache.xml";
-	//private static final String norlMal = "C:/Program Files/Apache Software Foundation/Tomcat 7.0/webapps/ehcache.xml";
+	//private static final String localCache="C:\\Users\\Administrator\\git\\jcp_server2017\\AccumulateWealth\\WebRoot\\WEB-INF\\ehcache.xml";
+	private static final String norlMal = "C:/Program Files/Apache Software Foundation/Tomcat 7.0/webapps/ehcache.xml";
 	private static final CacheManager cacheManagerNormal = new CacheManager(
-			localCache);
+			norlMal);
 	private Cache cache;
 	public CacheUtils(String chcheName) {
 		this.cache = cacheManagerNormal.getCache(chcheName);

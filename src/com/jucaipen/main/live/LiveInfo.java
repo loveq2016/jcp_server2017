@@ -40,7 +40,6 @@ public class LiveInfo extends HttpServlet {
 	private List<String> ids = new ArrayList<String>();
 	private String result;
 	// 在线人数
-	private int memberNum;
 	private boolean hasCache;
 	// 腾讯云APPID
 	private static final String appId = "1400028429";
@@ -120,6 +119,9 @@ public class LiveInfo extends HttpServlet {
 				bills = contributes.get(i).getAllJucaiBills();
 				number = i + 1;
 				break;
+			}else{
+				bills=0;
+				number=contributes.size();
 			}
 		}
 		// 获取讲师基本信息
@@ -141,9 +143,14 @@ public class LiveInfo extends HttpServlet {
 			new CacheUtils(Constant.TEACHER_CACHE).addToCache("userInfo"
 					+ roomId, list);
 		} else {
-			list = (List<User>) cached3;
+			try {
+				list = (List<User>) cached3;
+			} catch (Exception e) {
+				list = getMember(roomId);
+			}
+			
 		}
-		String onLineData = JsonUtil.getOnLineData(bills, list, memberNum,
+		String onLineData = JsonUtil.getOnLineData(bills, list,
 				number);
 		if(list.size()>0){
 			new CacheUtils(Constant.VIDEO_CACHE).addToCache("liveInfo" + tId,
@@ -165,7 +172,7 @@ public class LiveInfo extends HttpServlet {
 		JSONObject object = new JSONObject(roomInfo);
 		String ok = object.optString("ActionStatus");
 		if ("OK".equals(ok)) {
-			memberNum = object.optInt("MemberNum", 0);
+			int memberNum = object.optInt("MemberNum", 0);
 			JSONArray memberList = object.optJSONArray("MemberList");
 			for (int i = 0; i < memberList.length(); i++) {
 				JSONObject member = memberList.optJSONObject(i);
@@ -185,10 +192,18 @@ public class LiveInfo extends HttpServlet {
 						new CacheUtils(Constant.TEACHER_CACHE).addToCache(
 								"userInfo" + userId, user);
 					} else {
-						user = (User) cached;
+						try {
+							user = (User) cached;
+						} catch (Exception e) {
+							String userFace = UserServer.findFaceImageById(userId);
+							user=new User();
+							user.setId(userId);
+							user.setFaceImage(userFace);
+						}
 					}
 					// 不统计房间创建者
 					if (roomId != user.getId()) {
+						user.setOnLineNum(memberNum);
 						users.add(user);
 					}
 				}
