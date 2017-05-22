@@ -196,7 +196,7 @@ public class UserServer {
 	 * @param id
 	 * @return 根据用户id获取用户头像URL
 	 */
-	public static String findFaceImageById(int id) {
+	public static User findFaceImageById(int id) {
 		UserDao dao = new UserImp();
 		return dao.querryFaceImage(id);
 	}

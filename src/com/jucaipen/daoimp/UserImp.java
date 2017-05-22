@@ -151,15 +151,19 @@ public class UserImp implements UserDao {
 	 * 
 	 * 获取用户头像
 	 */
-	public String querryFaceImage(int id) {
+	public User querryFaceImage(int id) {
 		try {
 			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
-			res = sta.executeQuery("SELECT UserFace FROM JCP_User WHERE Id="
+			res = sta.executeQuery("SELECT UserFace,ISNULL(NickName,'') NickName FROM JCP_User WHERE Id="
 					+ id);
 			while (res.next()) {
-				String face = res.getString("UserFace");
-				return face;
+				String face = res.getString(1);
+				String nickName=res.getString(2);
+				User user=new User();
+				user.setFaceImage(face);
+				user.setNickName(nickName);
+				return user;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

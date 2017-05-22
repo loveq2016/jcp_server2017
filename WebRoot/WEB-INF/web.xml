@@ -1226,6 +1226,11 @@
     <servlet-name>UpdateApkInfo</servlet-name>
     <servlet-class>com.jucaipen.base.UpdateApkInfo</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>UpdataWatchNum</servlet-name>
+    <servlet-class>com.jucaipen.main.live.UpdataWatchNum</servlet-class>
+  </servlet>
+
 
 
 
@@ -1322,6 +1327,10 @@
   <servlet-mapping>
     <servlet-name>UpdateApkInfo</servlet-name>
     <url-pattern>/updatinfo</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>UpdataWatchNum</servlet-name>
+    <url-pattern>/jucaipen/updatawatchnum</url-pattern>
   </servlet-mapping>
     <listener>
         <listener-class>com.jucaipen.base.WebListener</listener-class>

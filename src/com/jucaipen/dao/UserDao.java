@@ -153,7 +153,7 @@ public interface UserDao {
 	 * @param id
 	 * @return  获取用户头像信息
 	 */
-	public String querryFaceImage(int id);
+	public User querryFaceImage(int id);
 	/**
 	 * @param integeral
 	 * @return  修改用户积分信息

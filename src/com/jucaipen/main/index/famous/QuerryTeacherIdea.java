@@ -1,41 +1,28 @@
 package com.jucaipen.main.index.famous;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
+import com.google.gson.JsonObject;
+import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.Account;
-import com.jucaipen.model.Answer;
-import com.jucaipen.model.AnswerSale;
-import com.jucaipen.model.Ask;
 import com.jucaipen.model.FamousTeacher;
-import com.jucaipen.model.Guardian;
-import com.jucaipen.model.HotIdea;
-import com.jucaipen.model.IdeaSale;
 import com.jucaipen.model.LiveRecoder;
 import com.jucaipen.model.LiveRecoderSale;
 import com.jucaipen.model.RecoderVideo;
-import com.jucaipen.model.TextLive;
-import com.jucaipen.model.TxtLiveSale;
-import com.jucaipen.model.User;
 import com.jucaipen.model.Video;
 import com.jucaipen.model.VideoLive;
 import com.jucaipen.service.AccountSer;
-import com.jucaipen.service.AnswerSaleSer;
-import com.jucaipen.service.AnswerSer;
-import com.jucaipen.service.AskSer;
 import com.jucaipen.service.FamousTeacherSer;
-import com.jucaipen.service.GuardianSer;
-import com.jucaipen.service.HotIdeaServ;
-import com.jucaipen.service.IdeaSaleServer;
 import com.jucaipen.service.LiveRecoderSaleSer;
 import com.jucaipen.service.LiveRecoderSer;
 import com.jucaipen.service.RecoderVideoServer;
-import com.jucaipen.service.TxtLiveSaleSer;
-import com.jucaipen.service.TxtLiveSer;
 import com.jucaipen.service.UserServer;
 import com.jucaipen.service.VideoLiveServer;
 import com.jucaipen.service.VideoServer;
@@ -43,9 +30,9 @@ import com.jucaipen.utils.CacheUtils;
 import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.LiveUtil;
+import com.jucaipen.utils.LoginUtil;
 import com.jucaipen.utils.RandomUtils;
 import com.jucaipen.utils.StringUtil;
-import com.jucaipen.utils.TimeUtils;
 /**
  * @author
  * 
@@ -54,18 +41,12 @@ import com.jucaipen.utils.TimeUtils;
 @SuppressWarnings("serial")
 public class QuerryTeacherIdea extends HttpServlet {
 	private String result;
+	private String baseUrl = "https://console.tim.qq.com/v4/group_open_http_svc/get_group_member_info";
 	private boolean check=false;
-	private String urls[]={"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160817130010-20160817140207.m3u8",
-			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160818130010-20160818140219.m3u8",
-			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160819150500-20160819154838.m3u8",
-			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160822150934-20160822160025.m3u8",
-			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160823085947-20160823091548.m3u8",
-			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160825102745-20160825113430.m3u8",
-			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160830102530-20160830113240.m3u8",
-			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160901092130-20160901102101.m3u8",
-			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160905135930-20160905150400.m3u8",
-			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160906191940-20160906202001.m3u8"
-			};
+	private boolean hasCache;
+	private Map<String,String> param=new HashMap<String,String>();
+	private String GET_SIGN="http://www.jucaipen.com/ashx/AndroidUser.ashx?action=GetUserSig";
+	private String appId="1400028429";
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
@@ -77,6 +58,7 @@ public class QuerryTeacherIdea extends HttpServlet {
 		String typeId = request.getParameter("typeId");
 		String page = request.getParameter("page");
 		response.setDateHeader("expires", 0); 
+		hasCache=(Boolean) request.getServletContext().getAttribute("hasCache");
 		String userId = request.getParameter("userId");
 		check = (Boolean) request.getServletContext().getAttribute("check");
 		if (StringUtil.isNotNull(teacherId)) {
@@ -123,25 +105,13 @@ public class QuerryTeacherIdea extends HttpServlet {
 			int usId) {
 		// 初始化讲师热门观点 问答 文字直播 直播信息
 		FamousTeacher teacher = FamousTeacherSer.findFamousTeacherById(tId);
-		int isPurch = 1;
-		if (usId <= 0) {
-			isPurch = 1;
-		}
-		if (type == 0) {
+		/*if (type == 0) {
 			// 热门观点
 			List<HotIdea> ideas;
 			if (isIndex == 0) {
 				// 首页
-				/*Object cached = DataManager.getCached(Constant.VIDEO_CACHE,"indexIdea");
-				if(cached!=null){
-					return cached.toString();
-				}*/
 				ideas = HotIdeaServ.findLastIdeaByTeacherId(tId, 3);
 			} else {
-				/*Object cached = DataManager.getCached(Constant.VIDEO_CACHE,tId+"allIdea"+usId);
-				if(cached!=null){
-					return cached.toString();
-				}*/
 				ideas = HotIdeaServ.findIdeaByTeacherId(tId, p);
 			}
 
@@ -171,7 +141,9 @@ public class QuerryTeacherIdea extends HttpServlet {
 				new CacheUtils(Constant.VIDEO_CACHE).addToCache(tId+"allIdea"+usId,ideaList);
 			}
 			return ideaList;
-		} else if (type == 1) {
+		} else */
+		
+		/*if (type == 1) {
 			// 问答
 			List<Ask> asks;
 			if (isIndex == 0) {
@@ -212,7 +184,9 @@ public class QuerryTeacherIdea extends HttpServlet {
 				users.add(user);
 			}
 			return JsonUtil.getAskList(asks, users, 0);
-		} else if (type == 2) {
+		} else*/
+		
+		/*if (type == 2) {
 			// 文字直播
 			if (usId <= 0) {
 				isPurch = 1;
@@ -294,20 +268,11 @@ public class QuerryTeacherIdea extends HttpServlet {
 				}
 			}
 			return JsonUtil.getTxtLiveByTeacherId(txt, allTxts, guardian);
-		} else {
+		} */
+		
+		
+		if(type!=0&&type!=1&&type!=2) {
 			// 视频直播
-		/*	if(isIndex==0){
-				Object cached = DataManager.getCached(Constant.VIDEO_CACHE,"indexLive");
-				if(cached!=null){
-					return cached.toString();
-				}
-			}else{
-				Object cached = DataManager.getCached(Constant.VIDEO_CACHE,tId+"allLive"+p);
-				if(cached!=null){
-					return cached.toString();
-				}
-			}*/
-			
 			int ownJucaiBills = 0;
 			VideoLive live = VideoLiveServer.findLiveBytId(tId);
 			if (live != null) {
@@ -317,6 +282,8 @@ public class QuerryTeacherIdea extends HttpServlet {
 				live.setCharge(teacher.getLiveFree() == 1);
 				// 单次直播的价格
 				live.setLivePrice(teacher.getLivePrice());
+				int roomId = FamousTeacherSer.findRoomInfo(tId);
+				live.setXnRenQi(getRoomInfo(roomId));
 				// 视频直播url
 				live.setVideoUrl(teacher.getAppLiveUrl());
 				live.setTeacherName(teacher.getNickName());
@@ -355,7 +322,6 @@ public class QuerryTeacherIdea extends HttpServlet {
 			if (isIndex == 0) {
 				// 首页
 				String indexVideoLive = JsonUtil.getIndexVideoLive(live);
-				//new CacheUtils(Constant.VIDEO_CACHE).addToCache("indexLive", indexVideoLive);
 				return indexVideoLive;
 			}
 			List<RecoderVideo>  videos=RecoderVideoServer.getAllRecoderVideo(tId,p,10.0);
@@ -365,7 +331,7 @@ public class QuerryTeacherIdea extends HttpServlet {
 					// 是否为付费视频 0为免费视频，1为付费视频
 					int recoderId = Integer.parseInt(video.getExt1());
 					if(check){
-						video.setLiveUrl1(video2!=null&&video2.getVideoUrl().length()>0 ? video2.getVideoUrl() : urls[RandomUtils.getRandomData(9, 0)]);
+						video.setLiveUrl1(video2!=null&&video2.getVideoUrl().length()>0 ? video2.getVideoUrl() : Constant.urls[RandomUtils.getRandomData(9, 0)]);
 					}
 					if (video.getLiveIsFree()==2&&recoderId!=0) {
 						    //录播是否购买
@@ -386,9 +352,64 @@ public class QuerryTeacherIdea extends HttpServlet {
 				}
 			}
 			String allLive = JsonUtil.getLive(live, videos,p);
-		//	new CacheUtils(Constant.VIDEO_CACHE).addToCache(tId+"allLive"+p, allLive);
 			return allLive;
 		}
+		return null;
+	}
+	
+	/**
+	 * 获取聊天室详细信息
+	 */
+	public int getRoomInfo(int roomId) {
+		JsonObject object = new JsonObject();
+		object.addProperty("GroupId", roomId+"");
+		object.addProperty("Limit", 1);
+		object.addProperty("Offset", 0);
+		String onLineInfo= LoginUtil.sendPostStr(createUrl(baseUrl, getSign("admin")),
+				object.toString(), null);
+		JSONObject jsonObj = new JSONObject(onLineInfo);
+		String ok = jsonObj.optString("ActionStatus");
+		if ("OK".equals(ok)) {
+			return jsonObj.optInt("MemberNum", 0);
+		}else{
+			return 0;
+		}
+	}
+	
+	/**
+	 * @param base
+	 * @param sign
+	 * @return 拼接腾讯云URL
+	 */
+	private String createUrl(String base, String sign) {
+		StringBuffer buffer = new StringBuffer(base);
+		buffer.append("?usersig=" + sign + "&");
+		buffer.append("identifier=admin" + "&");
+		buffer.append("sdkappid=" + appId + "&");
+		buffer.append("random=" + RandomUtils.getRandomData(8) + "&");
+		buffer.append("contenttype=json");
+		return buffer.toString();
+	}
+	
+	/**
+	 * @return 获取管理员sign
+	 */
+	private String getSign(String a) {
+		Object cached = DataManager.getCached(Constant.CACHE_SIGN, "userSign"+a, hasCache);
+		if(cached!=null){
+			return cached.toString();
+		}
+		param.clear();
+		param.put("username", a);
+		String signResult = LoginUtil.sendHttpPost(GET_SIGN, param);
+		JSONObject object = new JSONObject(signResult);
+		boolean isCreate = object.optBoolean("Result");
+		if (isCreate) {
+			String sign = object.optString("UserSig");
+			new CacheUtils(Constant.CACHE_SIGN).addToCache("userSign"+a, sign);
+			return sign;
+		}
+		return null;
 	}
 
 }

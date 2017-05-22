@@ -109,6 +109,30 @@ public class Constant {
 	 */
 	public static final String CACHE_SIGN="cache_sign";
 	
+	public static final  String urls[]={"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160817130010-20160817140207.m3u8",
+			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160818130010-20160818140219.m3u8",
+			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160819150500-20160819154838.m3u8",
+			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160822150934-20160822160025.m3u8",
+			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160823085947-20160823091548.m3u8",
+			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160825102745-20160825113430.m3u8",
+			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160830102530-20160830113240.m3u8",
+			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160901092130-20160901102101.m3u8",
+			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160905135930-20160905150400.m3u8",
+			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160906191940-20160906202001.m3u8"
+			};
+	
+	
+	public static final String urls2[]={"http://recordcdn.quklive.com/broadcast/activity/9458019977964845/20160719192025-20160719202126.m3u8",
+			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160721130012-20160721140053.m3u8",
+			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160725102510-20160725113411.m3u8",
+			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160727192010-20160727202111.m3u8",
+			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160729130000-20160729140032.m3u8",
+			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160801102551-20160801113353.m3u8",
+			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160802090747-20160802092208.m3u8",
+			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160809092055-20160809102256.m3u8",
+			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160815085910-20160815091500.m3u8",
+			"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160816092110-20160816102025.m3u8"
+			};
 	
 	
 

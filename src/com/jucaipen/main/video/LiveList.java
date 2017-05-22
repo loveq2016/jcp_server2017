@@ -2,40 +2,41 @@ package com.jucaipen.main.video;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
+import com.google.gson.JsonObject;
+import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.Account;
 import com.jucaipen.model.ClientOsInfo;
 import com.jucaipen.model.FamousTeacher;
-import com.jucaipen.model.Guardian;
 import com.jucaipen.model.LiveRecoder;
 import com.jucaipen.model.LiveRecoderSale;
 import com.jucaipen.model.RecoderVideo;
-import com.jucaipen.model.TextLive;
-import com.jucaipen.model.TxtLiveSale;
 import com.jucaipen.model.Video;
 import com.jucaipen.model.VideoLive;
 import com.jucaipen.service.AccountSer;
 import com.jucaipen.service.FamousTeacherSer;
-import com.jucaipen.service.GuardianSer;
 import com.jucaipen.service.LiveRecoderSaleSer;
 import com.jucaipen.service.LiveRecoderSer;
 import com.jucaipen.service.RecoderVideoServer;
-import com.jucaipen.service.TxtLiveSaleSer;
-import com.jucaipen.service.TxtLiveSer;
 import com.jucaipen.service.UserServer;
 import com.jucaipen.service.VideoLiveServer;
 import com.jucaipen.service.VideoServer;
+import com.jucaipen.utils.CacheUtils;
+import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.HeaderUtil;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.LiveUtil;
+import com.jucaipen.utils.LoginUtil;
 import com.jucaipen.utils.RandomUtils;
 import com.jucaipen.utils.StringUtil;
-import com.jucaipen.utils.TimeUtils;
 /**
  * @author Administrator
  * 
@@ -48,21 +49,15 @@ import com.jucaipen.utils.TimeUtils;
  */
 public class LiveList extends HttpServlet {
 	private static final long serialVersionUID = -3535325712984870701L;
-	private String urls[]={"http://recordcdn.quklive.com/broadcast/activity/9458019977964845/20160719192025-20160719202126.m3u8",
-	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160721130012-20160721140053.m3u8",
-	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160725102510-20160725113411.m3u8",
-	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160727192010-20160727202111.m3u8",
-	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160729130000-20160729140032.m3u8",
-	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160801102551-20160801113353.m3u8",
-	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160802090747-20160802092208.m3u8",
-	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160809092055-20160809102256.m3u8",
-	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160815085910-20160815091500.m3u8",
-	"http://recordcdn.quklive.com/broadcast/activity/1469002576632934/20160816092110-20160816102025.m3u8"
-	};
 	private String result;
 	private List<FamousTeacher> teachers = new ArrayList<FamousTeacher>();
 	private String userAgent;
 	private boolean check=false;
+	private boolean hasCache;
+	private String baseUrl = "https://console.tim.qq.com/v4/group_open_http_svc/get_group_member_info";
+	private Map<String,String> param=new HashMap<String,String>();
+	private String GET_SIGN="http://www.jucaipen.com/ashx/AndroidUser.ashx?action=GetUserSig";
+	private String appId="1400028429";
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -70,6 +65,7 @@ public class LiveList extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
+		hasCache=(Boolean) request.getServletContext().getAttribute("hasCache");
 		userAgent = request.getParameter("User-Agent");
 		ClientOsInfo os = HeaderUtil.getMobilOS(userAgent);
 		int isDevice = HeaderUtil.isVaildDevice(os, userAgent);
@@ -95,7 +91,7 @@ public class LiveList extends HttpServlet {
 								int p = Integer.parseInt(page);
 								if (type == 0) {
 									// 文字直播
-									result = initTxtLive(p, uId);
+								//	result = initTxtLive(p, uId);
 								} else if(type==1){
 									// 视频直播
 									result = initLive(p, uId);
@@ -134,11 +130,6 @@ public class LiveList extends HttpServlet {
 		if (uId <= 0) {
 			isPurch = 1;
 		}
-		/*Object cached = DataManager.getCached(Constant.VIDEO_CACHE, "recoderVideo");
-		if(cached!=null){
-			return cached.toString();
-		}*/
-		
 		teachers.clear();
 		List<VideoLive> videos = VideoLiveServer.findRecoderLive(4);
 		if (videos != null) {
@@ -173,6 +164,8 @@ public class LiveList extends HttpServlet {
 						live.setVideoUrl("");
 					}
 				}else{
+					int roomId = FamousTeacherSer.findRoomInfo(tId);
+					live.setXnRenQi(getRoomInfo(roomId));
 					liveType=1;
 					// 是否收费 0 否 1 是
 					live.setCharge(teacher.getLiveFree() == 1);
@@ -218,7 +211,7 @@ public class LiveList extends HttpServlet {
 				//}
 					if(liveType==2&&check){
 						Video video2 = VideoServer.findLastVideoByTeacher(tId);
-						live.setVideoUrl(video2!=null&&video2.getVideoUrl().length()>0 ? video2.getVideoUrl() : urls[RandomUtils.getRandomData(9, 0)]);
+						live.setVideoUrl(video2!=null&&video2.getVideoUrl().length()>0 ? video2.getVideoUrl() : Constant.urls[RandomUtils.getRandomData(9, 0)]);
 					}
 				live.setOwnJucaiBills(ownJucaiBills);
 				live.setIsPurch(isPurch);
@@ -226,7 +219,6 @@ public class LiveList extends HttpServlet {
 			}
 		}
 		String liveList = JsonUtil.getLiveList(videos, teachers);
-		//new CacheUtils(Constant.VIDEO_CACHE).addToCache("recoderVideo", liveList);
 		return liveList;
 	}
 
@@ -238,11 +230,6 @@ public class LiveList extends HttpServlet {
 			isPurch = 1;
 		}
 		teachers.clear();
-		/*Object cached = DataManager.getCached(Constant.VIDEO_CACHE, "allVideo"+p);
-		if(cached!=null){
-			return cached.toString();
-		}*/
-		
 		List<VideoLive> videos = VideoLiveServer.findAll(p,10.0);
 		if (videos != null) {
 			for (VideoLive live : videos) {
@@ -259,14 +246,6 @@ public class LiveList extends HttpServlet {
 				if(live.getIsEnd()!=2){
 					liveType=2;
 					RecoderVideo recoderVideo=RecoderVideoServer.getLastRecoderVideo(tId);;
-					/*Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE, "recoderVideos"+live.getId());
-					if(cached2==null){
-						
-						new CacheUtils(Constant.TEACHER_CACHE).addToCache("teacheVideos"+tId, recoderVideo);
-					}else{
-						recoderVideo=(RecoderVideo) cached2;
-					}*/
-					
 					//直播已经结束 --返回最近的录播url
 					// 是否收费 0 否 1 是
 					if(recoderVideo!=null){
@@ -283,6 +262,8 @@ public class LiveList extends HttpServlet {
 						live.setVideoUrl("");
 					}
 				}else{
+					int roomId = FamousTeacherSer.findRoomInfo(tId);
+					live.setXnRenQi(getRoomInfo(roomId));
 					liveType=1;
 					// 是否收费 0 否 1 是
 					live.setCharge(teacher.getLiveFree() == 1);
@@ -302,14 +283,6 @@ public class LiveList extends HttpServlet {
 								.getRecoderByLiveId(live.getId());
 						Account account = AccountSer.findAccountByUserId(uId);
 						live.setGradian(LiveUtil.isGradian(tId, uId));
-						/*Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE, "recoderVideos"+live.getId());
-						if(cached2==null){
-							 resoder = LiveRecoderSer
-									.getRecoderByLiveId(live.getId());
-							new CacheUtils(Constant.TEACHER_CACHE).addToCache("recoderVideos"+live.getId(), resoder);
-						}else{
-							resoder=(LiveRecoder) cached2;
-						}*/
 						if(resoder!=null){
 							LiveRecoderSale liveSale=null;
 							LiveRecoderSale sale = LiveRecoderSaleSer
@@ -338,7 +311,7 @@ public class LiveList extends HttpServlet {
 				//}
 					if(liveType==2&&check){
 						Video video2 = VideoServer.findLastVideoByTeacher(tId);
-						live.setVideoUrl(video2!=null&&video2.getVideoUrl().length()>0 ? video2.getVideoUrl() : urls[RandomUtils.getRandomData(9, 0)]);
+						live.setVideoUrl(video2!=null&&video2.getVideoUrl().length()>0 ? video2.getVideoUrl() : Constant.urls[RandomUtils.getRandomData(9, 0)]);
 					}
 				live.setOwnJucaiBills(ownJucaiBills);
 				live.setIsPurch(isPurch);
@@ -346,7 +319,6 @@ public class LiveList extends HttpServlet {
 			}
 		}
 		String liveList = JsonUtil.getLiveList(videos, teachers);
-	//	new CacheUtils(Constant.VIDEO_CACHE).addToCache("allVideo"+p, liveList);
 		return liveList;
 	}
 
@@ -355,7 +327,7 @@ public class LiveList extends HttpServlet {
 	 * @param p
 	 * @param uId
 	 * @return  初始化文字直播 ---获取正在直播的文字直播
-	 */
+	 *//*
 	private String initTxtLive(int p, int uId) {
 		int isPurch = 1;
 		int ownJucaiBills = 0;
@@ -404,5 +376,60 @@ public class LiveList extends HttpServlet {
 			txt.setIsPurch(guardian != null ? 0 : isPurch);
 		}
 		return JsonUtil.getTxtLiveList(txtLives, teachers);
+	}*/
+	
+	/**
+	 * 获取聊天室详细信息
+	 */
+	public int getRoomInfo(int roomId) {
+		JsonObject object = new JsonObject();
+		object.addProperty("GroupId", roomId+"");
+		object.addProperty("Limit", 1);
+		object.addProperty("Offset", 0);
+		String onLineInfo= LoginUtil.sendPostStr(createUrl(baseUrl, getSign("admin")),
+				object.toString(), null);
+		JSONObject jsonObj = new JSONObject(onLineInfo);
+		String ok = jsonObj.optString("ActionStatus");
+		if ("OK".equals(ok)) {
+			return jsonObj.optInt("MemberNum", 0);
+		}else{
+			return 0;
+		}
+	}
+	
+	/**
+	 * @param base
+	 * @param sign
+	 * @return 拼接腾讯云URL
+	 */
+	private String createUrl(String base, String sign) {
+		StringBuffer buffer = new StringBuffer(base);
+		buffer.append("?usersig=" + sign + "&");
+		buffer.append("identifier=admin" + "&");
+		buffer.append("sdkappid=" + appId + "&");
+		buffer.append("random=" + RandomUtils.getRandomData(8) + "&");
+		buffer.append("contenttype=json");
+		return buffer.toString();
+	}
+	
+	/**
+	 * @return 获取管理员sign
+	 */
+	private String getSign(String a) {
+		Object cached = DataManager.getCached(Constant.CACHE_SIGN, "userSign"+a, hasCache);
+		if(cached!=null){
+			return cached.toString();
+		}
+		param.clear();
+		param.put("username", a);
+		String signResult = LoginUtil.sendHttpPost(GET_SIGN, param);
+		JSONObject object = new JSONObject(signResult);
+		boolean isCreate = object.optBoolean("Result");
+		if (isCreate) {
+			String sign = object.optString("UserSig");
+			new CacheUtils(Constant.CACHE_SIGN).addToCache("userSign"+a, sign);
+			return sign;
+		}
+		return null;
 	}
 }

@@ -137,15 +137,17 @@ public class RecoderVideoImp implements RecoderVideoDao {
 		try {
 			Connection dbConn = JdbcUtil.connSqlServer();
 			PreparedStatement statement = dbConn
-					.prepareStatement("SELECT PlayCount,PlayCountSham FROM JCP_Live_Recorded WHERE Id=? AND VideoUrl_1 IS NOT NULL AND DATALENGTH(VideoUrl_1)>0");
+					.prepareStatement("SELECT PlayCount,PlayCountSham,TeacherId FROM JCP_Live_Recorded WHERE Id=? AND VideoUrl_1 IS NOT NULL AND DATALENGTH(VideoUrl_1)>0");
 			statement.setInt(1, id);
 			ResultSet query = statement.executeQuery();
 			while (query.next()) {
 				int playCount = query.getInt(1);
 				int xnCount = query.getInt(2);
+				int tId=query.getInt(3);
 				RecoderVideo video = new RecoderVideo();
 				video.setPlayCount(playCount);
 				video.setXnPlayCount(xnCount);
+				video.setTeacherId(tId);
 				return video;
 			}
 		} catch (SQLException e) {

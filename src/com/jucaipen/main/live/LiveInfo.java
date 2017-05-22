@@ -6,12 +6,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import com.google.gson.JsonObject;
 import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.Contribute;
@@ -33,14 +37,13 @@ import com.jucaipen.utils.StringUtil;
 public class LiveInfo extends HttpServlet {
 	// 获取群成员 url
 	private String baseUrl = "https://console.tim.qq.com/v4/group_open_http_svc/get_group_member_info";
-	// private String baseUrl =
-	// "https://console.tim.qq.com/v4/group_open_http_svc/get_group_info";
 	private Map<String, String> param = new HashMap<String, String>();
 	// 房间id 集合列表
 	private List<String> ids = new ArrayList<String>();
 	private String result;
 	// 在线人数
 	private boolean hasCache;
+	private ServletContext context;
 	// 腾讯云APPID
 	private static final String appId = "1400028429";
 	// 获取用户 userSign url
@@ -54,6 +57,7 @@ public class LiveInfo extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
+		context=request.getServletContext();
 		hasCache = (Boolean) request.getServletContext().getAttribute("hasCache");
 		String teacherId = request.getParameter("teacherId");
 		hasCache = (Boolean) request.getServletContext().getAttribute(
@@ -72,22 +76,9 @@ public class LiveInfo extends HttpServlet {
 	/**
 	 * 获取聊天室详细信息
 	 */
-	public String getRoomInfo(List<String> ids) {
-		/*
-		 * StringBuffer buffer = new StringBuffer(); buffer.append("{"); //
-		 * groupList buffer.append("\"GroupIdList\":["); for (String id : ids) {
-		 * buffer.append("\"" + id + "\""); buffer.append(","); }
-		 * buffer.replace(buffer.length() - 1, buffer.length(), "");
-		 * buffer.append("]"); buffer.append("}");
-		 */
-
-		/*
-		 * { "GroupId":"@TGS#1NVTZEAE4", // 群组ID（必填） "Limit": 100, //
-		 * 最多获取多少个成员的资料 "Offset": 0 // 从第多少个成员开始获取资料 }
-		 */
-
+	public String getRoomInfo(int roomId) {
 		JsonObject object = new JsonObject();
-		object.addProperty("GroupId", ids.get(0));
+		object.addProperty("GroupId", roomId+"");
 		object.addProperty("Limit", 10);
 		object.addProperty("Offset", 0);
 
@@ -139,14 +130,14 @@ public class LiveInfo extends HttpServlet {
 		Object cached3 = DataManager.getCached(Constant.TEACHER_CACHE,
 				"userInfo" + roomId, hasCache);
 		if (cached3 == null) {
-			list = getMember(roomId);
+			list = getMember(roomId,tId);
 			new CacheUtils(Constant.TEACHER_CACHE).addToCache("userInfo"
 					+ roomId, list);
 		} else {
 			try {
 				list = (List<User>) cached3;
 			} catch (Exception e) {
-				list = getMember(roomId);
+				list = getMember(roomId,tId);
 			}
 			
 		}
@@ -163,16 +154,18 @@ public class LiveInfo extends HttpServlet {
 	 * @param roomId
 	 * @return 获取直播室成员信息
 	 */
-	private List<User> getMember(int roomId) {
+	private List<User> getMember(int roomId,int tId) {
 		ids.clear();
 		List<User> users = new ArrayList<User>();
-		ids.add(roomId + "");
-		String roomInfo = getRoomInfo(ids);
+		String roomInfo = getRoomInfo(roomId);
 		// 2、直播人气
 		JSONObject object = new JSONObject(roomInfo);
 		String ok = object.optString("ActionStatus");
 		if ("OK".equals(ok)) {
 			int memberNum = object.optInt("MemberNum", 0);
+			if(memberNum>0){
+				context.setAttribute("onLine"+tId, memberNum);
+			}
 			JSONArray memberList = object.optJSONArray("MemberList");
 			for (int i = 0; i < memberList.length(); i++) {
 				JSONObject member = memberList.optJSONObject(i);
@@ -185,20 +178,16 @@ public class LiveInfo extends HttpServlet {
 							Constant.TEACHER_CACHE, "userInfo" + userId,
 							hasCache);
 					if (cached == null) {
-						String userFace = UserServer.findFaceImageById(userId);
-						user=new User();
+						user = UserServer.findFaceImageById(userId);
 						user.setId(userId);
-						user.setFaceImage(userFace);
 						new CacheUtils(Constant.TEACHER_CACHE).addToCache(
 								"userInfo" + userId, user);
 					} else {
 						try {
 							user = (User) cached;
 						} catch (Exception e) {
-							String userFace = UserServer.findFaceImageById(userId);
-							user=new User();
+							user = UserServer.findFaceImageById(userId);
 							user.setId(userId);
-							user.setFaceImage(userFace);
 						}
 					}
 					// 不统计房间创建者

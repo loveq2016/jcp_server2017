@@ -23,13 +23,17 @@
     window.onload=function(){
     var meta=document.getElementsByTagName("meta")[0];
     var form=document.getElementsByTagName("form")[0];
+    var btn_login=document.getElementById("btn_login");
+    var btn_reset=document.getElementById("btn_reset");
     if(!isPC()){
        //手机端
        meta.setAttribute("content","width=device-width, initial-scale=1");
     }else{
       // PC
-       form.setAttribute("style","font-size:22px !important;margin-top:10px !important;");
-       form.style.cssText="font-size:22px !important;margin-top:10px !important;";
+       form.setAttribute("style","margin-top:10px;");
+       form.style.cssText="margin-top:10px";
+       btn_login.setAttribute("style", "width:100px;");
+       btn_reset.setAttribute("style", "width:100px;");
     }
     function isPC() 
        { 

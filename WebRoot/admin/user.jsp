@@ -30,13 +30,14 @@
 	<%
 		Connection conn = JdbcUtil.connSqlServer();
 		Statement sta = conn.createStatement();
-		ResultSet res = sta.executeQuery("select * from JCP_User where RegFrom="+5);
+		ResultSet res = sta.executeQuery("select TOP 10 * from JCP_User where RegFrom="+5);
 	%>
 	<div style="text-align: center;">
 		<font size="5" color="pink">用户管理中心</font>
 	</div>
 	<br>
-	<table border="2" align="center" bordercolor="black" >
+	<div align="center">
+	<table border="2" bordercolor="black" >
 		<tr bgcolor="#408080">
 			<td width="10%" align="center">id</td>
 			<td width="10%" align="center">用户名</td>
@@ -66,5 +67,9 @@
 			}
 		%>
 	</table>
+	<a href="javascript:0" id="lastPage">上一页</a>
+	<a href="javascript:0"  id="nextPage">下一页</a>
+	</div>
+	
 </body>
 </html>
