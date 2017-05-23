@@ -61,8 +61,10 @@ public class LiveRecoderImp implements LiveRecoderDao {
 				int liveState = res.getInt(6);
 				String endDate = res.getString(7);
 				String remark = res.getString(8);
+				String title=res.getString(9);
 				LiveRecoder recoder = new LiveRecoder(id, liveId, teacherId,
 						liveNo, startDate, liveState, endDate, remark);
+				recoder.setTitle(title);
 				return recoder;
 			}
 		} catch (SQLException e) {

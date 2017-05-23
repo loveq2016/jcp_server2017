@@ -16,9 +16,11 @@ public class BaseRequest extends HttpServletRequestWrapper{
 
 	@Override
 	public String getParameter(String name) {
-		if(name==null)
+		if(name==null){
 			return null;
-		return super.getParameter(name);
+		}
+		String param = super.getParameter(name);
+		return param;
 	}
 	
 	

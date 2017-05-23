@@ -151,6 +151,7 @@ public class LiveList extends HttpServlet {
 					//直播已经结束 --返回最近的录播url
 					// 是否收费 0 否 1 是
 					if(recoderVideo!=null){
+						live.setTitle(recoderVideo.getTitle());
 						live.setCharge(recoderVideo.getLiveIsFree() == 2);
 						// 单次直播价格
 						live.setId(recoderVideo.getId());
@@ -185,6 +186,7 @@ public class LiveList extends HttpServlet {
 						LiveRecoder resoder = LiveRecoderSer
 						.getRecoderByLiveId(live.getId());
 						if(resoder!=null){
+							live.setTitle(resoder.getTitle());
 							LiveRecoderSale liveSale=null;
 							LiveRecoderSale recoderSale = LiveRecoderSaleSer
 									.getLiveSaleByUidAndLiveId(uId,resoder.getId(),liveType);
@@ -284,6 +286,7 @@ public class LiveList extends HttpServlet {
 						Account account = AccountSer.findAccountByUserId(uId);
 						live.setGradian(LiveUtil.isGradian(tId, uId));
 						if(resoder!=null){
+							live.setTitle(resoder.getTitle());
 							LiveRecoderSale liveSale=null;
 							LiveRecoderSale sale = LiveRecoderSaleSer
 									.getLiveSaleByUidAndLiveId(uId,resoder.getId(),liveType);

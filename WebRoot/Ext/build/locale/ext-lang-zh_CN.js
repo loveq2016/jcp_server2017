@@ -4,55 +4,55 @@
  * 09 April 2007
  */
 
-Ext.UpdateManager.defaults.indicatorText = '<div class="loading-indicator">åŠ è½½ä¸­...</div>';
+Ext.UpdateManager.defaults.indicatorText = '<div class="loading-indicator">¼ÓÔØÖĞ...</div>';
 
 if(Ext.View){
    Ext.View.prototype.emptyText = "";
 }
 
 if(Ext.grid.GridPanel){
-   Ext.grid.GridPanel.prototype.ddText = "{0} é€‰æ‹©è¡Œ";
+   Ext.grid.GridPanel.prototype.ddText = "{0} Ñ¡ÔñĞĞ";
 }
 
 if(Ext.TabPanelItem){
-   Ext.TabPanelItem.prototype.closeText = "å…³é—­";
+   Ext.TabPanelItem.prototype.closeText = "¹Ø±Õ";
 }
 
 if(Ext.form.Field){
-   Ext.form.Field.prototype.invalidText = "è¾“å…¥å€¼éæ³•";
+   Ext.form.Field.prototype.invalidText = "ÊäÈëÖµ·Ç·¨";
 }
 
 Date.monthNames = [
-   "ä¸€æœˆ",
-   "äºŒæœˆ",
-   "ä¸‰æœˆ",
-   "å››æœˆ",
-   "äº”æœˆ",
-   "å…­æœˆ",
-   "ä¸ƒæœˆ",
-   "å…«æœˆ",
-   "ä¹æœˆ",
-   "åæœˆ",
-   "åä¸€æœˆ",
-   "åäºŒæœˆ"
+   "Ò»ÔÂ",
+   "¶şÔÂ",
+   "ÈıÔÂ",
+   "ËÄÔÂ",
+   "ÎåÔÂ",
+   "ÁùÔÂ",
+   "ÆßÔÂ",
+   "°ËÔÂ",
+   "¾ÅÔÂ",
+   "Ê®ÔÂ",
+   "Ê®Ò»ÔÂ",
+   "Ê®¶şÔÂ"
 ];
 
 Date.dayNames = [
-   "æ—¥",
-   "ä¸€",
-   "äºŒ",
-   "ä¸‰",
-   "å››",
-   "äº”",
-   "å…­"
+   "ÈÕ",
+   "Ò»",
+   "¶ş",
+   "Èı",
+   "ËÄ",
+   "Îå",
+   "Áù"
 ];
 
 if(Ext.MessageBox){
    Ext.MessageBox.buttonText = {
-      ok     : "ç¡®å®š",
-      cancel : "å–æ¶ˆ",
-      yes    : "æ˜¯",
-      no     : "å¦"
+      ok     : "È·¶¨",
+      cancel : "È¡Ïû",
+      yes    : "ÊÇ",
+      no     : "·ñ"
    };
 }
 
@@ -60,48 +60,48 @@ if(Ext.util.Format){
    Ext.util.Format.date = function(v, format){
       if(!v) return "";
       if(!(v instanceof Date)) v = new Date(Date.parse(v));
-      return v.dateFormat(format || "yå¹´mæœˆdæ—¥");
+      return v.dateFormat(format || "yÄêmÔÂdÈÕ");
    };
 }
 
 if(Ext.DatePicker){
    Ext.apply(Ext.DatePicker.prototype, {
-      todayText         : "ä»Šå¤©",
-      minText           : "æ—¥æœŸåœ¨æœ€å°æ—¥æœŸä¹‹å‰",
-      maxText           : "æ—¥æœŸåœ¨æœ€å¤§æ—¥æœŸä¹‹å",
+      todayText         : "½ñÌì",
+      minText           : "ÈÕÆÚÔÚ×îĞ¡ÈÕÆÚÖ®Ç°",
+      maxText           : "ÈÕÆÚÔÚ×î´óÈÕÆÚÖ®ºó",
       disabledDaysText  : "",
       disabledDatesText : "",
       monthNames        : Date.monthNames,
       dayNames          : Date.dayNames,
-      nextText          : 'ä¸‹æœˆ (Control+Right)',
-      prevText          : 'ä¸Šæœˆ (Control+Left)',
-      monthYearText     : 'é€‰æ‹©ä¸€ä¸ªæœˆ (Control+Up/Down æ¥æ”¹å˜å¹´)',
-      todayTip          : "{0} (ç©ºæ ¼é”®é€‰æ‹©)",
-      format            : "yå¹´mæœˆdæ—¥",
-      okText            : "ç¡®å®š",
-      cancelText        : "å–æ¶ˆ"
+      nextText          : 'ÏÂÔÂ (Control+Right)',
+      prevText          : 'ÉÏÔÂ (Control+Left)',
+      monthYearText     : 'Ñ¡ÔñÒ»¸öÔÂ (Control+Up/Down À´¸Ä±äÄê)',
+      todayTip          : "{0} (¿Õ¸ñ¼üÑ¡Ôñ)",
+      format            : "yÄêmÔÂdÈÕ",
+      okText            : "È·¶¨",
+      cancelText        : "È¡Ïû"
    });
 }
 
 if(Ext.PagingToolbar){
    Ext.apply(Ext.PagingToolbar.prototype, {
-      beforePageText : "é¡µ",
-      afterPageText  : "é¡µå…± {0} é¡µ",
-      firstText      : "ç¬¬ä¸€é¡µ",
-      prevText       : "å‰ä¸€é¡µ",
-      nextText       : "ä¸‹ä¸€é¡µ",
-      lastText       : "æœ€åé¡µ",
-      refreshText    : "åˆ·æ–°",
-      displayMsg     : "æ˜¾ç¤º {0} - {1}ï¼Œå…± {2} æ¡",
-      emptyMsg       : 'æ²¡æœ‰æ•°æ®éœ€è¦æ˜¾ç¤º'
+      beforePageText : "Ò³",
+      afterPageText  : "Ò³¹² {0} Ò³",
+      firstText      : "µÚÒ»Ò³",
+      prevText       : "Ç°Ò»Ò³",
+      nextText       : "ÏÂÒ»Ò³",
+      lastText       : "×îºóÒ³",
+      refreshText    : "Ë¢ĞÂ",
+      displayMsg     : "ÏÔÊ¾ {0} - {1}£¬¹² {2} Ìõ",
+      emptyMsg       : 'Ã»ÓĞÊı¾İĞèÒªÏÔÊ¾'
    });
 }
 
 if(Ext.form.TextField){
    Ext.apply(Ext.form.TextField.prototype, {
-      minLengthText : "è¯¥è¾“å…¥é¡¹çš„æœ€å°é•¿åº¦æ˜¯ {0}",
-      maxLengthText : "è¯¥è¾“å…¥é¡¹çš„æœ€å¤§é•¿åº¦æ˜¯ {0}",
-      blankText     : "è¯¥è¾“å…¥é¡¹ä¸ºå¿…è¾“é¡¹",
+      minLengthText : "¸ÃÊäÈëÏîµÄ×îĞ¡³¤¶ÈÊÇ {0}",
+      maxLengthText : "¸ÃÊäÈëÏîµÄ×î´ó³¤¶ÈÊÇ {0}",
+      blankText     : "¸ÃÊäÈëÏîÎª±ØÊäÏî",
       regexText     : "",
       emptyText     : null
    });
@@ -109,60 +109,60 @@ if(Ext.form.TextField){
 
 if(Ext.form.NumberField){
    Ext.apply(Ext.form.NumberField.prototype, {
-      minText : "è¯¥è¾“å…¥é¡¹çš„æœ€å°å€¼æ˜¯ {0}",
-      maxText : "è¯¥è¾“å…¥é¡¹çš„æœ€å¤§å€¼æ˜¯ {0}",
-      nanText : "{0} ä¸æ˜¯æœ‰æ•ˆæ•°å€¼"
+      minText : "¸ÃÊäÈëÏîµÄ×îĞ¡ÖµÊÇ {0}",
+      maxText : "¸ÃÊäÈëÏîµÄ×î´óÖµÊÇ {0}",
+      nanText : "{0} ²»ÊÇÓĞĞ§ÊıÖµ"
    });
 }
 
 if(Ext.form.DateField){
    Ext.apply(Ext.form.DateField.prototype, {
-      disabledDaysText  : "ç¦ç”¨",
-      disabledDatesText : "ç¦ç”¨",
-      minText           : "è¯¥è¾“å…¥é¡¹çš„æ—¥æœŸå¿…é¡»åœ¨ {0} ä¹‹å",
-      maxText           : "è¯¥è¾“å…¥é¡¹çš„æ—¥æœŸå¿…é¡»åœ¨ {0} ä¹‹å‰",
-      invalidText       : "{0} æ˜¯æ— æ•ˆçš„æ—¥æœŸ - å¿…é¡»ç¬¦åˆæ ¼å¼ï¼š {1}",
-      format            : "yå¹´mæœˆdæ—¥"
+      disabledDaysText  : "½ûÓÃ",
+      disabledDatesText : "½ûÓÃ",
+      minText           : "¸ÃÊäÈëÏîµÄÈÕÆÚ±ØĞëÔÚ {0} Ö®ºó",
+      maxText           : "¸ÃÊäÈëÏîµÄÈÕÆÚ±ØĞëÔÚ {0} Ö®Ç°",
+      invalidText       : "{0} ÊÇÎŞĞ§µÄÈÕÆÚ - ±ØĞë·ûºÏ¸ñÊ½£º {1}",
+      format            : "yÄêmÔÂdÈÕ"
    });
 }
 
 if(Ext.form.ComboBox){
    Ext.apply(Ext.form.ComboBox.prototype, {
-      loadingText       : "åŠ è½½...",
+      loadingText       : "¼ÓÔØ...",
       valueNotFoundText : undefined
    });
 }
 
 if(Ext.form.VTypes){
    Ext.apply(Ext.form.VTypes, {
-      emailText    : 'è¯¥è¾“å…¥é¡¹å¿…é¡»æ˜¯ç”µå­é‚®ä»¶åœ°å€ï¼Œæ ¼å¼å¦‚ï¼š "user@domain.com"',
-      urlText      : 'è¯¥è¾“å…¥é¡¹å¿…é¡»æ˜¯URLåœ°å€ï¼Œæ ¼å¼å¦‚ï¼š "http:/'+'/www.domain.com"',
-      alphaText    : 'è¯¥è¾“å…¥é¡¹åªèƒ½åŒ…å«å­—ç¬¦å’Œ_',
-      alphanumText : 'è¯¥è¾“å…¥é¡¹åªèƒ½åŒ…å«å­—ç¬¦,æ•°å­—å’Œ_'
+      emailText    : '¸ÃÊäÈëÏî±ØĞëÊÇµç×ÓÓÊ¼şµØÖ·£¬¸ñÊ½Èç£º "user@domain.com"',
+      urlText      : '¸ÃÊäÈëÏî±ØĞëÊÇURLµØÖ·£¬¸ñÊ½Èç£º "http:/'+'/www.domain.com"',
+      alphaText    : '¸ÃÊäÈëÏîÖ»ÄÜ°üº¬×Ö·ûºÍ_',
+      alphanumText : '¸ÃÊäÈëÏîÖ»ÄÜ°üº¬×Ö·û,Êı×ÖºÍ_'
    });
 }
 
 if(Ext.grid.GridView){
    Ext.apply(Ext.grid.GridView.prototype, {
-      sortAscText  : "æ­£åº",
-      sortDescText : "é€†åº",
-      lockText     : "é”åˆ—",
-      unlockText   : "è§£é”åˆ—",
-      columnsText  : "åˆ—"
+      sortAscText  : "ÕıĞò",
+      sortDescText : "ÄæĞò",
+      lockText     : "ËøÁĞ",
+      unlockText   : "½âËøÁĞ",
+      columnsText  : "ÁĞ"
    });
 }
 
 if(Ext.grid.PropertyColumnModel){
    Ext.apply(Ext.grid.PropertyColumnModel.prototype, {
-      nameText   : "åç§°",
-      valueText  : "å€¼",
-      dateFormat : "yå¹´mæœˆdæ—¥"
+      nameText   : "Ãû³Æ",
+      valueText  : "Öµ",
+      dateFormat : "yÄêmÔÂdÈÕ"
    });
 }
 
 if(Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion){
    Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
-      splitTip            : "æ‹–åŠ¨æ¥æ”¹å˜å°ºå¯¸.",
-      collapsibleSplitTip : "æ‹–åŠ¨æ¥æ”¹å˜å°ºå¯¸. åŒå‡»éšè—."
+      splitTip            : "ÍÏ¶¯À´¸Ä±ä³ß´ç.",
+      collapsibleSplitTip : "ÍÏ¶¯À´¸Ä±ä³ß´ç. Ë«»÷Òş²Ø."
    });
 }

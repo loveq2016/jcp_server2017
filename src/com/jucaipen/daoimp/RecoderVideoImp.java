@@ -45,7 +45,7 @@ public class RecoderVideoImp implements RecoderVideoDao {
 		try {
 			Connection dbConn = JdbcUtil.connSqlServer();
 			PreparedStatement statement = dbConn
-					.prepareStatement("SELECT TOP 1 VideoUrl_1,ImageUrl,LiveIdFree,FreePrice,Ext_1,PlayCountSham,Id FROM JCP_Live_Recorded WHERE TeacherId=? AND VideoUrl_1 IS NOT NULL AND DATALENGTH(VideoUrl_1)>0 ORDER BY EndDate DESC");
+					.prepareStatement("SELECT TOP 1 VideoUrl_1,ImageUrl,LiveIdFree,FreePrice,Ext_1,PlayCountSham,Id,Title FROM JCP_Live_Recorded WHERE TeacherId=? AND VideoUrl_1 IS NOT NULL AND DATALENGTH(VideoUrl_1)>0 ORDER BY EndDate DESC");
 			statement.setInt(1, teacherId);
 			ResultSet query = statement.executeQuery();
 			while (query.next()) {
@@ -56,10 +56,12 @@ public class RecoderVideoImp implements RecoderVideoDao {
 				String ext1 = query.getString(5);
 				int xn=query.getInt(6);
 				int id=query.getInt(7);
+				String title=query.getString(8);
 				RecoderVideo recoderVideo = new RecoderVideo();
 				recoderVideo.setLiveUrl1(url1);
 				recoderVideo.setImageUrl(image);
 				recoderVideo.setLiveIsFree(isFree);
+				recoderVideo.setTitle(title);
 				recoderVideo.setId(id);
 				recoderVideo.setLivePrice(plice);
 				recoderVideo.setXnPlayCount(xn);

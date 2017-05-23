@@ -297,6 +297,7 @@ public class QuerryTeacherIdea extends HttpServlet {
 						LiveRecoder recoder = LiveRecoderSer
 						.getRecoderByLiveId(live.getId());
 						if(recoder!=null){
+							live.setTitle(recoder.getTitle());
 							LiveRecoderSale sale = LiveRecoderSaleSer
 									.getLiveSaleByUidAndLiveId(usId, 
 											recoder.getId(),1);

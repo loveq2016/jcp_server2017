@@ -49,7 +49,16 @@ public class LiveRecoder implements Serializable{
 	 */
 	private String remark;
 	
+	private String title;
 	
+	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
 	public LiveRecoder(int id, int liveId, int teacherId, String liveNo,
 			String startDate, int liveState, String endDate, String remark) {
