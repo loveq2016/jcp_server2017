@@ -86,6 +86,7 @@ public class UpdateApkInfo extends HttpServlet {
 		info.setPkgName("com.example.androidnetwork");
 		info.setUpdateDate(TimeUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		info.setIsForce(0);
+		info.setWebUrl("");
 		info.setLength(length);
 		if (StringUtil.isInteger(versionCode)) {
 			int vCode = Integer.parseInt(versionCode);
