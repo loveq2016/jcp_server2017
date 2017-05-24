@@ -155,7 +155,7 @@ public class UserImp implements UserDao {
 		try {
 			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
-			res = sta.executeQuery("SELECT UserFace,ISNULL(NickName,'') NickName FROM JCP_User WHERE Id="
+			res = sta.executeQuery("SELECT ISNULL(UserFace,'') UserFace,ISNULL(NickName,'') NickName FROM JCP_User WHERE Id="
 					+ id);
 			while (res.next()) {
 				String face = res.getString(1);
