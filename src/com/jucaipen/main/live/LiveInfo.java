@@ -81,7 +81,6 @@ public class LiveInfo extends HttpServlet {
 		object.addProperty("GroupId", roomId+"");
 		object.addProperty("Limit", 10);
 		object.addProperty("Offset", 0);
-
 		return LoginUtil.sendPostStr(createUrl(baseUrl, getSign("admin")),
 				object.toString(), null);
 	}
