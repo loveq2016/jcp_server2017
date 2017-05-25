@@ -1,5 +1,4 @@
 package com.jucaipen.utils;
-
 import java.security.MessageDigest;
 /**
  * @author Administrator
