@@ -1,23 +1,12 @@
 package com.jucaipen.manager;
-
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.UUID;
-
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import com.jucaipen.model.ServerManager;
-import com.jucaipen.utils.JdbcUtil;
-import com.jucaipen.utils.JsonUtil;
+import com.jucaipen.utils.MD5Util;
 import com.jucaipen.utils.StringUtil;
 
 /**
@@ -36,9 +25,10 @@ public class LoginServer extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		String account = request.getParameter("account");
 		String password = request.getParameter("password");
+		String lowerCase = MD5Util.MD5("123456").toLowerCase();
 		if (StringUtil.isNotNull(account)&&account.equals("admin")) {
 			if (StringUtil.isNotNull(password)) {
-					if (password.equals("123456")) {
+					if (password.equals(lowerCase)) {
 						// µÇÂ¼³É¹¦
 					/*	Cookie cookie=new Cookie("name", "admin"+UUID.randomUUID().toString());
 						cookie.setSecure(false);

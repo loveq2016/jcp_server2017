@@ -13,7 +13,7 @@ public class AccountFilter implements Filter{
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -28,7 +28,7 @@ public class AccountFilter implements Filter{
 			if(session!=null&&session.getAttribute("account")!=null){
 				String attribute = (String) session.getAttribute("account");
 				if("admin".equals(attribute)){
-					chain.doFilter(req, resp);
+					chain.doFilter(new BaseRequest(req), resp);
 				}else{
 					resp.sendRedirect(req.getContextPath()+"/login.jsp");
 				}
@@ -36,7 +36,7 @@ public class AccountFilter implements Filter{
 				resp.sendRedirect(req.getContextPath()+"/login.jsp");
 			}
 		}else{
-			chain.doFilter(req, resp);
+			chain.doFilter(new BaseRequest(req), resp);
 		}
 	}
 
