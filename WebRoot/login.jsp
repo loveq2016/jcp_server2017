@@ -72,19 +72,30 @@ form {
 	color: white;
 }
 
-#btn_login {
-	width: 25%;
+ #btn_login {
+	width: 100px;
 	padding: 3px;
 	font-size: 14px;
 	border: 0px;
 	background: green;
 	color: white;
-}
+} 
 
 span {
 	font-size: 15px;
 	color: red;
 	margin: auto 0;
+}
+
+input {
+	width:200px;
+}
+#code{
+  width: 150px;
+}
+#codeImage{
+   height: 30px;
+   width: 100px;
 }
 </style>
 
@@ -92,7 +103,8 @@ span {
 
 <body>
 	<form action="login" method="post">
-		<div align="center" style="text-align: center; margin-top:20%;">
+
+	<div align="center" style="text-align: center; margin-top:20%;">
 			输入账号:&nbsp;<input type="text" name="account" id="acct"
 				onblur="checkAccount()"><span id="sp1"></span>
 		</div>
@@ -101,9 +113,14 @@ span {
 				onblur="putPwd()">
 		</div>
 		<div align="center" style="text-align: center; margin-top:15px;">
+			输入验证码:&nbsp;<input type="password" name="password" id="code"
+				>
+				<img alt="" src="checkCode" id="codeImage">
+		</div>
+		<div align="center" style="text-align: center; margin-top:15px;">
 			<input type="submit" value="登录" id="btn_login"> <input
 				type="reset" value="重置" id="btn_reset">
-		</div>
+		</div> 
 	</form>
 
 	<script type="text/javascript">

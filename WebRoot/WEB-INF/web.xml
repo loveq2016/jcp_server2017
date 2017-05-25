@@ -1230,6 +1230,11 @@
     <servlet-name>UpdataWatchNum</servlet-name>
     <servlet-class>com.jucaipen.main.live.UpdataWatchNum</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>GetCode</servlet-name>
+    <servlet-class>com.jucaipen.base.GetCode</servlet-class>
+  </servlet>
+
 
 
 
@@ -1331,6 +1336,10 @@
   <servlet-mapping>
     <servlet-name>UpdataWatchNum</servlet-name>
     <url-pattern>/jucaipen/updatawatchnum</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GetCode</servlet-name>
+    <url-pattern>/checkCode</url-pattern>
   </servlet-mapping>
     <listener>
         <listener-class>com.jucaipen.base.WebListener</listener-class>

@@ -20,6 +20,10 @@ import Decoder.BASE64Encoder;
 public class ImgUtils {
 
 	private static final String codeChar = "abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ0123456789";
+    private static String randomCode;
+	public String getRandomCode() {
+		return randomCode;
+	}
 
 	/**
 	 * 将网络图片进行Base64位编码
@@ -108,8 +112,8 @@ public class ImgUtils {
 		graphics.fillRect(0, 0, width, height);
 		graphics.setColor(getRandomColor(255, 243, 155));
 		graphics.setFont(new Font("宋体", Font.BOLD, 22));
-		graphics.rotate(12, 0, 0);
-		graphics.drawString(createRandonCode(4), 10, 30);
+		randomCode=createRandonCode(4);
+		graphics.drawString(randomCode, 10, 30);
 		return bImage;
 	}
 
