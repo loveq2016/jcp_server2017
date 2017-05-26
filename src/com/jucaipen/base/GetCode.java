@@ -20,8 +20,9 @@ public class GetCode extends HttpServlet {
 			throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html/img");
-		BufferedImage image = ImgUtils.createImage(30, 50, Color.PINK);
+		response.setContentType("text/html/image");
+		response.addHeader( "Cache-Control", "no-cache" );  
+		BufferedImage image = ImgUtils.createImage(80, 30, Color.PINK);
 		HttpSession session = request.getSession();
 		session.setAttribute("randomCode", new ImgUtils().getRandomCode());
 		ImageIO.write(image, "jpeg", response.getOutputStream());

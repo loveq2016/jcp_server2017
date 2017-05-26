@@ -23,6 +23,23 @@
 
 <script type="text/javascript">
 	window.onload = function() {
+		var errInfo = getQueryString("errCode");
+		if (errInfo) {
+			if (errInfo == 1) {
+				/* var account = getQueryString("account");
+				var pwd = getQueryString("password");
+				$("#acct").val(account);
+				$("#pwd").val(pwd); */
+				$("#codeInfo").html("验证码错误");
+			} else if (errInfo == 2) {
+				var account = getQueryString("account");
+				/* $("#acct").val(account); */
+				$("#pwdInfo").html("密码错误");
+			} else {
+				$("#accountInfo").html("用户不存在");
+			}
+		}
+
 		var meta = document.getElementsByTagName("meta")[0];
 		var form = document.getElementsByTagName("form")[0];
 		var btn_login = document.getElementById("btn_login");
@@ -30,12 +47,16 @@
 		if (!isPC()) {
 			//手机端
 			meta.setAttribute("content", "width=device-width, initial-scale=1");
+			btn_login.setAttribute("style", "width:100px;padding:8px;");
+			btn_reset.setAttribute("style", "width:100px;padding:8px;");
+			form.setAttribute("style", "margin-top:35%;margin-left:10%;");
+			form.style.cssText = "margin-top:35%;margin-left:10%;";
 		} else {
 			// PC
-			form.setAttribute("style", "margin-top:10px;");
-			form.style.cssText = "margin-top:10px";
-			btn_login.setAttribute("style", "width:100px;");
-			btn_reset.setAttribute("style", "width:100px;");
+			form.setAttribute("style", "margin-top:18%;margin-left:45%;");
+			form.style.cssText = "margin-top:18%;margin-left:45%;";
+			btn_login.setAttribute("style", "width:150px;padding:8px;");
+			btn_reset.setAttribute("style", "width:150px;padding:8px;");
 		}
 		function isPC() {
 			var userAgentInfo = navigator.userAgent;
@@ -50,6 +71,14 @@
 			}
 			return flag;
 		}
+
+		function getQueryString(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+			var r = window.location.search.substr(1).match(reg);
+			if (r != null)
+				return unescape(r[2]);
+			return null;
+		}
 	};
 </script>
 <style>
@@ -57,10 +86,6 @@
 	font-family: "微软雅黑";
 }
 
-form {
-	text-align: center;
-	margin-top: 49%;
-}
 
 #btn_reset {
 	margin-left: 20px;
@@ -72,30 +97,44 @@ form {
 	color: white;
 }
 
- #btn_login {
+#btn_login {
 	width: 100px;
 	padding: 3px;
 	font-size: 14px;
 	border: 0px;
 	background: green;
 	color: white;
-} 
+}
 
-span {
+#sp1 {
 	font-size: 15px;
 	color: red;
 	margin: auto 0;
 }
 
-input {
-	width:200px;
+#acct ,#pwd ,#code {
+	width: 200px;
+	padding: 5px;
+	box-shadow: 0px 0px 5px #888888;
 }
-#code{
-  width: 150px;
+
+
+#code {
+	width: 129px;
 }
-#codeImage{
-   height: 30px;
-   width: 100px;
+
+#codeImage {
+	margin-left: 7px;
+	margin-bottom: -8px;
+}
+
+#dc {
+	
+}
+
+label {
+	color: red;
+	font-size: 12px;
 }
 </style>
 
@@ -104,26 +143,36 @@ input {
 <body>
 	<form action="login" method="post">
 
-	<div align="center" style="text-align: center; margin-top:20%;">
-			输入账号:&nbsp;<input type="text" name="account" id="acct"
-				onblur="checkAccount()"><span id="sp1"></span>
-		</div>
-		<div align="center" style="text-align: center; margin-top:15px;">
-			输入密码:&nbsp;<input type="password" name="password" id="pwd"
-				onblur="putPwd()">
-		</div>
-		<div align="center" style="text-align: center; margin-top:15px;">
-			输入验证码:&nbsp;<input type="password" name="password" id="code"
-				>
-				<img alt="" src="checkCode" id="codeImage">
-		</div>
-		<div align="center" style="text-align: center; margin-top:15px;">
-			<input type="submit" value="登录" id="btn_login"> <input
+		<p>
+			<span>账&nbsp;&nbsp;&nbsp;号&nbsp;</span> 
+			<input type="text" name="account" id="acct"
+				placeholder="请输入账号"> 
+				<label id="accountInfo"></label>
+		</p>
+		<p>
+			<span>密&nbsp;&nbsp;&nbsp;码&nbsp;</span> 
+			<input type="password" name="password"
+				id="pwd" onblur="putPwd()" placeholder='请输入密码'>
+				 <label id="pwdInfo"></label>
+		</p>
+		<p id='dc'>
+			<span>验证码&nbsp;</span> <input type="text" name="checkCode"
+				id="code" placeholder='请输入验证码'> 
+				<img alt="验证码"	src="checkCode" id="codeImage"> 
+				<label id="codeInfo"></label>
+		</p>
+		<p>
+			<input type="submit" value="登录" id="btn_login"> 
+			<input
 				type="reset" value="重置" id="btn_reset">
-		</div> 
+		</p>
 	</form>
 
 	<script type="text/javascript">
+		$("#codeImage").click(function() {
+			$("#codeImage").attr("src", "checkCode?" + Date.parse(new Date()));
+		});
+
 		function putPwd() {
 			var pwd = $("#pwd").val();
 			if (pwd.length > 0) {

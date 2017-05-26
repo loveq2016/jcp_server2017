@@ -113,7 +113,7 @@ public class ImgUtils {
 		graphics.setColor(getRandomColor(255, 243, 155));
 		graphics.setFont(new Font("ËÎÌו", Font.BOLD, 22));
 		randomCode=createRandonCode(4);
-		graphics.drawString(randomCode, 10, 30);
+		graphics.drawString(randomCode, 15, 22);
 		return bImage;
 	}
 
