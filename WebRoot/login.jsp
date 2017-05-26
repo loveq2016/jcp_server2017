@@ -20,6 +20,8 @@
 <meta http-equiv="description" content="This is my page">
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="js/md5.js"></script>
+<link rel="stylesheet"
+	href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
 
 <script type="text/javascript">
 	window.onload = function() {
@@ -47,8 +49,8 @@
 		if (!isPC()) {
 			//手机端
 			meta.setAttribute("content", "width=device-width, initial-scale=1");
-			btn_login.setAttribute("style", "width:100px;padding:8px;");
-			btn_reset.setAttribute("style", "width:100px;padding:8px;");
+			btn_login.setAttribute("style", "width:100px;padding:10px;");
+			btn_reset.setAttribute("style", "width:100px;padding:10px;");
 			form.setAttribute("style", "margin-top:35%;margin-left:10%;");
 			form.style.cssText = "margin-top:35%;margin-left:10%;";
 		} else {
@@ -86,13 +88,13 @@
 	font-family: "微软雅黑";
 }
 
-
 #btn_reset {
 	margin-left: 20px;
 	width: 25%;
 	padding: 3px;
 	font-size: 14px;
-	border: 0px;
+	border-radius:8px;
+	border:0px;
 	background: green;
 	color: white;
 }
@@ -101,9 +103,10 @@
 	width: 100px;
 	padding: 3px;
 	font-size: 14px;
-	border: 0px;
+	border-radius:8px;
 	background: green;
 	color: white;
+	border: 0px;
 }
 
 #sp1 {
@@ -112,12 +115,11 @@
 	margin: auto 0;
 }
 
-#acct ,#pwd ,#code {
+#acct,#pwd,#code {
 	width: 200px;
 	padding: 5px;
 	box-shadow: 0px 0px 5px #888888;
 }
-
 
 #code {
 	width: 129px;
@@ -144,26 +146,22 @@ label {
 	<form action="login" method="post">
 
 		<p>
-			<span>账&nbsp;&nbsp;&nbsp;号&nbsp;</span> 
-			<input type="text" name="account" id="acct"
-				placeholder="请输入账号"> 
-				<label id="accountInfo"></label>
+			<span>账&nbsp;&nbsp;&nbsp;号&nbsp;</span> <input type="text"
+				name="account" id="acct" placeholder="请输入账号"> <label
+				id="accountInfo"></label>
 		</p>
 		<p>
-			<span>密&nbsp;&nbsp;&nbsp;码&nbsp;</span> 
-			<input type="password" name="password"
-				id="pwd" onblur="putPwd()" placeholder='请输入密码'>
-				 <label id="pwdInfo"></label>
+			<span>密&nbsp;&nbsp;&nbsp;码&nbsp;</span> <input type="password"
+				name="password" id="pwd" onblur="putPwd()" placeholder='请输入密码'>
+			<label id="pwdInfo"></label>
 		</p>
 		<p id='dc'>
-			<span>验证码&nbsp;</span> <input type="text" name="checkCode"
-				id="code" placeholder='请输入验证码'> 
-				<img alt="验证码"	src="checkCode" id="codeImage"> 
-				<label id="codeInfo"></label>
+			<span>验证码&nbsp;</span> <input type="text" name="checkCode" id="code"
+				placeholder='请输入验证码'> <img alt="验证码" src="checkCode"
+				id="codeImage"> <label id="codeInfo"></label>
 		</p>
 		<p>
-			<input type="submit" value="登录" id="btn_login"> 
-			<input
+			<input type="submit" value="登录" id="btn_login" > <input
 				type="reset" value="重置" id="btn_reset">
 		</p>
 	</form>
