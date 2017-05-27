@@ -88,20 +88,20 @@ public class JPushUtils {
 	 *            要推送的别名
 	 * @param msg
 	 *            推送的消息内容
-	 * @param liveId 
+	 * @param liveId
 	 * @return 创建通知 目标 ： android iOS 指定别名
 	 */
 	public static PushPayload createNptifyForAliase(String msg, String key,
 			Number value, String dataKay, int dataValue, String key1,
-			String valueStr, String teacherFace, int free,
-			int liveId, Collection<String> aliases) {
+			String valueStr, String teacherFace, int free, int liveId,
+			Collection<String> aliases) {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put(key, value + "");
 		map.put(dataKay, dataValue + "");
 		map.put(key1, valueStr);
 		map.put("teacherFace", teacherFace);
 		map.put("isFree", free + "");
-		map.put("liveId", liveId+"");
+		map.put("liveId", liveId + "");
 		return PushPayload
 				.newBuilder()
 				.setNotification(

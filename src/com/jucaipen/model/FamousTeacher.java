@@ -213,7 +213,7 @@ public class FamousTeacher implements Serializable {
 	 */
 	private int xnArticleReadNum;
 
-/*	private String mobileLiveUrl;*/
+	private String rtmpUrl;
 	
 	/**
 	 *   app Ö±²¥ url
@@ -237,13 +237,15 @@ public class FamousTeacher implements Serializable {
 		this.weekPrice = weekPrice;
 	}
 
-	/*public String getMobileLiveUrl() {
-		return mobileLiveUrl;
+	
+
+	public String getRtmpUrl() {
+		return rtmpUrl;
 	}
 
-	public void setMobileLiveUrl(String mobileLiveUrl) {
-		this.mobileLiveUrl = mobileLiveUrl;
-	}*/
+	public void setRtmpUrl(String rtmpUrl) {
+		this.rtmpUrl = rtmpUrl;
+	}
 
 	public String getBankName() {
 		return bankName;

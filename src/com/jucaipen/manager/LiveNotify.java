@@ -76,7 +76,7 @@ public class LiveNotify extends HttpServlet {
 			}
 			if (!aliases.isEmpty()) {
 				String title = "【" + teacher.getNickName()
-						+ "】老师正在直播，小伙伴赶紧来围观...";
+						+ "】正在直播，小伙伴赶紧来围观...";
 				int roomId = teacher.getFk_UserId();
 				int isFree=teacher.getLiveFree();
 				String teacherFace=teacher.getHeadFace();

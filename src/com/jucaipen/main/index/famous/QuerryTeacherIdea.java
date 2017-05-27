@@ -285,6 +285,7 @@ public class QuerryTeacherIdea extends HttpServlet {
 				int roomId = FamousTeacherSer.findRoomInfo(tId);
 				live.setXnRenQi(getRoomInfo(roomId));
 				//  ”∆µ÷±≤•url
+				live.setRtmpUrl(teacher.getRtmpUrl());
 				live.setVideoUrl(teacher.getAppLiveUrl());
 				live.setTeacherName(teacher.getNickName());
 				live.setTeacherFace(teacher.getHeadFace());

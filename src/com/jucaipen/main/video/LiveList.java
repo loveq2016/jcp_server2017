@@ -172,6 +172,7 @@ public class LiveList extends HttpServlet {
 					live.setCharge(teacher.getLiveFree() == 1);
 					// 单次直播价格
 					live.setLivePrice(teacher.getLivePrice());
+					live.setRtmpUrl(teacher.getRtmpUrl());
 					live.setVideoUrl(teacher.getAppLiveUrl());
 				}
 				live.setTeacherName(teacher.getNickName());
@@ -272,6 +273,7 @@ public class LiveList extends HttpServlet {
 					live.setRoomId(teacher.getFk_UserId());
 					// 单次直播价格
 					live.setLivePrice(teacher.getLivePrice());
+					live.setRtmpUrl(teacher.getRtmpUrl());
 					live.setVideoUrl(teacher.getAppLiveUrl());
 				}
 				live.setTeacherName(teacher.getNickName());

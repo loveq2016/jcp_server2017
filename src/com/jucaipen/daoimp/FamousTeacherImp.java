@@ -241,6 +241,7 @@ public class FamousTeacherImp implements FamousTeacherDao {
 				int bankId = result.getInt("FK_BankId");
 				String bankAccount = result.getString("BankAccount");
 				String appLiveUrl=result.getString("AppLiveUrl");
+				String VideoLiveUrl=result.getString("VideoLiveUrl");
 				FamousTeacher teacher = new FamousTeacher();
 				teacher.setPage(page);
 				teacher.setTotlePage(totlePage);
@@ -253,6 +254,7 @@ public class FamousTeacherImp implements FamousTeacherDao {
 				teacher.setFk_UserId(userId);
 				teacher.setArticleCount(articleCount);
 				teacher.setTrueName(trueName);
+				teacher.setRtmpUrl(VideoLiveUrl);
 				teacher.setTelPhone(telPhone);
 				teacher.setXnArticleReadNum(xnReadIdeaNum);
 				teacher.setIsUserLiveUrl(isUserLive);

@@ -72,6 +72,8 @@ public class VideoLive implements Serializable{
 	 *  ÷±≤•URL
 	 */
 	private String videoUrl;
+	
+	private String rtmpUrl;
 	/**
 	 *  ÷±≤•∑‚√Ê
 	 */
@@ -115,6 +117,12 @@ public class VideoLive implements Serializable{
 	 */
 	private boolean isGradian;
 	
+	public String getRtmpUrl() {
+		return rtmpUrl;
+	}
+	public void setRtmpUrl(String rtmpUrl) {
+		this.rtmpUrl = rtmpUrl;
+	}
 	public int getXnRenQi() {
 		return xnRenQi;
 	}
