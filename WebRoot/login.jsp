@@ -10,7 +10,6 @@
 <html>
 <head>
 <base href="<%=basePath%>">
-
 <title>登录APP后台管理系统</title>
 <meta name="viewport" content="" />
 <meta http-equiv="pragma" content="no-cache">
@@ -85,7 +84,18 @@
 </script>
 <style>
 * {
+	margin: 0px;
+	padding: 0pd;
 	font-family: "微软雅黑";
+}
+
+body {
+	
+}
+
+form {
+	margin-top: 18%;
+	margin-left: 45%;
 }
 
 #btn_reset {
@@ -93,8 +103,8 @@
 	width: 25%;
 	padding: 3px;
 	font-size: 14px;
-	border-radius:8px;
-	border:0px;
+	border-radius: 8px;
+	border: 0px;
 	background: green;
 	color: white;
 }
@@ -103,7 +113,7 @@
 	width: 100px;
 	padding: 3px;
 	font-size: 14px;
-	border-radius:8px;
+	border-radius: 8px;
 	background: green;
 	color: white;
 	border: 0px;
@@ -124,10 +134,14 @@
 #code {
 	width: 129px;
 }
+span{
+  color: black;
+  font-size: 18px;
+}
 
 #codeImage {
 	margin-left: 7px;
-	margin-bottom: -8px;
+	margin-bottom: 5px;
 }
 
 #dc {
@@ -147,8 +161,8 @@ label {
 
 		<p>
 			<span>账&nbsp;&nbsp;&nbsp;号&nbsp;</span> <input type="text"
-				name="account" id="acct" placeholder="请输入账号"> <label
-				id="accountInfo"></label>
+				name="account" id="acct" placeholder="请输入账号" onblur="putNull()">
+			<label id="accountInfo"></label>
 		</p>
 		<p>
 			<span>密&nbsp;&nbsp;&nbsp;码&nbsp;</span> <input type="password"
@@ -157,20 +171,34 @@ label {
 		</p>
 		<p id='dc'>
 			<span>验证码&nbsp;</span> <input type="text" name="checkCode" id="code"
-				placeholder='请输入验证码'> <img alt="验证码" src="checkCode"
-				id="codeImage"> <label id="codeInfo"></label>
+				placeholder='请输入验证码' onblur="putNull()" s> <img alt="验证码"
+				src="checkCode" id="codeImage"> <label id="codeInfo"></label>
 		</p>
 		<p>
-			<input type="submit" value="登录" id="btn_login" > <input
+			<input type="submit" value="登录" id="btn_login"> <input
 				type="reset" value="重置" id="btn_reset">
 		</p>
 	</form>
 
 	<script type="text/javascript">
-		$("#codeImage").click(function() {
-			$("#codeImage").attr("src", "checkCode?" + Date.parse(new Date()));
-		});
+		//加载验证码
+		$("#codeImage").click(
+				function() {
+					$("#codeImage").attr(
+							"src",
+							"checkCode?" + Date.parse(new Date())
+									+ (Math.floor(Math.round() * 100)));
+				});
 
+		//清空提示数据
+		function putNull() {
+			$("#codeInfo").html("");
+			$("#accountInfo").html("");
+			$("#pwdInfo").html("");
+
+		}
+
+		//md5加密密码
 		function putPwd() {
 			var pwd = $("#pwd").val();
 			if (pwd.length > 0) {

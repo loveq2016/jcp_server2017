@@ -60,10 +60,6 @@ public class UserBaseInfo extends HttpServlet {
 	}
 
 	private String initBaseInfo(int uId) {
-		/*Object cached = DataManager.getCached(Constant.TEACHER_CACHE, "userBaseInfo"+uId);
-		if(cached!=null){
-			return cached.toString();
-		}*/
 		// 是否是讲师
 		FamousTeacher teacher = FamousTeacherSer.findFamousTeacherByUserId(uId);
 		// 申请是否成功
@@ -90,10 +86,18 @@ public class UserBaseInfo extends HttpServlet {
 				user.setApplyFailReason(details.getCause());
 			}
 		}
-
+		
+		User userInteger=UserServer.querryIntegeralByUid(uId);
+		int integeral = userInteger.getAllIntegral();
+		if(integeral>0){
+			user.setUserLeval(integeral < 30001 ? (int) Math
+					.ceil((double)integeral / 100)
+					: (int) Math.ceil((double)30001 / 100));
+		}else{
+			user.setUserLeval(0);
+		}
 		user.setApplyState(apply != null ? apply.getState() : -1);
 		String baseInfo = JsonUtil.getBaseInfo(user);
-	//	new CacheUtils(Constant.TEACHER_CACHE).addToCache("userBaseInfo"+uId, baseInfo);
 		return baseInfo;
 	}
 

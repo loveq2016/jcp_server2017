@@ -1,21 +1,17 @@
 package com.jucaipen.main.live;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import com.google.gson.JsonObject;
 import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.Contribute;
@@ -29,6 +25,7 @@ import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.LoginUtil;
 import com.jucaipen.utils.RandomUtils;
 import com.jucaipen.utils.StringUtil;
+
 /**
  * @author 杨朗飞
  * 
@@ -57,8 +54,9 @@ public class LiveInfo extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		context=request.getServletContext();
-		hasCache = (Boolean) request.getServletContext().getAttribute("hasCache");
+		context = request.getServletContext();
+		hasCache = (Boolean) request.getServletContext().getAttribute(
+				"hasCache");
 		String teacherId = request.getParameter("teacherId");
 		hasCache = (Boolean) request.getServletContext().getAttribute(
 				"hasCache");
@@ -78,7 +76,7 @@ public class LiveInfo extends HttpServlet {
 	 */
 	public String getRoomInfo(int roomId) {
 		JsonObject object = new JsonObject();
-		object.addProperty("GroupId", roomId+"");
+		object.addProperty("GroupId", roomId + "");
 		object.addProperty("Limit", 10);
 		object.addProperty("Offset", 0);
 		return LoginUtil.sendPostStr(createUrl(baseUrl, getSign("admin")),
@@ -109,9 +107,9 @@ public class LiveInfo extends HttpServlet {
 				bills = contributes.get(i).getAllJucaiBills();
 				number = i + 1;
 				break;
-			}else{
-				bills=0;
-				number=contributes.size();
+			} else {
+				bills = 0;
+				number = contributes.size();
 			}
 		}
 		// 获取讲师基本信息
@@ -120,7 +118,7 @@ public class LiveInfo extends HttpServlet {
 		if (cached2 == null) {
 			roomId = FamousTeacherSer.findRoomInfo(tId);
 			new CacheUtils(Constant.TEACHER_CACHE).addToCache("teacherInfo"
-					+ tId, roomId+"");
+					+ tId, roomId + "");
 		} else {
 			roomId = Integer.parseInt(cached2.toString());
 		}
@@ -129,20 +127,19 @@ public class LiveInfo extends HttpServlet {
 		Object cached3 = DataManager.getCached(Constant.TEACHER_CACHE,
 				"userInfo" + roomId, hasCache);
 		if (cached3 == null) {
-			list = getMember(roomId,tId);
+			list = getMember(roomId, tId);
 			new CacheUtils(Constant.TEACHER_CACHE).addToCache("userInfo"
 					+ roomId, list);
 		} else {
 			try {
 				list = (List<User>) cached3;
 			} catch (Exception e) {
-				list = getMember(roomId,tId);
+				list = getMember(roomId, tId);
 			}
-			
+
 		}
-		String onLineData = JsonUtil.getOnLineData(bills, list,
-				number);
-		if(list.size()>0){
+		String onLineData = JsonUtil.getOnLineData(bills, list, number);
+		if (list.size() > 0) {
 			new CacheUtils(Constant.VIDEO_CACHE).addToCache("liveInfo" + tId,
 					onLineData);
 		}
@@ -153,7 +150,7 @@ public class LiveInfo extends HttpServlet {
 	 * @param roomId
 	 * @return 获取直播室成员信息
 	 */
-	private List<User> getMember(int roomId,int tId) {
+	private List<User> getMember(int roomId, int tId) {
 		ids.clear();
 		List<User> users = new ArrayList<User>();
 		String roomInfo = getRoomInfo(roomId);
@@ -162,8 +159,8 @@ public class LiveInfo extends HttpServlet {
 		String ok = object.optString("ActionStatus");
 		if ("OK".equals(ok)) {
 			int memberNum = object.optInt("MemberNum", 0);
-			if(memberNum>0){
-				context.setAttribute("onLine"+tId, memberNum);
+			if (memberNum > 0) {
+				context.setAttribute("onLine" + tId, memberNum);
 			}
 			JSONArray memberList = object.optJSONArray("MemberList");
 			for (int i = 0; i < memberList.length(); i++) {
@@ -179,6 +176,14 @@ public class LiveInfo extends HttpServlet {
 					if (cached == null) {
 						user = UserServer.findFaceImageById(userId);
 						user.setId(userId);
+						int integeral = user.getAllIntegral();
+						if(integeral>0){
+							user.setUserLeval(integeral < 30001 ? (int) Math
+									.ceil((double)integeral / 100)
+									: (int) Math.ceil((double) 30001 / 100));
+						}else{
+							user.setUserLeval(0);
+						}
 						new CacheUtils(Constant.TEACHER_CACHE).addToCache(
 								"userInfo" + userId, user);
 					} else {
@@ -186,6 +191,14 @@ public class LiveInfo extends HttpServlet {
 							user = (User) cached;
 						} catch (Exception e) {
 							user = UserServer.findFaceImageById(userId);
+							int integeral = user.getAllIntegral();
+							if(integeral>0){
+								user.setUserLeval(integeral < 30001 ? (int) Math
+										.ceil((double)integeral / 100)
+										: (int) Math.ceil((double)30001 / 100));
+							}else{
+                                user.setUserLeval(0);								
+							}
 							user.setId(userId);
 						}
 					}
@@ -204,8 +217,9 @@ public class LiveInfo extends HttpServlet {
 	 * @return 获取管理员sign
 	 */
 	private String getSign(String a) {
-		Object cached = DataManager.getCached(Constant.CACHE_SIGN, "userSign"+a, hasCache);
-		if(cached!=null){
+		Object cached = DataManager.getCached(Constant.CACHE_SIGN, "userSign"
+				+ a, hasCache);
+		if (cached != null) {
 			return cached.toString();
 		}
 		param.clear();
@@ -215,7 +229,8 @@ public class LiveInfo extends HttpServlet {
 		boolean isCreate = object.optBoolean("Result");
 		if (isCreate) {
 			String sign = object.optString("UserSig");
-			new CacheUtils(Constant.CACHE_SIGN).addToCache("userSign"+a, sign);
+			new CacheUtils(Constant.CACHE_SIGN)
+					.addToCache("userSign" + a, sign);
 			return sign;
 		}
 		return null;

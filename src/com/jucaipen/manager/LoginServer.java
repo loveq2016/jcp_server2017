@@ -31,10 +31,6 @@ public class LoginServer extends HttpServlet {
 		if (StringUtil.isNotNull(account)&&account.equals("admin")) {
 			if (StringUtil.isNotNull(password)&&password.equals(lowerCase)) {
 						// µÇÂ¼³É¹¦
-					/*	Cookie cookie=new Cookie("name", "admin"+UUID.randomUUID().toString());
-						cookie.setSecure(false);
-						cookie.setValue(account+UUID.randomUUID().toString());
-						response.addCookie(cookie);*/
 						HttpSession session = request.getSession(true);
 						String code=(String) session.getAttribute("randomCode");
 						if(code.equalsIgnoreCase(checkCode)){

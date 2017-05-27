@@ -46,6 +46,15 @@ div {
 	background: #0080FF;
 	border: 0;
 }
+#fileArea{
+   text-align:center;
+   width: 250px;
+   height: 250px;
+   border: 1px solid  red;
+}
+span{
+   line-height: 250px;
+}
 </style>
 
 </head>
@@ -65,6 +74,13 @@ div {
 			<div>
 				APK文件：<input type="file" name="file"><font color="red"
 					size="2px">*&nbsp;文件格式：.apk</font>
+			</div>
+			<div  id="fileArea">
+			
+			  <span>
+			    拖拽文件到此区域
+			  </span>
+			
 			</div>
 			<div>
 				<input type="submit" value="提交" class="btn"> <input

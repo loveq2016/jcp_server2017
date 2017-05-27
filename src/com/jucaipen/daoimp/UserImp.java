@@ -103,7 +103,7 @@ public class UserImp implements UserDao {
 			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("select UserLevel,ISNULL(UserName,'') UserName,ISNULL(FK_InvestmentTypeId,'') FK_InvestmentTypeId,ISNULL(TrueName,'') TrueName,ISNULL(NickName,'') NickName,ISNULL(Sex,'') Sex,ISNULL(MobileNum,'') MobileNum,ProvinceID,CiytID,AreaID,ISNULL(UserInformation,'') UserInformation,ISNULL(Birthday,'') Birthday,ISNULL(UserFace,'') UserFace from JCP_User where Id="
+					.executeQuery("select UserLevel,ISNULL(UserName,'') UserName,ISNULL(FK_InvestmentTypeId,'') FK_InvestmentTypeId,ISNULL(TrueName,'') TrueName,ISNULL(NickName,'') NickName,ISNULL(Sex,'') Sex,ISNULL(MobileNum,'') MobileNum,ProvinceID,CiytID,AreaID,ISNULL(UserInformation,'') UserInformation,ISNULL(Birthday,'') Birthday,ISNULL(UserFace,'') UserFace,AllIntegral from JCP_User where Id="
 							+ id);
 			while (res.next()) {
 				String userName = res.getString("UserName");
@@ -119,6 +119,7 @@ public class UserImp implements UserDao {
 				String logo = res.getString(SqlUtil.USRE_FACEIMAGE);
 				int investmentId = res.getInt("FK_InvestmentTypeId");
 				int userLeavel = res.getInt("UserLevel");
+				int integeral=res.getInt("AllIntegral");
 				u = new User();
 				u.setNickName(nickName);
 				u.setSex(sex);
@@ -132,6 +133,7 @@ public class UserImp implements UserDao {
 				u.setCityId(localCity);
 				u.setDescript(desc);
 				u.setFaceImage(logo);
+				u.setAllIntegral(integeral);
 				u.setInvestId(investmentId);
 				return u;
 			}
@@ -155,13 +157,15 @@ public class UserImp implements UserDao {
 		try {
 			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
-			res = sta.executeQuery("SELECT ISNULL(UserFace,'') UserFace,ISNULL(NickName,'') NickName FROM JCP_User WHERE Id="
+			res = sta.executeQuery("SELECT ISNULL(UserFace,'') UserFace,ISNULL(NickName,'') NickName,AllIntegral FROM JCP_User WHERE Id="
 					+ id);
 			while (res.next()) {
 				String face = res.getString(1);
 				String nickName=res.getString(2);
+				int integeral=res.getInt(3);
 				User user=new User();
 				user.setFaceImage(face);
+				user.setAllIntegral(integeral);
 				user.setNickName(nickName);
 				return user;
 			}

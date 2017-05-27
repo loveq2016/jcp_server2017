@@ -89,6 +89,14 @@ public class LatestList extends HttpServlet {
 			Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE, "userInfo"+userId,hasCache);
 			if(cached2==null){
 				user = UserServer.findUserById(userId);
+				int integeral=user.getAllIntegral();
+				if(integeral>0){
+					user.setUserLeval(integeral < 30001 ? (int) Math
+							.ceil((double)integeral / 100)
+							: (int) Math.ceil((double) 30001 / 100));
+				}else{
+					user.setUserLeval(0);
+				}
 				new CacheUtils(Constant.TEACHER_CACHE).addToCache( "userInfo"+userId, user);
 			}else{
 				user=(User) cached2;
