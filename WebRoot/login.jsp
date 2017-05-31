@@ -19,6 +19,7 @@
 <meta http-equiv="description" content="This is my page">
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="js/md5.js"></script>
+<link rel="stylesheet" href="css/login.css">
 <link rel="stylesheet"
 	href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
 
@@ -82,83 +83,11 @@
 		}
 	};
 </script>
-<style>
-* {
-	margin: 0px;
-	padding: 0pd;
-	font-family: "微软雅黑";
-}
-
-body {
-	
-}
-
-form {
-	margin-top: 18%;
-	margin-left: 45%;
-}
-
-#btn_reset {
-	margin-left: 20px;
-	width: 25%;
-	padding: 3px;
-	font-size: 14px;
-	border-radius: 8px;
-	border: 0px;
-	background: green;
-	color: white;
-}
-
-#btn_login {
-	width: 100px;
-	padding: 3px;
-	font-size: 14px;
-	border-radius: 8px;
-	background: green;
-	color: white;
-	border: 0px;
-}
-
-#sp1 {
-	font-size: 15px;
-	color: red;
-	margin: auto 0;
-}
-
-#acct,#pwd,#code {
-	width: 200px;
-	padding: 5px;
-	box-shadow: 0px 0px 5px #888888;
-}
-
-#code {
-	width: 129px;
-}
-span{
-  color: black;
-  font-size: 18px;
-}
-
-#codeImage {
-	margin-left: 7px;
-	margin-bottom: 5px;
-}
-
-#dc {
-	
-}
-
-label {
-	color: red;
-	font-size: 12px;
-}
-</style>
 
 </head>
 
 <body>
-	<form action="login" method="post">
-
+	<form action="login" method="post" onsubmit="retuen dosubmit()">
 		<p>
 			<span>账&nbsp;&nbsp;&nbsp;号&nbsp;</span> <input type="text"
 				name="account" id="acct" placeholder="请输入账号" onblur="putNull()">
@@ -186,7 +115,7 @@ label {
 				function() {
 					$("#codeImage").attr(
 							"src",
-							"checkCode?" + Date.parse(new Date())
+							"checkCode?" + new Date().getTime()
 									+ (Math.floor(Math.round() * 100)));
 				});
 
@@ -214,7 +143,22 @@ label {
 			} else {
 				$("#sp1").html("");
 			}
-		}
+			};
+			
+			function dosubmit(){
+			 var isSubmit=false;
+			 if(!isSubmit){
+			    isSubmit=true;
+			    return true;
+			 }else{
+			   isSubmit=false;
+			   return false;
+			 };
+			};
+			$("#loginType").click(function(){
+			     alert("ll");
+			})
+			
 	</script>
 
 </body>

@@ -16,9 +16,6 @@ public class WebListener implements ServletContextListener {
 		config.getServletContext().setAttribute("expand", true);
 		//ÊÇ·ñ»º´æ
 		config.getServletContext().setAttribute("hasCache", true);
-	/*	List<Advertive> findAdver = AdverSer.findAdverByPid(12);
-		String advertive1 = JsonUtil.getAdvertive1(findAdver);
-		new CacheUtils(Constant.DEFAULT_CACHE).addToCache("ads", advertive1);*/
 	}
 
 	@Override

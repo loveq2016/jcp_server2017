@@ -176,14 +176,6 @@ public class LiveInfo extends HttpServlet {
 					if (cached == null) {
 						user = UserServer.findFaceImageById(userId);
 						user.setId(userId);
-						int integeral = user.getAllIntegral();
-						if(integeral>0){
-							user.setUserLeval(integeral < 30001 ? (int) Math
-									.ceil((double)integeral / 100)
-									: (int) Math.ceil((double) 30001 / 100));
-						}else{
-							user.setUserLeval(0);
-						}
 						new CacheUtils(Constant.TEACHER_CACHE).addToCache(
 								"userInfo" + userId, user);
 					} else {
@@ -191,17 +183,18 @@ public class LiveInfo extends HttpServlet {
 							user = (User) cached;
 						} catch (Exception e) {
 							user = UserServer.findFaceImageById(userId);
-							int integeral = user.getAllIntegral();
-							if(integeral>0){
-								user.setUserLeval(integeral < 30001 ? (int) Math
-										.ceil((double)integeral / 100)
-										: (int) Math.ceil((double)30001 / 100));
-							}else{
-                                user.setUserLeval(0);								
-							}
 							user.setId(userId);
 						}
 					}
+					int integeral = user.getAllIntegral();
+					if(integeral>0){
+						user.setUserLeval(integeral < 30001 ? (int) Math
+								.ceil((double)integeral / 100)
+								: (int) Math.ceil((double) 30001 / 100));
+					}else{
+						user.setUserLeval(0);
+					}
+					
 					// 不统计房间创建者
 					if (roomId != user.getId()) {
 						user.setOnLineNum(memberNum);

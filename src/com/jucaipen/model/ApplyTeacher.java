@@ -132,8 +132,14 @@ public class ApplyTeacher implements Serializable{
     
     private String actionCode;
     
+    private int step;
     
-    
+	public int getStep() {
+		return step;
+	}
+	public void setStep(int step) {
+		this.step = step;
+	}
 	public String getCertificationName() {
 		return certificationName;
 	}

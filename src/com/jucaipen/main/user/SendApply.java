@@ -99,7 +99,7 @@ public class SendApply extends HttpServlet {
 
 		if (step == 1) {
 			// 处理第一步数据
-			return addFirstStepMsg(applyMsg, uId);
+			return addFirstStepMsg(applyMsg, uId,step);
 		}
 
 		ApplyTeacher apply = ApplyTeacherSer.findLastApplyByUid(uId, 1);
@@ -287,10 +287,11 @@ public class SendApply extends HttpServlet {
 	/**
 	 * @param applyMsg
 	 * @param uId
+	 * @param step 
 	 * @param applyId
 	 * @return 提交申请第一步
 	 */
-	private String addFirstStepMsg(String applyMsg, int uId) {
+	private String addFirstStepMsg(String applyMsg, int uId, int step) {
 		ApplyTeacher apply = JsonUtil.parseFirstStepApply(applyMsg);
 		String name = apply.getTrueName();
 		if (!StringUtil.isNotNull(name)) {
@@ -316,6 +317,7 @@ public class SendApply extends HttpServlet {
 		if (!StringUtil.isNotNull(cardImage1)) {
 			return JsonUtil.getRetMsg(6, "请上传身份证正面照");
 		}
+		apply.setStep(step);
 		apply.setFk_UserId(uId);
 		apply.setInsertDate(TimeUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		int isSuccess = ApplyTeacherSer.addApply(apply, 1);

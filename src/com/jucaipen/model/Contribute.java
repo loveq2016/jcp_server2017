@@ -53,8 +53,14 @@ public class Contribute implements Serializable{
 	 */
 	private int comType;
 	
+	private int userLeavel;
 	
-	
+	public int getUserLeavel() {
+		return userLeavel;
+	}
+	public void setUserLeavel(int userLeavel) {
+		this.userLeavel = userLeavel;
+	}
 	public int getIsEnd() {
 		return isEnd;
 	}

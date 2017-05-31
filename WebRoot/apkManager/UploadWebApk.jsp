@@ -56,6 +56,11 @@ span{
    line-height: 250px;
 }
 </style>
+<script type="text/javascript">
+   var fileArea=document.getElementById("fileArea");
+
+
+</script>
 
 </head>
 <body>
@@ -80,7 +85,6 @@ span{
 			  <span>
 			    拖拽文件到此区域
 			  </span>
-			
 			</div>
 			<div>
 				<input type="submit" value="提交" class="btn"> <input

@@ -23,7 +23,7 @@ public class AccountFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
-		HttpSession session = req.getSession();
+		HttpSession session = req.getSession(false);
 		String url = req.getRequestURI();
 		if (!url.contains("login")) {
 			if (session != null && session.getAttribute("account") != null) {
