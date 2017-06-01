@@ -73,11 +73,11 @@ public class ApplyTeacherImp implements ApplyTeacherDao {
 				// 添加第一步数据
 				isSuccess = sta.executeUpdate("INSERT INTO JCP_Apply"
 						+ "(TrueName,IDCard,Sex,CardImg_1"
-						+ ",State,InsertDate,FK_UserId) VALUES" + "('"
+						+ ",State,InsertDate,FK_UserId,Step) VALUES" + "('"
 						+ apply.getTrueName() + "','" + apply.getIdCard()
 						+ "'," + apply.getSex() + ",'" + apply.getCardImage1()
 						+ "'," + (-1) + ",'" + apply.getInsertDate() + "',"
-						+ apply.getFk_UserId() + ")");
+						+ apply.getFk_UserId() + ","+step+")");
 			} else if (step == 2) {
 				// 更新第二步数据
 				isSuccess = sta
@@ -95,6 +95,7 @@ public class ApplyTeacherImp implements ApplyTeacherDao {
 								+ apply.getBankAccount()
 								+ "',FK_CityId="
 								+ apply.getFk_CityId()
+								+",Step="+step
 								+ ",CompanyName='"
 								+ apply.getCompanyName()
 								+ "',ShanChang='"
@@ -112,6 +113,7 @@ public class ApplyTeacherImp implements ApplyTeacherDao {
 								+ apply.getEmail() + "',IsTxtLive="
 								+ apply.getIsTxtLive() + ",IsVideoLive="
 								+ apply.getIsVideoLive() +",State=" + 0
+								+",Step="+step
 								+ " WHERE Id=" + apply.getId());
 			}
 			return isSuccess;

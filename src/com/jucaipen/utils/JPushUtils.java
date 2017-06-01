@@ -9,6 +9,7 @@ import cn.jpush.api.common.resp.APIConnectionException;
 import cn.jpush.api.common.resp.APIRequestException;
 import cn.jpush.api.push.PushResult;
 import cn.jpush.api.push.model.Message;
+import cn.jpush.api.push.model.Options;
 import cn.jpush.api.push.model.Platform;
 import cn.jpush.api.push.model.PushPayload;
 import cn.jpush.api.push.model.audience.Audience;
@@ -97,11 +98,11 @@ public class JPushUtils {
 			Collection<String> aliases) {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put(key, value + "");
-		map.put(dataKay, dataValue + "");
+		/*map.put(dataKay, dataValue + "");
 		map.put(key1, valueStr);
 		map.put("teacherFace", teacherFace);
 		map.put("isFree", free + "");
-		map.put("liveId", liveId + "");
+		map.put("liveId", liveId + "");*/
 		return PushPayload
 				.newBuilder()
 				.setNotification(
@@ -109,10 +110,15 @@ public class JPushUtils {
 								.alert(msg))
 				.setMessage(
 						Message.newBuilder().setMsgContent(msg)
-								.addExtra(key, value).addExtra(key1, valueStr)
+								.addExtra(key, value)
+								/*.addExtra(key1, valueStr)
 								.addExtra(dataKay, dataValue)
 								.addExtra("liveId", liveId)
-								.addExtra("isFree", free).build())
+								.addExtra("isFree", free)*/
+								.build())
+								.setOptions(Options.newBuilder()
+										.setApnsProduction(true)
+										.build())
 				.setPlatform(Platform.android_ios())
 				.setAudience(Audience.alias(aliases)).build();
 	}
@@ -192,7 +198,7 @@ public class JPushUtils {
 	 */
 	public static PushResult pushMsg(JPushClient client, PushPayload payLoad) {
 		try {
-			PushResult result = client.sendPush(payLoad);
+			PushResult result=client.sendPush(payLoad);
 			return result;
 		} catch (APIConnectionException e) {
 			e.printStackTrace();

@@ -23,6 +23,7 @@ import com.jucaipen.model.VideoLive;
 import com.jucaipen.service.FamousTeacherSer;
 import com.jucaipen.service.FansSer;
 import com.jucaipen.service.VideoLiveServer;
+import com.jucaipen.utils.Constant;
 import com.jucaipen.utils.JPushUtils;
 import com.jucaipen.utils.StringUtil;
 /**
@@ -56,21 +57,34 @@ public class LiveNotify extends HttpServlet {
 		initAlias(tId, liveUrl);
 	}
 
+	
 	/**
 	 * @param free 
 	 * @param tacticsId
 	 *            获取关注讲师的用户别名
 	 */
 	private void initAlias(int teacherId, String liveUrl) {
+		List<Fans> fans;
 		Collection<String> aliases = new ArrayList<String>();
-		VideoLive live = VideoLiveServer.findLiveBytId(teacherId);
-		FamousTeacher teacher = FamousTeacherSer.findTeacherBaseInfo(teacherId);
-		List<Fans> fans = FansSer.findFansByTeacherId(teacherId);
+		FamousTeacher teacher=FamousTeacherSer.findTeacherNameById(teacherId);
+		//FamousTeacher teacher = FamousTeacherSer.findTeacherBaseInfo(teacherId);
+		//VideoLive live = VideoLiveServer.findLiveBytId(teacherId);
+		Object cached = DataManager.getCached(Constant.DEFAULT_CACHE, "fans"+teacherId, true);
+		if(cached==null){
+			 fans = FansSer.findFansByTeacherId(teacherId);
+		}else{
+			try {
+				fans=(List<Fans>) cached;
+			} catch (Exception e) {
+				 fans = FansSer.findFansByTeacherId(teacherId);
+			}
+		}
+		 fans = FansSer.findFansByTeacherId(teacherId);
 		JPushClient client = JPushUtils.getJPush();
 		if (fans != null) {
 			for (Fans fan : fans) {
 				int uId = fan.getUserId();
-				if (uId > 0 && hasRegin(uId + "", client)) {
+				if (uId > 0) {
 					aliases.add(uId + "");
 				}
 			}
@@ -80,10 +94,10 @@ public class LiveNotify extends HttpServlet {
 				int roomId = teacher.getFk_UserId();
 				int isFree=teacher.getLiveFree();
 				String teacherFace=teacher.getHeadFace();
-				int liveId=live.getId();
+				//int liveId=live.getId();
 				PushPayload payLoad = JPushUtils.createNptifyForAliase(title,
 						"teacherId", teacherId, "roomId", roomId, "liveUrl",
-						liveUrl,teacherFace, isFree,liveId,aliases);
+						liveUrl,teacherFace, isFree,0,aliases);
 				PushResult result = JPushUtils.pushMsg(client, payLoad);
 				System.out.println(result.toString());
 			} else {

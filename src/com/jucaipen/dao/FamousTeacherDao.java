@@ -97,6 +97,8 @@ public interface FamousTeacherDao {
 	 * @return  根据关键词搜索讲师
 	 */
 	public List<FamousTeacher>  findTeacherByKeyWord(String keyWord);
+
+	public FamousTeacher findTeacherNameById(int teacherId);
 	
 
 }

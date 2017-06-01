@@ -155,4 +155,9 @@ public class FamousTeacherSer {
 		return dao.findMaxAsk(id);
 	}
 
+	public static FamousTeacher findTeacherNameById(int teacherId) {
+		FamousTeacherDao dao=new FamousTeacherImp();
+		return dao.findTeacherNameById(teacherId);
+	}
+
 }

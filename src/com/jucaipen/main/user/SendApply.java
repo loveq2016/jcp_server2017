@@ -33,7 +33,7 @@ public class SendApply extends HttpServlet {
 	private String result;
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	// 加密手机号 参数
-	private String encrypePath = "http://www.jcplicai.com/ashx/AndroidUser.ashx?action=GetEncryptMobileNum";
+	private String encrypePath = "http://www.jucaipen.com/ashx/AndroidUser.ashx?action=GetEncryptMobileNum";
 	private Map<String, String> param = new HashMap<String, String>();
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -73,7 +73,9 @@ public class SendApply extends HttpServlet {
 
 	private String getPhoneNum(String telPhone) {
 		param.put("mobilenum", telPhone);
+		System.out.println("mobilenum="+telPhone);
 		String resJson = LoginUtil.sendHttpPost(encrypePath, param);
+		System.out.println("resJson="+resJson);
 		org.json.JSONObject object = new org.json.JSONObject(resJson);
 		boolean isRes = object.getBoolean("Result");
 		if (isRes) {
@@ -107,12 +109,12 @@ public class SendApply extends HttpServlet {
 
 		if (step == 2) {
 			// 处理第二步数据
-			return addSecondStepMsg(applyMsg, applyId, uId);
+			return addSecondStepMsg(applyMsg, applyId, uId,step);
 		}
 
 		if (step == 3) {
 			// 处理第三步数据
-			return addThirdStepMsg(applyMsg, applyId);
+			return addThirdStepMsg(applyMsg, applyId,step);
 		}
 
 		return null;
@@ -124,7 +126,7 @@ public class SendApply extends HttpServlet {
 	 * @param id
 	 * @return 提交申请第三步
 	 */
-	private String addThirdStepMsg(String applyMsg, int id) {
+	private String addThirdStepMsg(String applyMsg, int id,int step) {
 		ApplyTeacher apply = JsonUtil.parseThirdStepApply(applyMsg);
 		String parentAccount = apply.getParentAccount();
 		if (StringUtil.isNotNull(parentAccount)) {
@@ -167,6 +169,7 @@ public class SendApply extends HttpServlet {
 		apply.setIsVideoLive(isVideoLive);
 		apply.setIsVideoLive(isVideoLive);
 		apply.setId(id);
+		apply.setStep(step);
 		int isSuccess = ApplyTeacherSer.addApply(apply, 3);
 		return isSuccess == 1 ? JsonUtil.getRetMsg(0, "提交成功") : JsonUtil
 				.getRetMsg(1, "提交失败");
@@ -228,7 +231,7 @@ public class SendApply extends HttpServlet {
 	 * @param id
 	 * @return 提交申请第二步
 	 */
-	private String addSecondStepMsg(String applyMsg, int id, int uId) {
+	private String addSecondStepMsg(String applyMsg, int id, int uId,int step) {
 		ApplyTeacher apply = JsonUtil.parseSecondStepApply(applyMsg);
 		int fk_certificationId = apply.getFk_certificationId();
 		if (fk_certificationId == -1) {
@@ -279,6 +282,7 @@ public class SendApply extends HttpServlet {
 			return JsonUtil.getRetMsg(8, "请输入擅长领域");
 		}
 		apply.setId(id);
+		apply.setStep(step);
 		int isSuccess = ApplyTeacherSer.addApply(apply, 2);
 		return isSuccess == 1 ? JsonUtil.getRetMsg(0, "提交成功") : JsonUtil
 				.getRetMsg(1, "提交失败");

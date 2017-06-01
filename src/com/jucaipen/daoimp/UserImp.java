@@ -526,7 +526,7 @@ public class UserImp implements UserDao {
 			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
 			res = sta.executeQuery("select * from JCP_User where MobileNum='"
-					+ telPhone + "' AND State<>2");
+					+ telPhone + "' AND State==0");
 			users = getUser(res, -1, -1);
 			if (users != null && users.size() > 0) {
 				u = users.get(0);

@@ -1321,6 +1321,16 @@
     <servlet-name>GetExpand</servlet-name>
     <url-pattern>/jucaipen/getexpand</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+     <servlet-name>onLine</servlet-name>
+     <servlet-class>com.jucaipen.main.live.OnLineUser</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>onLine</servlet-name>
+      <url-pattern>/jucaipen/onlinemember</url-pattern>
+  </servlet-mapping>
+  
   <servlet-mapping>
     <servlet-name>DownLoad</servlet-name>
     <url-pattern>/download</url-pattern>

@@ -603,4 +603,29 @@ public class FamousTeacherImp implements FamousTeacherDao {
 		return 0;
 	}
 
+
+	@Override
+	public FamousTeacher findTeacherNameById(int teacherId) {
+		try {
+			dbConn = JdbcUtil.connSqlServer();
+			sta = dbConn.createStatement();
+			res = sta
+					.executeQuery("SELECT NickName FROM JCP_Tearcher WHERE State=0 AND Id="+teacherId);
+			while (res.next()) {
+				FamousTeacher teacher=new FamousTeacher();
+				teacher.setNickName(res.getString(1));
+				return teacher;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
 }

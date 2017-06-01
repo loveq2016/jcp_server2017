@@ -89,12 +89,12 @@
 <body>
 	<form action="login" method="post" onsubmit="retuen dosubmit()">
 		<p>
-			<span>账&nbsp;&nbsp;&nbsp;号&nbsp;</span> <input type="text"
+			<span>账&nbsp;号&nbsp;</span> <input type="text"
 				name="account" id="acct" placeholder="请输入账号" onblur="putNull()">
 			<label id="accountInfo"></label>
 		</p>
 		<p>
-			<span>密&nbsp;&nbsp;&nbsp;码&nbsp;</span> <input type="password"
+			<span>密&nbsp;码&nbsp;</span> <input type="password"
 				name="password" id="pwd" onblur="putPwd()" placeholder='请输入密码'>
 			<label id="pwdInfo"></label>
 		</p>
@@ -155,10 +155,6 @@
 			   return false;
 			 };
 			};
-			$("#loginType").click(function(){
-			     alert("ll");
-			})
-			
 	</script>
 
 </body>
