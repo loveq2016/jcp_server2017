@@ -9,7 +9,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 public class AccountFilter implements Filter {
 
 	@Override
@@ -26,6 +25,7 @@ public class AccountFilter implements Filter {
 		String url = req.getRequestURI();
 		//来源验证
 		String referer = req.getHeader("referer");
+		
 		if (!url.contains("login")) {
 			if (session != null && session.getAttribute("account") != null) {
 				chain.doFilter(new BaseRequest(req), resp);

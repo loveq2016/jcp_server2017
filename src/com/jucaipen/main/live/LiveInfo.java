@@ -99,7 +99,7 @@ public class LiveInfo extends HttpServlet {
 			return cached.toString();
 		}
 		List<Contribute> contributes = ContributeSer
-				.findContributeGroupByTid("month");
+				.findContributeGroupByTid("day");
 		// ¹±Ï×ÅÅÐÐ
 		for (int i = 0; i < contributes.size(); i++) {
 			int teacherId = contributes.get(i).getTeacherId();
