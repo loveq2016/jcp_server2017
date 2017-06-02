@@ -75,8 +75,8 @@ public class OnLineUser extends HttpServlet {
 	public String getRoomInfo(int roomId, int p) {
 		JsonObject object = new JsonObject();
 		object.addProperty("GroupId", roomId + "");
-		object.addProperty("Limit", 20);
-		object.addProperty("Offset", (p-1)*20);
+		object.addProperty("Limit", 15);
+		object.addProperty("Offset", (p-1)*15);
 		return LoginUtil.sendPostStr(createUrl(baseUrl, getSign("onLineAdmin")),
 				object.toString(), null);
 	}
@@ -90,7 +90,7 @@ public class OnLineUser extends HttpServlet {
 	private String getOnLineInfo(int tId, int p) {
 		// 1、贡献值
 		int roomId;
-		Object cached = DataManager.getCached(Constant.VIDEO_CACHE, "liveInfo"
+		Object cached = DataManager.getCached(Constant.VIDEO_CACHE, p+"onLine"
 				+ tId, hasCache);
 		if (cached != null) {
 			return cached.toString();
@@ -108,10 +108,10 @@ public class OnLineUser extends HttpServlet {
 		// 获取直播室信息
 		List<User> list;
 		Object cached3 = DataManager.getCached(Constant.TEACHER_CACHE,
-				"userInfo" + roomId, hasCache);
+				p+"onLineUser" + roomId, hasCache);
 		if (cached3 == null) {
 			list = getMember(roomId, tId,p);
-			new CacheUtils(Constant.TEACHER_CACHE).addToCache("userInfo"
+			new CacheUtils(Constant.TEACHER_CACHE).addToCache(p+"onLineUser"
 					+ roomId, list);
 		} else {
 			try {
@@ -123,7 +123,7 @@ public class OnLineUser extends HttpServlet {
 		}
 		String onLineData = JsonUtil.getOnLineData(list);
 		if (list.size() > 0) {
-			new CacheUtils(Constant.VIDEO_CACHE).addToCache("liveInfo" + tId,
+			new CacheUtils(Constant.VIDEO_CACHE).addToCache(p+"onLine" + tId,
 					onLineData);
 		}
 		return onLineData;
@@ -144,7 +144,7 @@ public class OnLineUser extends HttpServlet {
 		if ("OK".equals(ok)) {
 			int memberNum = object.optInt("MemberNum", 0);
 			JSONArray memberList = object.optJSONArray("MemberList");
-			for (int i = 0; i < memberList.length(); i++) {
+			for (int i = 0; memberList!=null&&i < memberList.length(); i++) {
 				JSONObject member = memberList.optJSONObject(i);
 				String account = member.optString("Member_Account");
 				if (StringUtil.isNotNull(account)

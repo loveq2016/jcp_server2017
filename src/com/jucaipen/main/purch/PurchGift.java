@@ -109,7 +109,7 @@ public class PurchGift extends HttpServlet {
 		
 		int isTest = UserServer.findIsTest(uId);
 		if(isTest==1){
-			return JsonUtil.getPurchrResult(0, "≤‚ ‘’À∫≈¿Ò∆∑π∫¬Ú≥…π¶",b,0);
+			return JsonUtil.getPurchrResult(0, "≤‚ ‘’À∫≈¿Ò∆∑π∫¬Ú≥…π¶",a!=null ? a.getJucaiBills() : 0,0);
 		}
 		
 		if(b<=0){

@@ -1,6 +1,8 @@
 package com.jucaipen.base;
 
 import java.io.IOException;
+import java.util.Enumeration;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -25,6 +27,8 @@ public class AccountFilter implements Filter {
 		HttpServletResponse resp = (HttpServletResponse) response;
 		HttpSession session = req.getSession(false);
 		String url = req.getRequestURI();
+		String referer = req.getHeader("referer");
+		System.out.println("referer:"+referer);
 		if (!url.contains("login")) {
 			if (session != null && session.getAttribute("account") != null) {
 				chain.doFilter(new BaseRequest(req), resp);
@@ -32,7 +36,11 @@ public class AccountFilter implements Filter {
 				resp.sendRedirect(req.getContextPath() + "/login.jsp");
 			}
 		} else {
-			chain.doFilter(new BaseRequest(req), resp);
+			if (session != null && session.getAttribute("account") != null) {
+				resp.sendRedirect("admin/index.jsp");
+			} else {
+				chain.doFilter(new BaseRequest(req), resp);
+			}
 		}
 	}
 
