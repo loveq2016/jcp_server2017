@@ -10,12 +10,14 @@
 <html>
 <head>
 <base href="<%=basePath%>">
-<title>登录APP后台管理系统</title>
+<title>登录</title>
 <meta name="viewport" content="" />
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="js/md5.js"></script>
 <link rel="stylesheet" href="css/login.css">

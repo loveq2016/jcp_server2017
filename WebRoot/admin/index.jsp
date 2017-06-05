@@ -11,13 +11,15 @@
 <head>
 <base href="<%=basePath%>">
 
-<title>app后台管理</title>
+<title>主页</title>
 <meta name="viewport" content="" />
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
 
 <script type="text/javascript">
     window.onload=function(){
@@ -26,6 +28,9 @@
     if(!isPC()){
        //手机端
        meta.setAttribute("content","width=device-width, initial-scale=1");
+       for(var i=0;i<a.length;i++){
+         a[i].setAttribute("style","color:green;");
+      }
     }else{
       // PC
       for(var i=0;i<a.length;i++){
