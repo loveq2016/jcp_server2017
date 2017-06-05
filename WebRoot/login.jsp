@@ -16,7 +16,6 @@
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-<meta http-equiv="description" content="This is my page">
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="js/md5.js"></script>
 <link rel="stylesheet" href="css/login.css">
@@ -88,24 +87,32 @@
 
 <body>
 	<form action="login" method="post" onsubmit="retuen dosubmit()">
-		<p>
-			<span>账&nbsp;号&nbsp;</span> <input type="text"
-				name="account" id="acct" placeholder="请输入账号" onblur="putNull()">
-			<label id="accountInfo"></label>
-		</p>
-		<p>
-			<span>密&nbsp;码&nbsp;</span> <input type="password"
-				name="password" id="pwd" onblur="putPwd()" placeholder='请输入密码'>
-			<label id="pwdInfo"></label>
-		</p>
-		<p id='dc'>
-			<span>验证码&nbsp;</span> <input type="text" name="checkCode" id="code"
-				placeholder='请输入验证码' onblur="putNull()" s> <img alt="验证码"
-				src="checkCode" id="codeImage"> <label id="codeInfo"></label>
-		</p>
-		<p>
-			<input type="submit" value="登录" id="btn_login"> <input
-				type="reset" value="重置" id="btn_reset">
+		<div class="normal">
+			<p>
+				<span>账&nbsp;号&nbsp;</span> <input type="text" name="account"
+					id="acct" placeholder="请输入账号" onblur="putNull()"> <label
+					id="accountInfo"></label>
+			</p>
+			<p>
+				<span>密&nbsp;码&nbsp;</span> <input type="password" name="password"
+					id="pwd" onblur="putPwd()" placeholder='请输入密码'> <label
+					id="pwdInfo"></label>
+			</p>
+			<p id='dc'>
+				<span>验证码&nbsp;</span> <input type="text" name="checkCode" id="code"
+					placeholder='请输入验证码' onblur="putNull()" s> <img alt="验证码"
+					src="checkCode?type=1" id="codeImage"> <label id="codeInfo"></label>
+			</p>
+			<p>
+				<input type="submit" value="登录" id="btn_login"> <input
+					type="reset" value="重置" id="btn_reset">
+			</p>
+		</div>
+		<div class="qrLogin">
+			<img alt="" src="checkCode?type=2" id="qrCode">
+		</div>
+		<p id="swithArea">
+			<input type="reset" value="切换登录方式" id="btn_swith">
 		</p>
 	</form>
 
@@ -115,9 +122,21 @@
 				function() {
 					$("#codeImage").attr(
 							"src",
-							"checkCode?" + new Date().getTime()
+							"checkCode?type=1&" + new Date().getTime()
 									+ (Math.floor(Math.round() * 100)));
 				});
+				
+				
+		$("#btn_swith").click(function() {
+			var display=$(".qrLogin").css("display");
+			if(display=='none'){
+			  $(".normal").hide(2000);
+			  $(".qrLogin").show(2000);
+			}else{
+			  $(".qrLogin").hide(2000);
+			  $(".normal").show(2000);
+			}
+		})
 
 		//清空提示数据
 		function putNull() {
@@ -143,18 +162,20 @@
 			} else {
 				$("#sp1").html("");
 			}
-			};
-			
-			function dosubmit(){
-			 var isSubmit=false;
-			 if(!isSubmit){
-			    isSubmit=true;
-			    return true;
-			 }else{
-			   isSubmit=false;
-			   return false;
-			 };
-			};
+		};
+
+		function dosubmit() {
+			var isSubmit = false;
+			if (!isSubmit) {
+				isSubmit = true;
+				return true;
+			} else {
+				isSubmit = false;
+				return false;
+			}
+			;
+		};
+		$("form").show(100);
 	</script>
 
 </body>

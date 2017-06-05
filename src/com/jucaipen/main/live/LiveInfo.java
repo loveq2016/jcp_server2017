@@ -100,18 +100,24 @@ public class LiveInfo extends HttpServlet {
 		}
 		List<Contribute> contributes = ContributeSer
 				.findContributeGroupByTid("day");
-		// 贡献排行
-		for (int i = 0; i < contributes.size(); i++) {
-			int teacherId = contributes.get(i).getTeacherId();
-			if (teacherId == tId) {
-				bills = contributes.get(i).getAllJucaiBills();
-				number = i + 1;
-				break;
-			} else {
-				bills = 0;
-				number = contributes.size();
+		if(contributes!=null){
+			// 贡献排行
+			for (int i = 0; i < contributes.size(); i++) {
+				int teacherId = contributes.get(i).getTeacherId();
+				if (teacherId == tId) {
+					bills = contributes.get(i).getAllJucaiBills();
+					number = i + 1;
+					break;
+				} else {
+					bills = 0;
+					number = contributes.size()+1;
+				}
 			}
+		}else{
+			bills = 0;
+			number=1;
 		}
+		
 		// 获取讲师基本信息
 		Object cached2 = DataManager.getCached(Constant.TEACHER_CACHE,
 				"teacherInfo" + tId, hasCache);

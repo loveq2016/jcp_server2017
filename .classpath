@@ -57,5 +57,8 @@
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/alipay-sdk-java20170411150054.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/ehcache.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/sqljdbc.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jmagick.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/QRCode.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/Qrcodeen.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>

@@ -20,6 +20,23 @@ form {
 	background: green;
 	color: white;
 }
+#btn_swith{
+	width: 320px;
+	padding: 8px;
+	border:none;
+	color:black;
+	margin-top: 10px;
+}
+#qrCode{
+	width: 320px;
+}
+#swithArea{
+	width: 100%;
+}
+.qrLogin{
+	display: none;
+	
+}
 #btn_login {
 	width: 100px;
 	padding: 3px;
