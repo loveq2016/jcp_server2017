@@ -35,7 +35,6 @@ import com.jucaipen.utils.StringUtil;
 public class QuerryMyApply extends HttpServlet {
 	private static final long serialVersionUID = -6869431560296180425L;
 	private String result;
-
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");

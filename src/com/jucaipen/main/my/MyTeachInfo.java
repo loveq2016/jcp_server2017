@@ -1,20 +1,16 @@
 package com.jucaipen.main.my;
-
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.jucaipen.model.Bank;
 import com.jucaipen.model.FamousTeacher;
 import com.jucaipen.service.BankSer;
 import com.jucaipen.service.FamousTeacherSer;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.StringUtil;
-
 /**
  * @author Administrator
  *

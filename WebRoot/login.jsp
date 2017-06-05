@@ -31,13 +31,16 @@
 				var pwd = getQueryString("password");
 				$("#acct").val(account);
 				$("#pwd").val(pwd); */
-				$("#codeInfo").html("验证码错误");
+				//$("#codeInfo").html("验证码错误");
+				alert("验证码错误");
 			} else if (errInfo == 2) {
 				var account = getQueryString("account");
 				/* $("#acct").val(account); */
-				$("#pwdInfo").html("密码错误");
+				//$("#pwdInfo").html("密码错误");
+				alert("密码错误");
 			} else {
-				$("#accountInfo").html("用户不存在");
+				//$("#accountInfo").html("用户不存在");
+				alert("用户不存在");
 			}
 		}
 
@@ -45,13 +48,19 @@
 		var form = document.getElementsByTagName("form")[0];
 		var btn_login = document.getElementById("btn_login");
 		var btn_reset = document.getElementById("btn_reset");
+		var swithArea=document.getElementById("swithArea");
+		var btn_swith=document.getElementById("btn_swith");
+		var qrCode=document.getElementById("qrCode");
 		if (!isPC()) {
 			//手机端
 			meta.setAttribute("content", "width=device-width, initial-scale=1");
-			btn_login.setAttribute("style", "width:100px;padding:10px;");
-			btn_reset.setAttribute("style", "width:100px;padding:10px;");
+			btn_login.setAttribute("style", "width:120px;padding:10px;");
+			btn_reset.setAttribute("style", "width:120px;padding:10px;");
 			form.setAttribute("style", "margin-top:35%;margin-left:10%;");
-			form.style.cssText = "margin-top:35%;margin-left:10%;";
+			qrCode.setAttribute("style", "width:250px;height:250px;");
+			//form.style.cssText = "margin-top:35%;margin-left:10%;";
+			swithArea.setAttribute("style", "width:80%;");
+			btn_swith.setAttribute("style", "width:100%;");
 		} else {
 			// PC
 			form.setAttribute("style", "margin-top:18%;margin-left:45%;");
@@ -89,12 +98,12 @@
 	<form action="login" method="post" onsubmit="retuen dosubmit()">
 		<div class="normal">
 			<p>
-				<span>账&nbsp;号&nbsp;</span> <input type="text" name="account"
+				<span>账&nbsp;&nbsp;&nbsp;号&nbsp;</span> <input type="text" name="account"
 					id="acct" placeholder="请输入账号" onblur="putNull()"> <label
 					id="accountInfo"></label>
 			</p>
 			<p>
-				<span>密&nbsp;码&nbsp;</span> <input type="password" name="password"
+				<span>密&nbsp;&nbsp;&nbsp;码&nbsp;</span> <input type="password" name="password"
 					id="pwd" onblur="putPwd()" placeholder='请输入密码'> <label
 					id="pwdInfo"></label>
 			</p>

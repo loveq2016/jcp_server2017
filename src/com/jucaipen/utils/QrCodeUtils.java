@@ -12,7 +12,7 @@ public class QrCodeUtils {
 			qrcode.setQrcodeErrorCorrect('M');
 			qrcode.setQrcodeEncodeMode('B');
 			qrcode.setQrcodeVersion(7);
-			byte[] contentBytes = content.getBytes("gb2312");
+			byte[] contentBytes = content.getBytes("utf-8");
 			BufferedImage bufImg = new BufferedImage(140, 140,
 					BufferedImage.TYPE_INT_RGB);
 			Graphics2D gs = bufImg.createGraphics();
