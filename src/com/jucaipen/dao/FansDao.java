@@ -57,4 +57,6 @@ public interface FansDao {
 	 */
 	public int cancelFans(int tId,int uId);
 
+	public int getFansNum(int teacherId);
+
 }

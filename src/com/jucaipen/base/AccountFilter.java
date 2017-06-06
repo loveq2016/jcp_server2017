@@ -15,7 +15,6 @@ public class AccountFilter implements Filter {
 	public void destroy() {
 
 	}
-
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
@@ -25,7 +24,6 @@ public class AccountFilter implements Filter {
 		String url = req.getRequestURI();
 		//来源验证
 		String referer = req.getHeader("referer");
-		
 		if (!url.contains("login")) {
 			if (session != null && session.getAttribute("account") != null) {
 				chain.doFilter(new BaseRequest(req), resp);

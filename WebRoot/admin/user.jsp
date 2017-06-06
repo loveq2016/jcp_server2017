@@ -17,15 +17,7 @@
 
 <title>用户管理首页</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta http-equiv="pragma" content="no-cache">
-<meta http-equiv="cache-control" content="no-cache">
-<meta http-equiv="expires" content="0">
-<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-<meta http-equiv="description" content="This is my page">
-
-
 </head>
-
 <body>
 	<%
 		Connection conn = JdbcUtil.connSqlServer();
@@ -37,8 +29,8 @@
 	</div>
 	<br>
 	<div align="center">
-	<table border="2" bordercolor="black" >
-		<tr bgcolor="#408080">
+	<table border="1" bordercolor="gray">
+		<tr>
 			<td width="10%" align="center">id</td>
 			<td width="10%" align="center">用户名</td>
 			<td width="10%" align="center">密码</td>
@@ -67,8 +59,8 @@
 			}
 		%>
 	</table>
-	<a href="javascript:0" id="lastPage">上一页</a>
-	<a href="javascript:0"  id="nextPage">下一页</a>
+	<a href="javascript:void(0)" id="lastPage">上一页</a>
+	<a href="javascript:void(0)"  id="nextPage">下一页</a>
 	</div>
 	
 </body>

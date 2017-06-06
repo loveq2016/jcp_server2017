@@ -553,17 +553,19 @@ public class FamousTeacherImp implements FamousTeacherDao {
 			dbConn = JdbcUtil.connSqlServer();
 			sta = dbConn.createStatement();
 			res = sta
-					.executeQuery("SELECT TOP "+top+" Id,NickName,HeadFace,TouXian FROM JCP_Tearcher WHERE State=0 ORDER BY LiveRenQi DESC");
+					.executeQuery("SELECT TOP "+top+" Id,NickName,HeadFace,TouXian,Fans FROM JCP_Tearcher WHERE State=0 ORDER BY LiveRenQi DESC");
 			while (res.next()) {
 				int id = res.getInt(1);
 				String name=res.getString(2);
 				String headFace=res.getString(3);
 				String leavel=res.getString(4);
+				int fans=res.getInt(5);
 				FamousTeacher teacher = new FamousTeacher();
 				teacher.setId(id);
 				teacher.setNickName(name);
 				teacher.setHeadFace(headFace);
 				teacher.setLevel(leavel);
+				teacher.setFans(fans);
 				teachers.add(teacher);
 			}
 			return teachers;

@@ -294,4 +294,26 @@ public class FansImp implements FansDao {
 		return null;
 	}
 
+	@Override
+	public int getFansNum(int teacherId) {
+		// 根据讲师id获取粉丝信息
+		dbConn = JdbcUtil.connSqlServer();
+		try {
+			sta = dbConn.createStatement();
+			res=sta.executeQuery("SELECT COUNT(*) FROM JCP_Fans WHERE FK_TearchId="+teacherId);
+			while (res.next()) {
+				return res.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				JdbcUtil.closeConn(sta, dbConn, res);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return 0;
+	}
+
 }

@@ -21,9 +21,6 @@
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="js/md5.js"></script>
 <link rel="stylesheet" href="css/login.css">
-<link rel="stylesheet"
-	href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
-
 <script type="text/javascript">
 	window.onload = function() {
 		var errInfo = getQueryString("errCode");
@@ -56,6 +53,8 @@
 		if (!isPC()) {
 			//手机端
 			meta.setAttribute("content", "width=device-width, initial-scale=1");
+			form.setAttribute("style", "margin-top:18%;margin-left:45%;width:180px;");
+			form.style.cssText = "margin-top:18%;margin-left:45%;width:180px;";
 			btn_login.setAttribute("style", "width:120px;padding:10px;");
 			btn_reset.setAttribute("style", "width:120px;padding:10px;");
 			form.setAttribute("style", "margin-top:35%;margin-left:10%;");
@@ -65,8 +64,8 @@
 			btn_swith.setAttribute("style", "width:100%;");
 		} else {
 			// PC
-			form.setAttribute("style", "margin-top:18%;margin-left:45%;");
-			form.style.cssText = "margin-top:18%;margin-left:45%;";
+			form.setAttribute("style", "margin-top:18%;margin-left:45%;width:330px;");
+			form.style.cssText = "margin-top:18%;margin-left:45%;width:330px;";
 			btn_login.setAttribute("style", "width:150px;padding:8px;");
 			btn_reset.setAttribute("style", "width:150px;padding:8px;");
 		}
@@ -93,10 +92,17 @@
 		}
 	};
 </script>
+<style>
+ body {
+	background: url("images/bg.jpg");
+	background-repeat: no-repeat;
+	background-size:cover;
+} 
+</style>
 
 </head>
 
-<body>
+<body >
 	<form action="login" method="post" onsubmit="retuen dosubmit()">
 		<div class="normal">
 			<p>

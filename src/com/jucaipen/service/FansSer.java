@@ -12,6 +12,12 @@ import com.jucaipen.model.Fans;
  * ╥шк©пео╒
  */
 public class FansSer {
+	
+	
+	public static int getFansNum(int teacherId){
+		FansDao dao=new FansImp();
+		return dao.getFansNum(teacherId);
+	}
 
 	/**
 	 * @param userId
