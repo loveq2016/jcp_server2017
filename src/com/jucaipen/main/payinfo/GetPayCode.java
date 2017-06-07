@@ -2,22 +2,16 @@ package com.jucaipen.main.payinfo;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.derby.tools.sysinfo;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
@@ -28,7 +22,6 @@ import com.jucaipen.model.ChargeOrder;
 import com.jucaipen.service.ChargeOrderSer;
 import com.jucaipen.utils.JsonUtil;
 import com.jucaipen.utils.LoginUtil;
-import com.jucaipen.utils.MD5Util;
 import com.jucaipen.utils.StringUtil;
 import com.jucaipen.utils.TimeUtils;
 

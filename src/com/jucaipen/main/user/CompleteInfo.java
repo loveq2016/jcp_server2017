@@ -63,22 +63,18 @@ public class CompleteInfo extends HttpServlet {
 		String cityId = request.getParameter("cityId");
 		String investId = request.getParameter("investId");
 		String plain = request.getParameter("plain");
-		if (nickName==null||nickName.length()<=0) {
+		if (!StringUtil.isNotNull(nickName)) {
 			return JsonUtil.getRetMsg(1, "昵称不能为空");
 		}
 		User user = new User();
 		user.setNickName(nickName);
-		if (StringUtil.isNotNull(trueName)) {
-			user.setTrueName(trueName);
-		}
+		user.setTrueName(StringUtil.isNotNull(trueName) ? trueName : "");
 
 		if (StringUtil.isNotNull(sex)) {
 			user.setSex(sex);
 		}
 
-		if (StringUtil.isNotNull(birth)) {
-			user.setBirthday(birth);
-		}
+		user.setBirthday(StringUtil.isNotNull(birth) ? birth : "");
 		
 		if(StringUtil.isNotNull(provinceId)&&StringUtil.isInteger(provinceId)){
 			int pId=Integer.parseInt(provinceId);
@@ -106,10 +102,7 @@ public class CompleteInfo extends HttpServlet {
 			int inveId = Integer.parseInt(investId);
 			user.setInvestId(inveId);
 		}
-
-		if (StringUtil.isNotNull(plain)) {
-			user.setDescript(plain);
-		}
+		user.setDescript(StringUtil.isNotNull(plain) ? plain : "");
 		int isSuccess = UserServer.updateUser(uId, user);
 		return isSuccess == 1 ? JsonUtil.getRetMsg(0, "个人资料提交成功") : JsonUtil
 				.getRetMsg(1, "个人资料提交失败");

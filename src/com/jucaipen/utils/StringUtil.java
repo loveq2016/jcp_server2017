@@ -182,7 +182,7 @@ public class StringUtil {
 	 * @return false if null || ""
 	 */
 	public static boolean isNotNull(String string) {
-		if (string == null || "".equals(string)) {
+		if (string == null || "".equals(string.trim())) {
 			return false;
 		} else {
 			return true;

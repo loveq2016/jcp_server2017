@@ -14,7 +14,7 @@ import com.jucaipen.utils.ImgUtils;
 import com.jucaipen.utils.QrCodeUtils;
 public class GetCode extends HttpServlet {
 	private static final long serialVersionUID = -5050808368233646244L;
-	private String loginUrl="http://192.168.1.31:8080/AccumulateWealth/login.jsp";
+	private String loginUrl="http://121.40.227.121:8080/AccumulateWealth/login.jsp";
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
