@@ -24,7 +24,6 @@ public class AccountFilter implements Filter {
 		String url = req.getRequestURI();
 		//来源验证
 		String referer = req.getHeader("referer");
-		System.out.println("referer:"+referer);
 		if (!url.contains("login")) {
 			if (session != null && session.getAttribute("account") != null) {
 				chain.doFilter(new BaseRequest(req), resp);

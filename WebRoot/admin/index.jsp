@@ -107,6 +107,8 @@ table{
 			<font color="pink"> APP后台数据管理</font>
 		</marquee>
 	</h2>
+	<h3>当前用户:${account}</h3>
+	    
 	<ul>
 		<li data="admin/user.jsp" class="select" onclick="changeBg(this)"><a  href="javascript:void(0)"><strong>用户管理</strong> </a></li>
 		<li data="admin/finalnews.jsp" onclick="changeBg(this)"><a href="javascript:void(0)"><strong>账号管理</strong> </a></li>
