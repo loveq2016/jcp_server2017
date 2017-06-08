@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 
  */
 @SuppressWarnings("serial")
-public class User implements Serializable {
+public class User implements Serializable,Comparable<User> {
 	
 	/**
 	 * 用户信息当前页
@@ -548,6 +548,19 @@ public class User implements Serializable {
 	}
 	public void setAllIntegral(int allIntegral) {
 		this.allIntegral = allIntegral;
+	}
+	@Override
+	public int compareTo(User o) {
+		if(o!=null){
+			if(this.getUserLeval()>o.getUserLeval()){
+				return -1;
+			}else if(this.getUserLeval()<o.getUserLeval()){
+				return 1;
+			}else{
+				return 0;
+			}
+		}
+		return 0;
 	}
 	
 	

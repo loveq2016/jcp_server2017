@@ -2,16 +2,21 @@ package com.jucaipen.main.live;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import com.google.gson.JsonObject;
 import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.Contribute;
@@ -144,6 +149,7 @@ public class LiveInfo extends HttpServlet {
 			}
 
 		}
+		Collections.sort(list);
 		String onLineData = JsonUtil.getOnLineData(bills, list, number);
 		if (list.size() > 0) {
 			new CacheUtils(Constant.VIDEO_CACHE).addToCache("liveInfo" + tId,

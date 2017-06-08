@@ -8,7 +8,7 @@ import java.io.Serializable;
  *   ¹±Ï× °ñ   JCP_Contribute
  */
 @SuppressWarnings("serial")
-public class Contribute implements Serializable{
+public class Contribute implements Serializable,Comparable<Contribute>{
 	/**
 	 *  Id
 	 */
@@ -132,5 +132,18 @@ public class Contribute implements Serializable{
 	}
 	public void setComType(int comType) {
 		this.comType = comType;
+	}
+	@Override
+	public int compareTo(Contribute o) {
+		if(o!=null){
+			if(this.getUserLeavel()>o.getUserLeavel()){
+				return -1;
+			}else if(this.getUserLeavel()<o.getUserLeavel()){
+				return 1;
+			}else{
+				return 0;
+			}
+		}
+		return 0;
 	}
 }

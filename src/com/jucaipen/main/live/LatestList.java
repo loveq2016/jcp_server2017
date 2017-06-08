@@ -1,6 +1,7 @@
 package com.jucaipen.main.live;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -105,6 +106,7 @@ public class LatestList extends HttpServlet {
 			contribute.setFromName(user.getNickName());
 			contribute.setFromFace(user.getFaceImage());
 		}
+		Collections.sort(contributes);
 		String lateList = JsonUtil.getLateList(contributes);
 		new CacheUtils(Constant.TEACHER_CACHE).addToCache(t+"userLast"+tId, lateList);
 		return lateList;

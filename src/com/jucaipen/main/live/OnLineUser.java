@@ -2,15 +2,19 @@ package com.jucaipen.main.live;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import com.google.gson.JsonObject;
 import com.jucaipen.manager.DataManager;
 import com.jucaipen.model.User;
@@ -75,8 +79,8 @@ public class OnLineUser extends HttpServlet {
 	public String getRoomInfo(int roomId, int p) {
 		JsonObject object = new JsonObject();
 		object.addProperty("GroupId", roomId + "");
-		object.addProperty("Limit", 15);
-		object.addProperty("Offset", (p-1)*15);
+		object.addProperty("Limit", 20);
+		object.addProperty("Offset", (p-1)*20);
 		return LoginUtil.sendPostStr(createUrl(baseUrl, getSign("onLineAdmin")),
 				object.toString(), null);
 	}
@@ -119,8 +123,8 @@ public class OnLineUser extends HttpServlet {
 			} catch (Exception e) {
 				list = getMember(roomId, tId,p);
 			}
-
 		}
+		Collections.sort(list);
 		String onLineData = JsonUtil.getOnLineData(list);
 		if (list.size() > 0) {
 			new CacheUtils(Constant.VIDEO_CACHE).addToCache(p+"onLine" + tId,
