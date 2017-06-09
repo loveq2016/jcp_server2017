@@ -1361,11 +1361,7 @@
     </filter>
      <filter-mapping>
         <filter-name>accountFilter</filter-name>
-        <url-pattern>*.jsp</url-pattern>
-    </filter-mapping>
-     <filter-mapping>
-        <filter-name>accountFilter</filter-name>
-        <url-pattern>*.html</url-pattern>
+        <url-pattern>/admin/*</url-pattern>
     </filter-mapping>
     <filter>
         <filter-name>sessionFilter</filter-name>

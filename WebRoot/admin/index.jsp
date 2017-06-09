@@ -16,6 +16,7 @@
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
+<!-- <meta http-equiv="refresh" content="1"> -->
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
@@ -81,21 +82,28 @@ ul {
 
 iframe {
 	width: 85%;
-	height:85%;
+	height: 85%;
 	float: right;
 	margin-right: 20px;
 	border: none;
 	display: none;
+}
+
+table {
 	
 }
-table{
-  
+
+.select {
+	background: gray;
 }
-.select{
-  background: gray;
+
+.userName,.time {
+	color: orange;
+}
+h4{
+ margin-top: -10px;
 }
 </style>
-
 
 </head>
 
@@ -107,17 +115,25 @@ table{
 			<font color="pink"> APP后台数据管理</font>
 		</marquee>
 	</h2>
-	<h3>当前用户:${account}</h3>
-	    
+	<h4>
+		当前用户:&nbsp;<span class="userName">${account}</span>
+	</h4>
+	<h4>
+		当前时间:&nbsp;<span class="time"></span>
+	</h4>
 	<ul>
-		<li data="admin/user.jsp" class="select" onclick="changeBg(this)"><a  href="javascript:void(0)"><strong>用户管理</strong> </a></li>
-		<li data="admin/finalnews.jsp" onclick="changeBg(this)"><a href="javascript:void(0)"><strong>账号管理</strong> </a></li>
-		<li data="admin/apkManager.jsp" onclick="changeBg(this)"><a href="javascript:void(0)"><strong>APK管理</strong> </a></li>
-		<li data="admin/pushInfoManager.jsp" onclick="changeBg(this)"><a href="javascript:void(0)"><strong>消息推送管理</strong>
-		</a></li>
-		<li data="admin/yao.jsp" onclick="changeBg(this)"><a href="javascript:void(0)"><strong>配置管理</strong> </a></li>
+		<li data="admin/user.jsp" class="select" onclick="changeBg(this)"><a
+			href="javascript:void(0)"><strong>用户管理</strong> </a></li>
+		<li data="admin/finalnews.jsp" onclick="changeBg(this)"><a
+			href="javascript:void(0)"><strong>账号管理</strong> </a></li>
+		<li data="admin/apkManager.jsp" onclick="changeBg(this)"><a
+			href="javascript:void(0)"><strong>APK管理</strong> </a></li>
+		<li data="admin/pushInfoManager.jsp" onclick="changeBg(this)"><a
+			href="javascript:void(0)"><strong>消息推送管理</strong> </a></li>
+		<li data="admin/yao.jsp" onclick="changeBg(this)"><a
+			href="javascript:void(0)"><strong>配置管理</strong> </a></li>
 	</ul>
-	 <table>
+	<table>
 		<tr>
 			<td align="center" valign="middle" bgColor="#c0c0c0" width="10%"><a
 				href="admin/user.jsp"><strong>用户管理</strong> </a></td>
@@ -129,22 +145,29 @@ table{
 				href="admin/pushInfoManager.jsp"><strong>消息推送管理</strong> </a></td>
 			<td align="center" valign="middle" bgColor="#c0c0c0" width="10%"><a
 				href="admin/yao.jsp"><strong>配置管理</strong> </a></td>
+			<td align="center" valign="middle" bgColor="#c0c0c0" width="10%"><a
+				href="admin/log.jsp"><strong>日志管理</strong> </a></td>
 		</tr>
-	</table> 
+	</table>
 	<br>
 	<iframe src="admin/user.jsp"> </iframe>
-	
+
 	<script type="text/javascript">
-	 var li=document.getElementsByTagName("li");
-	 var iframe=document.getElementsByTagName("iframe")[0];
-	 function changeBg(ele){
-	    for(var i=0;i<li.length;i++){
-	       li[i].className="";
-	   }
-	    iframe.setAttribute("src",ele.getAttribute("data"));
-	    ele.className="select";
-	 }
+		var li = document.getElementsByTagName("li");
+		var iframe = document.getElementsByTagName("iframe")[0];
+		var time = document.getElementsByClassName("time")[0];
+		time.innerHTML = new Date().toLocaleString();
+		setInterval(function() {
+			time.innerHTML = new Date().toLocaleString();
+		}, 1000);
+		function changeBg(ele) {
+			for (var i = 0; i < li.length; i++) {
+				li[i].className = "";
+			}
+			iframe.setAttribute("src", ele.getAttribute("data"));
+			ele.className = "select";
+		}
 	</script>
-	
+
 </body>
 </html>

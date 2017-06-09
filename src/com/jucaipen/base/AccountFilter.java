@@ -24,7 +24,13 @@ public class AccountFilter implements Filter {
 		String url = req.getRequestURI();
 		//来源验证
 		String referer = req.getHeader("referer");
-		if (!url.contains("login")) {
+		if(!url.contains(".jsp")&&!url.contains(".html")){
+			//不过滤非 html、JSP文件
+			chain.doFilter(req, resp);
+			return ;
+		}
+		
+		if (!url.contains("login.jsp")) {
 			if (session != null && session.getAttribute("account") != null) {
 				chain.doFilter(new BaseRequest(req), resp);
 			} else {
