@@ -66,6 +66,10 @@ public class CompleteInfo extends HttpServlet {
 		if (!StringUtil.isNotNull(nickName)) {
 			return JsonUtil.getRetMsg(1, "昵称不能为空");
 		}
+		
+		if (nickName.length()>7) {
+			return JsonUtil.getRetMsg(8, "昵称长度不能超过7位");
+		}
 		User user = new User();
 		user.setNickName(nickName);
 		user.setTrueName(StringUtil.isNotNull(trueName) ? trueName : "");
